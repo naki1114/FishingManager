@@ -77,6 +77,7 @@ dependencies {
     implementation("androidx.camera:camera-view:1.3.1")
     implementation("androidx.camera:camera-extensions:1.3.1")
 
-
+    // TedPermission
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
 
 }
