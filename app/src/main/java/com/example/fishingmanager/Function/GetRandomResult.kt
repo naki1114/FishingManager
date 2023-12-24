@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Function
+package com.example.fishingmanager.Function
 
 import java.util.Random
 

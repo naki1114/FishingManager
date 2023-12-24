@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Model
+package com.example.fishingmanager.Model
 
 class HomeModel {
 }

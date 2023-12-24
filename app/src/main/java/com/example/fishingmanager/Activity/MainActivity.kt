@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Activity
+package com.example.fishingmanager.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Function
+package com.example.fishingmanager.Function
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat

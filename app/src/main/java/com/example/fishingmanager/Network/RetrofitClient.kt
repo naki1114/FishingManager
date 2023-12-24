@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Network
+package com.example.fishingmanager.Network
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

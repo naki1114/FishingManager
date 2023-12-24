@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Network
+package com.example.fishingmanager.Network
 
 import android.content.Context
 import android.net.ConnectivityManager

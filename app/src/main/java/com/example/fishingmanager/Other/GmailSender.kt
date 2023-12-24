@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Other
+package com.example.fishingmanager.Other
 
 import java.util.Properties
 import javax.mail.Authenticator
