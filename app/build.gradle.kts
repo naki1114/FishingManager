@@ -86,6 +86,9 @@ dependencies {
     // PullRefresh
     implementation("com.baoyz.pullrefreshlayout:library:1.2.0")
 
-    
+    // CircleImage
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+
 
 }
