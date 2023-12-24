@@ -83,6 +83,9 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.13.0")
 
+    // PullRefresh
+    implementation("com.baoyz.pullrefreshlayout:library:1.2.0")
 
+    
 
 }
