@@ -63,4 +63,12 @@ dependencies {
     implementation(files("libs/additionnal.jar"))
     implementation(files("libs/mail.jar"))
 
+    // Tensorflow
+    implementation("org.tensorflow:tensorflow-lite:2.13.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.0.0-nightly-SNAPSHOT")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
+    implementation("org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT")
+
+
+
 }
