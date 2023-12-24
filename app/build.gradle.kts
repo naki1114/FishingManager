@@ -95,4 +95,7 @@ dependencies {
     // GoogleLogin
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    // NaverLogin
+    implementation("com.navercorp.nid:oauth:5.5.0")
+
 }
