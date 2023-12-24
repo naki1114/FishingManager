@@ -80,4 +80,9 @@ dependencies {
     // TedPermission
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
 
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.13.0")
+
+
+
 }
