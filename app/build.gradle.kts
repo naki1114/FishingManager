@@ -92,6 +92,7 @@ dependencies {
     // KakaoLogin
     implementation("com.kakao.sdk:v2-user:2.10.0")
 
-    
+    // GoogleLogin
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
 }
