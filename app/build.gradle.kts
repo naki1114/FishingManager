@@ -89,6 +89,9 @@ dependencies {
     // CircleImage
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
+    // KakaoLogin
+    implementation("com.kakao.sdk:v2-user:2.10.0")
 
+    
 
 }
