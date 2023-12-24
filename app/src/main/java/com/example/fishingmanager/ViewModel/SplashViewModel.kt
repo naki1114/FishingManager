@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.ViewModel
+package com.example.fishingmanager.ViewModel
 
 class SplashViewModel {
 }

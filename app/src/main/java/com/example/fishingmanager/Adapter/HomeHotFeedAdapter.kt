@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Adapter
+package com.example.fishingmanager.Adapter
 
 class HomeHotFeedAdapter {
 }

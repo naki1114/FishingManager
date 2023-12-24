@@ -1,12 +1,12 @@
-package com.example.fishingmanagerclone.Network
+package com.example.fishingmanager.Network
 
-import com.example.fishingmanagerclone.Data.Collection
-import com.example.fishingmanagerclone.Data.Comment
-import com.example.fishingmanagerclone.Data.Feed
-import com.example.fishingmanagerclone.Data.History
-import com.example.fishingmanagerclone.Data.Index
-import com.example.fishingmanagerclone.Data.Tide
-import com.example.fishingmanagerclone.Data.Weather
+import com.example.fishingmanager.Data.Collection
+import com.example.fishingmanager.Data.Comment
+import com.example.fishingmanager.Data.Feed
+import com.example.fishingmanager.Data.History
+import com.example.fishingmanager.Data.Index
+import com.example.fishingmanager.Data.Tide
+import com.example.fishingmanager.Data.Weather
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Field

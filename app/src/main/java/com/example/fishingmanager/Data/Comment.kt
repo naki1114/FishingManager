@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.Data
+package com.example.fishingmanager.Data
 
 data class Comment(
     val nickname: String,

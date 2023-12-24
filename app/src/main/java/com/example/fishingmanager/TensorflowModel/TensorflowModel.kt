@@ -1,4 +1,4 @@
-package com.example.fishingmanagerclone.TensorflowModel
+package com.example.fishingmanager.TensorflowModel
 
 import android.content.Context
 import android.graphics.Bitmap
