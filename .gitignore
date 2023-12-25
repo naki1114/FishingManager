@@ -15,3 +15,6 @@
 local.properties
 .idea/kotlinc.xml
 .idea/vcs.xml
+.idea/misc.xml
+app/src/main/java/com/example/fishingmanager/Network/RetrofitClient.kt
+app/src/main/java/com/example/fishingmanager/Other/GmailSender.kt
