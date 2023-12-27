@@ -43,7 +43,7 @@ dependencies {
     // Basic
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -64,18 +64,18 @@ dependencies {
     implementation(files("libs/mail.jar"))
 
     // Tensorflow
-    implementation("org.tensorflow:tensorflow-lite:2.13.0")
-    implementation("org.tensorflow:tensorflow-lite-support:0.0.0-nightly-SNAPSHOT")
-    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
-    implementation("org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT")
+//    implementation("org.tensorflow:tensorflow-lite:2.13.0")
+//    implementation("org.tensorflow:tensorflow-lite-support:0.0.0-nightly-SNAPSHOT")
+//    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
+//    implementation("org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT")
 
     // Camera2
-    implementation("androidx.camera:camera-core:1.3.1")
-    implementation("androidx.camera:camera-camera2:1.3.1")
-    implementation("androidx.camera:camera-lifecycle:1.3.1")
-    implementation("androidx.camera:camera-video:1.3.1")
-    implementation("androidx.camera:camera-view:1.3.1")
-    implementation("androidx.camera:camera-extensions:1.3.1")
+//    implementation("androidx.camera:camera-core:1.3.1")
+//    implementation("androidx.camera:camera-camera2:1.3.1")
+//    implementation("androidx.camera:camera-lifecycle:1.3.1")
+//    implementation("androidx.camera:camera-video:1.3.1")
+//    implementation("androidx.camera:camera-view:1.3.1")
+//    implementation("androidx.camera:camera-extensions:1.3.1")
 
     // TedPermission
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
@@ -84,18 +84,18 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.13.0")
 
     // PullRefresh
-    implementation("com.baoyz.pullrefreshlayout:library:1.2.0")
+//    implementation("com.baoyz.pullrefreshlayout:library:1.2.0")
 
     // CircleImage
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // KakaoLogin
-    implementation("com.kakao.sdk:v2-user:2.10.0")
+//    implementation("com.kakao.sdk:v2-user:2.10.0")
 
     // GoogleLogin
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+//    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // NaverLogin
-    implementation("com.navercorp.nid:oauth:5.5.0")
+//    implementation("com.navercorp.nid:oauth:5.5.0")
 
 }
