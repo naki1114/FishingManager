@@ -14,6 +14,7 @@ import com.example.fishingmanager.Function.GetDate
 import com.example.fishingmanager.R
 import com.example.fishingmanager.ViewModel.SplashViewModel
 import com.skydoves.progressview.ProgressView
+import kotlin.concurrent.thread
 
 
 class SplashFragment : Fragment() {
@@ -25,6 +26,15 @@ class SplashFragment : Fragment() {
     private lateinit var progressView: ProgressView
     private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
+
+    val delayToStart = thread(false) {
+        Thread.sleep(1000)
+        (activity as MainActivity).changeFragment("start")
+    }
+    val delayToHome = thread(false) {
+        Thread.sleep(1000)
+        (activity as MainActivity).changeFragment("home")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,11 +149,11 @@ class SplashFragment : Fragment() {
 
                 if (checkSharedPreferense) {
 
-                    (activity as MainActivity).changeFragment("start")
+                    delayToStart.start()
 
                 } else {
 
-                    (activity as MainActivity).changeFragment("home")
+                    delayToHome.start()
 
                 }
 
