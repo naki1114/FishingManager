@@ -1,9 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.StartFragment">
+    tools:context=".StartFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/startLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main2"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/logoView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/fishing_logo"
+            android:layout_marginTop="180dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/toLoginLayoutButton" />
+
+        <Button
+            android:id="@+id/toLoginLayoutButton"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="@string/start_login"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/main2"
+            android:backgroundTint="@color/main1"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoView"
+            app:layout_constraintBottom_toTopOf="@id/toSignupLayoutButton" />
+
+        <Button
+            android:id="@+id/toSignupLayoutButton"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="@string/start_signup"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/main2"
+            android:backgroundTint="@color/main1"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toLoginLayoutButton" />
+
+        <LinearLayout
+            android:id="@+id/socialLoginText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/toSignupLayoutButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="@color/black" />
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="@string/start_socialLogin"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/socialLoginButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/socialLoginText"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" >
+
+            <ImageButton
+                android:id="@+id/googleLoginButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/google_logo"
+                android:scaleType="fitCenter"
+                android:background="@color/main2" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <ImageButton
+                android:id="@+id/kakaoLoginButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/kakao_logo"
+                android:scaleType="fitCenter"
+                android:background="@color/main2" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:orientation="horizontal" />
+
+            <ImageButton
+                android:id="@+id/naverLoginButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/naver_logo"
+                android:scaleType="fitCenter"
+                android:background="@color/main2" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
