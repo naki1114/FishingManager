@@ -1,60 +1,168 @@
 package com.example.fishingmanager.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.example.fishingmanager.Activity.MainActivity
+import com.example.fishingmanager.Function.GetDate
 import com.example.fishingmanager.R
+import com.example.fishingmanager.ViewModel.SplashViewModel
+import com.skydoves.progressview.ProgressView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SplashFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SplashFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    val TAG: String = "SplashFragment"
+
+    private lateinit var viewModel : SplashViewModel
+    private lateinit var progressText: TextView
+    private lateinit var progressView: ProgressView
+    private var checkSharedPreferense : Boolean = false
+    private var progressValue: Float = 0.0f
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SplashFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SplashFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    } // onCreateView()
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setVariable()
+        observeLiveData()
+        requestData()
+
+    } // onViewCreated
+
+
+    // 변수 초기화
+    fun setVariable() {
+
+        viewModel = SplashViewModel()
+        progressText = activity?.findViewById(R.id.progressText)!!
+        progressView = activity?.findViewById(R.id.progressView)!!
+        checkSharedPreferense = checkSharedPreference()
+
+    } // setVariable()
+
+
+    // API 데이터 요청
+    fun requestData() {
+
+        viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate2(GetDate().getTime()), "0500", "37", "127")
+        viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), "DT_0001", "json")
+        viewModel.getIndex("SF", "json")
+
+    } // requestData()
+
+
+    // ViewModel - LiveData 관찰
+    fun observeLiveData() {
+
+        // 날씨 - ArrayList 감지
+        viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
+
+            updateProgressView()
+
+        })
+
+        // 조석 - ArrayList 감지
+        viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
+
+            updateProgressView()
+
+        })
+
+        // 지수 - ArrayList 감지
+        viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
+
+            updateProgressView()
+
+        })
+
+        // DB 데이터 - Boolean 감지
+        viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer { s ->
+
+            if (s) {
+
+                updateProgressView()
+
             }
-    }
+
+        })
+
+    } // observeLiveData()
+
+
+    // ProgressView 업데이트
+    fun updateProgressView() {
+
+        if (checkSharedPreferense) {
+
+            progressValue += 33.3f
+
+            if (progressValue.toInt() == 99) {
+
+                progressValue = 100.0f
+
+            }
+
+        } else {
+
+            progressValue += 25.0f
+
+        }
+
+        progressView.labelText = "${progressValue.toInt()} %"
+        progressView.progress = progressValue
+
+        when (progressValue.toInt()) {
+
+            0 -> progressText.text = resources.getString(R.string.splash_loading_0)
+            25 -> progressText.text = resources.getString(R.string.splash_loading_25)
+            50 -> progressText.text = resources.getString(R.string.splash_loading_50)
+            75 -> progressText.text = resources.getString(R.string.splash_loading_75)
+            33 -> progressText.text = resources.getString(R.string.splash_loading_33)
+            66 -> progressText.text = resources.getString(R.string.splash_loading_66)
+            99 , 100 -> {
+                progressText.text = resources.getString(R.string.splash_loading_100)
+
+                if (checkSharedPreferense) {
+
+                    (activity as MainActivity).changeFragment("start")
+
+                } else {
+
+                    (activity as MainActivity).changeFragment("home")
+
+                }
+
+            }
+
+        }
+
+    } // updateProgressView()
+
+
+    // SharedPreference 체크
+    fun checkSharedPreference() : Boolean {
+
+        val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        val checkValue = sharedPreferences?.getString("nickname", "")
+
+        return checkValue == ""
+
+    } // checkSharedPreference()
+
+
 }

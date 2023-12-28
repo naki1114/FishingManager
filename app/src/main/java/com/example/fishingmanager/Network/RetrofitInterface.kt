@@ -1,6 +1,7 @@
 package com.example.fishingmanager.Network
 
 import com.example.fishingmanager.Data.Collection
+import com.example.fishingmanager.Data.Combine
 import com.example.fishingmanager.Data.Comment
 import com.example.fishingmanager.Data.Feed
 import com.example.fishingmanager.Data.History
@@ -19,10 +20,10 @@ import retrofit2.http.Query
 interface RetrofitInterface {
 
     // 날씨 API
-    @GET("getVilageFcst?serviceKey=" + RetrofitClient.WEATHER_KEY)
+    @GET("getVilageFcst?serviceKey=${RetrofitClient.WEATHER_KEY}")
     fun requestWeather(
-        @Query("pageNo") pageNo: Int,
-        @Query("numOfRows") numOfRows: Int,
+        @Query("pageNo") pageNo: String,
+        @Query("numOfRows") numOfRows: String,
         @Query("dataType") dataType: String,
         @Query("base_date") baseDate: String,
         @Query("base_time") baseTime: String,
@@ -32,7 +33,7 @@ interface RetrofitInterface {
 
 
     // 조석 API
-    @GET("tideObsPreTab/search.do?ServiceKey=" + RetrofitClient.SEE_KEY)
+    @GET("tideObsPreTab/search.do?ServiceKey=${RetrofitClient.SEE_KEY}")
     fun requestTide(
         @Query("Date") baseDate: String,
         @Query("ObsCode") location: String,
@@ -41,11 +42,16 @@ interface RetrofitInterface {
 
 
     // 해양생활예보지수 API
-    @GET("fcIndexOfType/search.do?ServiceKey=" + RetrofitClient.SEE_KEY)
+    @GET("fcIndexOfType/search.do?ServiceKey=${RetrofitClient.SEE_KEY}")
     fun requestIndex(
         @Query("Type") type: String,
         @Query("ResultType") resultType: String
     ): Call<Index>
+
+
+    // 도감, 기록, 게시글, 사용자 정보 조회
+    @POST("")
+    fun requestDB(@Field("nickname") nickname: String) : Call<Combine>
 
 
     // 도감 데이터 조회

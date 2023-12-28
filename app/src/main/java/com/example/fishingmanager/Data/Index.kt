@@ -3,7 +3,7 @@ package com.example.fishingmanager.Data
 data class Index(val result : Result) {
 
     data class Result(
-        val data : List<Item>,
+        val data : ArrayList<Item>,
         val meta : Meta
     )
 

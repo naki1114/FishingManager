@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main2"
     tools:context=".Fragment.SplashFragment">
+
+
+    <com.skydoves.progressview.ProgressView
+        android:id="@+id/progressView"
+        android:layout_width="300dp"
+        android:layout_height="24dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="100dp"
+        app:progressView_autoAnimate="true"
+        app:progressView_progressFromPrevious="true"
+        app:progressView_animation="normal"
+        app:progressView_duration="100"
+        app:progressView_colorBackground="@color/gray1"
+        app:progressView_colorProgress="@color/main1"
+        app:progressView_labelSize="18dp"
+        app:progressView_labelSpace="10dp"
+        app:progressView_max="100"
+        app:progressView_radius="50dp" />
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="140dp"
+        android:text="@string/splash_loading_0"
+        android:textSize="18dp"
+        android:textColor="@color/gray2"/>
+
 
 </FrameLayout>

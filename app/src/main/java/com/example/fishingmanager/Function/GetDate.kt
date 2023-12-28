@@ -22,6 +22,26 @@ class GetDate {
 
     } // getFormatDate()
 
+    @SuppressLint("SimpleDateFormat")
+    fun getFormatDate2(time : Long) : String {
+
+        var format = SimpleDateFormat("yyyyMMdd")
+        var formatTime : String = format.format(time)
+
+        return formatTime
+
+    } // getFormatDate2()
+
+    @SuppressLint("SimpleDateFormat")
+    fun getFormatDate3(time : Long) : String {
+
+        var format = SimpleDateFormat("yyyy-MM-dd")
+        var formatTime : String = format.format(time)
+
+        return formatTime
+
+    } // getFormatDate2()
+
 
     @SuppressLint("SimpleDateFormat")
     fun getFormatTime(time : Long) : String {

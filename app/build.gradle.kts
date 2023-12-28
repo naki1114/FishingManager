@@ -51,6 +51,7 @@ dependencies {
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.okhttp:okhttp:2.7.5")
 
     // Scalars (Converter)
     implementation("com.squareup.retrofit2:converter-scalars:2.6.4")
@@ -62,6 +63,9 @@ dependencies {
     implementation(files("libs/activation.jar"))
     implementation(files("libs/additionnal.jar"))
     implementation(files("libs/mail.jar"))
+
+    // ProgressView
+    implementation("com.github.skydoves:progressview:1.1.3")
 
     // Tensorflow
 //    implementation("org.tensorflow:tensorflow-lite:2.13.0")
