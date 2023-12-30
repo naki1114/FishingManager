@@ -50,32 +50,22 @@ interface RetrofitInterface {
 
 
     // 도감, 기록, 게시글, 사용자 정보 조회
-    @POST("")
+    @POST("File/Splash/GetUserData.php")
     fun requestDB(@Field("nickname") nickname: String) : Call<Combine>
 
 
-    // 도감 데이터 조회
-    @POST("")
-    fun requestCollection(@Field("nickname") nickname: String): Call<ArrayList<Collection>>
-
-
-    // 기록 데이터 조회
-    @POST("")
-    fun requestHistory(@Field("nickname") nickname: String): Call<ArrayList<History>>
-
-
     // 이메일 중복 체크
-    @POST("")
+    @POST("File/UserInfo/EmailDuplicateCheck.php")
     fun checkUserEmail(@Field("id") id: String): Call<String>
 
 
     // 닉네임 중복 체크
-    @POST("")
+    @POST("File/UserInfo/NicknameDuplicateCheck.php")
     fun checkUserNickname(@Field("nickname") nickname: String): Call<String>
 
 
     // 회원가입 완료
-    @POST("")
+    @POST("File/UserInfo/FinishSignup.php")
     fun saveUserInfo(
         @Field("id") id: String,
         @Field("password") password: String,
@@ -83,8 +73,16 @@ interface RetrofitInterface {
     ): Call<String>
 
 
+    // 비밀번호 찾기
+    @POST("File/UserInfo/FindPassword.php")
+    fun changePassword(
+        @Field("id") id: String,
+        @Field("password") password: String
+    )
+
+
     // 로그인 정보 조회
-    @POST("")
+    @POST("File/UserInfo/LoginCheck.php")
     fun checkUserInfo(
         @Field("id") id: String,
         @Field("password") password: String
@@ -92,22 +90,27 @@ interface RetrofitInterface {
 
 
     // 회원탈퇴
-    @POST("")
+    @POST("File/UserInfo/DeleteAccount.php")
     fun deleteUserInfo(@Field("nickname") nickname: String): Call<String>
 
 
     // 프로필 사진 수정
     @Multipart
-    @POST("")
+    @POST("File/UserInfo/UpdateProfileImage.php")
     fun updateProfileImage(
         @Part uploadFile: MultipartBody.Part,
         @Field("profileImage") profileImage: String
     ): Call<String>
 
 
+    // 게시글 요청
+    @POST("File/Feed/GetFeed.php")
+    fun getFeed(): Call<ArrayList<Feed>>
+
+
     // 게시글 추가
     @Multipart
-    @POST("")
+    @POST("File/Feed/InsertFeed.php")
     fun insertFeed(
         @Part uploadFile: MultipartBody.Part,
         @Field("nickname") nickname: String,
@@ -118,17 +121,53 @@ interface RetrofitInterface {
     ): Call<ArrayList<Feed>>
 
 
+    // 게시글 수정
+    @Multipart
+    @POST("File/Feed/UpdateFeed.php")
+    fun updateFeed(
+        @Part uploadFile: MultipartBody.Part,
+        @Field("nickname") nickname: String,
+        @Field("writeImage") writeImage: String,
+        @Field("title") title: String,
+        @Field("content") content: String,
+        @Field("date") date: String
+    ): Call<String>
+
+
+    // 게시글 삭제
+    @POST("File/Feed/DeleteFeed.php")
+    fun deleteFeed(
+        @Field("nickname") nickname: String,
+        @Field("feedNum") feedNum: Int
+    ): Call<String>
+
+
+    // 댓글 요청
+    @POST("File/Feed/GetComment.php")
+    fun getComment(): Call<ArrayList<Comment>>
+
+
     // 댓글 추가
-    @POST("")
+    @POST("File/Feed/InsertComment.php")
     fun insertComment(
         @Field("nickname") nickname: String,
+        @Field("feedNum") feedNum: Int,
         @Field("content") content: String,
         @Field("date") date: String
     ): Call<ArrayList<Comment>>
 
 
+    // 댓글 삭제
+    @POST("File/Feed/DeleteComment.php")
+    fun deleteComment(
+        @Field("nickname") nickname: String,
+        @Field("feedNum") feedNum: Int,
+        @Field("date") date: String
+    ): Call<String>
+
+
     // 도감 조회
-    @POST("")
+    @POST("File/CheckingFish/CheckCollection.php")
     fun checkCollection(
         @Field("nickname") nickname: String,
         @Field("fish") fish: String,
@@ -139,7 +178,7 @@ interface RetrofitInterface {
 
     // 기록 추가
     @Multipart
-    @POST("")
+    @POST("File/CheckingFish/InsertHistory.php")
     fun saveHistory(
         @Part uploadFile: MultipartBody.Part,
         @Field("nickname") nickname: String,
@@ -150,7 +189,7 @@ interface RetrofitInterface {
 
 
     // 이용권 구매
-    @POST("")
+    @POST("File/UserInfo/UpdateTicket.php")
     fun updateTicket(
         @Field("nickname") nickname: String,
         @Field("product") product: String,
