@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 class RetrofitClient {
 
-    private val BASE_URL: String = "http://13.125.189.5/"
+    private val BASE_URL: String = "http://13.125.189.5/FM/"
     private val WEATHER_URL : String = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/"
     private val TIDE_URL : String = "https://www.khoa.go.kr/api/oceangrid/"
     private val INDEX_URL : String = "https://www.khoa.go.kr/api/oceangrid/"
