@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="weatherItem"
+            type="com.example.fishingmanager.data.ConditionWeather" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="13dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            />
+
+        <TextView
+            android:id="@+id/conditionWeatherTimeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="@{weatherItem.time}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            />
+
+        <ImageView
+            android:id="@+id/conditionWeatherSkyImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+        <TextView
+            android:id="@+id/conditionWeatherTempText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="@{weatherItem.temp}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            />
+
+        <ImageView
+            android:id="@+id/conditionWeatherHumidityImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/humidity"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+        <TextView
+            android:id="@+id/conditionWeatherHumidityText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="@{weatherItem.humidity}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            />
+
+        <ImageView
+            android:id="@+id/conditionWeatherWindSpeedImage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/wind_speed"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+        <TextView
+            android:id="@+id/conditionWeatherWindSpeedText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:textSize="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="@{weatherItem.windSpeed}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            />
+
+    </LinearLayout>
+
+</layout>
