@@ -33,46 +33,23 @@ class SplashViewModel : ViewModel() {
 
 
     // Model에서 요청한 날씨 API에 대한 Callback
+    // Model에서 요청한 날씨 API에 대한 Callback
     fun getWeather(pageNo : String, numOfRows : String, dataType : String, baseDate : String, baseTime : String, nx : String, ny : String) {
         model = SplashModel()
-        model.getWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny).enqueue(object :
-            Callback<Weather> {
+        model.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny).enqueue(object : Callback<Weather> {
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
-
                 if (response.isSuccessful) {
 
-                    val list = ArrayList<Weather.Item>()
-                    val weather = response.body()
-                    val responseList : List<Weather.Item> = weather!!.response.body.items.item
-                    val listSize = responseList.size
-
-                    for (i in 0 until listSize) {
-
-                        if (responseList[i].fcstDate == GetDate().getFormatDate2(GetDate().getTime())
-                            && responseList[i].category == "TMP") {
-
-                            list.add(responseList[i])
-
-                        }
-
-                    }
-
-                    liveDataWeatherList.value = list
+                    liveDataWeatherList.value = model.getWeatherList(response)
 
                 } else {
-
                     Log.d(TAG, "getWeather - onResponse : isFailure : ${response.message()}")
-
                 }
-
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
-
                 Log.d(TAG, "getWeather - onFailure : $t")
-
             }
-
         })
 
     } // getWeather()
@@ -81,27 +58,20 @@ class SplashViewModel : ViewModel() {
     // Model에서 요청한 조석 API에 대한 Callback
     fun getTide(baseDate : String, location : String, resultType : String) {
         model = SplashModel()
-        model.getTide(baseDate, location, resultType).enqueue(object : Callback<Tide> {
+        model.requestTide(baseDate, location, resultType).enqueue(object : Callback<Tide> {
             override fun onResponse(call: Call<Tide>, response: Response<Tide>) {
-
                 if (response.isSuccessful) {
 
-                    liveDataTideList.value = response.body()!!.result.data
+                    liveDataTideList.value = model.getTideList(response)
 
                 } else {
-
                     Log.d(TAG, "getTide - onResponse : isFailure : ${response.message()}")
-
                 }
-
             }
 
             override fun onFailure(call: Call<Tide>, t: Throwable) {
-
                 Log.d(TAG, "getTide - onFailure : $t")
-
             }
-
         })
 
     } // getTide()
@@ -110,41 +80,20 @@ class SplashViewModel : ViewModel() {
     // Model에서 요청한 지수 API에 대한 Callback
     fun getIndex(type : String, resultType : String) {
         model = SplashModel()
-        model.getIndex(type, resultType).enqueue(object : Callback<Index> {
+        model.requestIndex(type, resultType).enqueue(object : Callback<Index> {
             override fun onResponse(call: Call<Index>, response: Response<Index>) {
-
                 if (response.isSuccessful) {
 
-                    val list = ArrayList<Index.Item>()
-                    val responseList : ArrayList<Index.Item> = response.body()!!.result.data
-                    val listSize = responseList.size
-
-                    for (i in 0 until listSize) {
-
-                        if (responseList[i].date == GetDate().getFormatDate3(GetDate().getTime())) {
-
-                            list.add(responseList[i])
-
-                        }
-
-                    }
-
-                    liveDataIndexList.value = list
+                    liveDataIndexList.value = model.getIndexList(response)
 
                 } else {
-
                     Log.d(TAG, "getIndex - onResponse : isFailure : ${response.message()}")
-
                 }
-
             }
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
-
                 Log.d(TAG, "getIndex - onFailure : $t")
-
             }
-
         })
 
     } // getIndex()
@@ -153,7 +102,7 @@ class SplashViewModel : ViewModel() {
     // Model에서 요청한 Web Server - Database 데이터에 대한 Callback
     fun getCombine(nickname : String) {
         model = SplashModel()
-        model.getCombine(nickname).enqueue(object : Callback<Combine> {
+        model.requestCombine(nickname).enqueue(object : Callback<Combine> {
             override fun onResponse(call: Call<Combine>, response: Response<Combine>) {
 
                 if (response.isSuccessful) {
