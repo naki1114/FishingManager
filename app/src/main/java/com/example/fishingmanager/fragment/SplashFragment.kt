@@ -1,6 +1,7 @@
 package com.example.fishingmanager.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -76,12 +77,13 @@ class SplashFragment : Fragment() {
 
 
     // ViewModel - LiveData 관찰
-    fun observeLiveData() {
+    private fun observeLiveData() {
 
         // 날씨 - ArrayList 감지
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
+            (activity as MainActivity).setWeatherList(it)
 
         })
 
@@ -89,6 +91,7 @@ class SplashFragment : Fragment() {
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
+            (activity as MainActivity).setTideList(it)
 
         })
 
@@ -96,13 +99,14 @@ class SplashFragment : Fragment() {
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
+            (activity as MainActivity).setIndexList(it)
 
         })
 
         // DB 데이터 - Boolean 감지
-        viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer { s ->
+        viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer {
 
-            if (s) {
+            if (it) {
 
                 updateProgressView()
 
