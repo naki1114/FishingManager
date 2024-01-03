@@ -85,55 +85,6 @@ class MainActivity : AppCompatActivity() {
     // ViewModel - LiveData 관찰
     fun observeLiveDate() {
 
-        // 날씨 - ArrayList 감지
-        splashViewModel.liveDataWeatherList.observe(this, Observer { s ->
-
-            weatherList = s
-
-        })
-
-        // 조석 - ArrayList 감지
-        splashViewModel.liveDataTideList.observe(this, Observer { s ->
-
-            tideList = s
-
-        })
-
-        // 지수 - ArrayList 감지
-        splashViewModel.liveDataIndexList.observe(this, Observer { s ->
-
-            indexList = s
-
-        })
-
-        // 도감 - ArrayList 감지
-        splashViewModel.liveDataCollectionList.observe(this, Observer { s ->
-
-            collectionList = s
-
-        })
-
-        // 기록 - ArrayList 감지
-        splashViewModel.liveDataHistoryList.observe(this, Observer { s ->
-
-            historyList = s
-
-        })
-
-        // 게시글 - ArrayList 감지
-        splashViewModel.liveDataFeedList.observe(this, Observer { s ->
-
-            feedList = s
-
-        })
-
-        // 사용자 정보 - UserInfo 감지
-        splashViewModel.liveDataUserInfo.observe(this, Observer { s ->
-
-            userInfo = s
-
-        })
-
         // 전환할 Fragment 이름 - String 감지
         mainViewModel.liveDataCurrentFragment.observe(this, Observer { s ->
 
@@ -189,6 +140,76 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
     } // removeFragmentStack()
+
+
+    fun getWeatherList() : ArrayList<Weather.Item> {
+
+        return weatherList
+
+    } // getWeatherList()
+
+
+    fun getTideList() : ArrayList<Tide.Item> {
+
+        return tideList
+
+    } // getTideList()
+
+
+    fun getIndexList() : ArrayList<Index.Item> {
+
+        return indexList
+
+    } // getIndexList()
+
+
+    fun getCollectionList() : ArrayList<Collection> {
+
+        return collectionList
+
+    } // getCollectionList()
+
+
+    fun getHistoryList() : ArrayList<History> {
+
+        return historyList
+
+    }
+
+
+    fun getFeedList() : ArrayList<Feed> {
+
+        return feedList
+
+    } // getFeedList()
+
+
+    fun getUserInfo() : UserInfo {
+
+        return userInfo
+
+    } // getUserInfo()
+
+
+    fun setWeatherList(weatherList : ArrayList<Weather.Item>) {
+
+        this.weatherList = weatherList
+
+    } // setWeatherList()
+
+
+    fun setTideList(tideList : ArrayList<Tide.Item>) {
+
+        this.tideList = tideList
+
+    } // setTideList()
+
+
+    fun setIndexList(indexList : ArrayList<Index.Item>) {
+
+        this.indexList = indexList
+
+    } // setIndexList()
 
 
 }
