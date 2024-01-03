@@ -102,4 +102,8 @@ dependencies {
     // NaverLogin
 //    implementation("com.navercorp.nid:oauth:5.5.0")
 
+    //CalendarView
+    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.2.1")
+
 }
