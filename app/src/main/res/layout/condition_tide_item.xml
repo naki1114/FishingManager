@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="tideItem"
+            type="com.example.fishingmanager.data.ConditionTide" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="25dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white"
+        >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            />
+
+        <TextView
+            android:id="@+id/conditionTideTimeText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="@{tideItem.time}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            />
+
+        <ImageView
+            android:id="@+id/conditionTideUpDownImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/conditionTideTideText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="@{tideItem.tide}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/conditionTideWaterHeightImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            app:civ_border_color="@color/gray1"
+            app:civ_border_width="1dp"
+            app:civ_border_overlay="false"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            />
+
+        <TextView
+            android:id="@+id/conditionTideWaterHeightText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:text="@{tideItem.waterHeight}"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            />
+
+    </LinearLayout>
+
+</layout>

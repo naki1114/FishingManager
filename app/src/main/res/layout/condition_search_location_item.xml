@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="locationList"
+            type="com.example.fishingmanager.data.SearchLocation" />
+
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.ConditionSearchLocationAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:onClick="@{() -> clickListener.onClick(locationList)}"
+        >
+
+        <TextView
+            android:id="@+id/conditionSearchLocationLocationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/black"
+            android:text="@{locationList.component1()}"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray2"
+            />
+
+    </LinearLayout>
+
+</layout>

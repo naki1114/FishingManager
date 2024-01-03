@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FishingManager</string>
+    <string name="app_name">FishingManagerClone</string>
     <string name="cancel">취소</string>
     <string name="check">확인</string>
     <string name="choice">선택</string>
@@ -19,7 +19,7 @@
     <string name="splash_loading_75">사용자 기록을 로딩중…</string>
     <string name="splash_loading_33">조석 예보를 로딩중…</string>
     <string name="splash_loading_66">생활해양 예보를 로딩중…</string>
-    <string name="splash_loading_100">로딩 완료!…</string>
+    <string name="splash_loading_100">로딩 완료 !</string>
     <string name="splash_loading_failure">서버의 일시적 장애로 인해\n데이터를 불러오지 못했습니다.\n\n잠시 후 다시 실행해 주세요.</string>
     <string name="start_login">로그인</string>
     <string name="start_signup">회원가입</string>
@@ -84,20 +84,27 @@
     <string name="home_recentCollection_seeMore">+ 더보기</string>
     <string name="home_HotFeed">이 달의 HOT 게시글</string>
     <string name="condition_combine_title">통합 컨디션</string>
-    <string name="condition_weather_title">통합 컨디션</string>
-    <string name="condition_tide_title">통합 컨디션</string>
-    <string name="condition_index_title">통합 컨디션</string>
+    <string name="condition_weather_title">날씨</string>
+    <string name="condition_tide_title">조석</string>
+    <string name="condition_index_title">지수</string>
     <string name="condition_select_date_title">날짜 선택</string>
     <string name="condition_search_location_title">장소 검색</string>
     <string name="condition_select_fish_title">어종 선택</string>
-    <string name="condition_combine">통합</string>
-    <string name="condition_weather">날씨</string>
-    <string name="condition_tide">조석</string>
-    <string name="condition_index">지수</string>
+    <string name="condition_combine">통 합</string>
+    <string name="condition_weather">날 씨</string>
+    <string name="condition_tide">조 석</string>
+    <string name="condition_index">지 수</string>
+    <string name="condition_index_am">오전</string>
+    <string name="condition_index_pm">오후</string>
     <string name="condition_index_waterTemp">수온</string>
     <string name="condition_index_waveHeight">파고</string>
     <string name="condition_index_tide">조석</string>
     <string name="condition_index_total">종합</string>
+    <string name="condition_index_very_bad">매우 안 좋음</string>
+    <string name="condition_index_bad">안 좋음</string>
+    <string name="condition_index_normal">보통</string>
+    <string name="condition_index_good">좋음</string>
+    <string name="condition_index_very_good">매우 좋음</string>
     <string name="checkingFish_title">어종 확인</string>
     <string name="checkingFish_result_title">확인 결과</string>
     <string name="checkingFish_limitCount">금일 남은 횟수</string>
@@ -130,4 +137,30 @@
     <string name="pay_removeAD_year">광고 제거 일 년 이용권</string>
     <string name="pay_month">월</string>
     <string name="pay_year">년</string>
+
+    <string-array name="custom_weekdays">
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+    </string-array>
+
+    <string-array name="custom_months">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </string-array>
+
 </resources>
