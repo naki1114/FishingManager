@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FishingManagerClone</string>
+    <string name="app_name">FishingManager</string>
     <string name="cancel">취소</string>
     <string name="check">확인</string>
     <string name="choice">선택</string>
@@ -31,7 +31,7 @@
     <string name="start_findPassword">비밀번호 찾기</string>
     <string name="start_login_failure">아이디 또는 비밀번호를 확인해 주세요.</string>
     <string name="start_signup_1page_main">사용하실 이메일을\n입력해 주세요.</string>
-    <string name="start_signup_2page_main">입력하신 이메일로\n 인증 번호가 발송되었어요.</string>
+    <string name="start_signup_2page_main">입력하신 이메일로\n인증 번호가 발송되었어요.</string>
     <string name="start_signup_3page_main">사용하실 비밀번호를\n입력해 주세요.</string>
     <string name="start_signup_4page_main">비밀번호를 한 번 더\n입력해 주세요.</string>
     <string name="start_signup_5page_main">사용하실 닉네임을\n입력해 주세요.</string>
@@ -79,7 +79,7 @@
     <string name="start_findPassword_4page_hint">비밀번호 재입력</string>
     <string name="home_weather">날씨</string>
     <string name="home_title">홈</string>
-    <string name="home_recommend">추천 장소 /&amp; 어종</string>
+    <string name="home_recommend">추천 장소 &amp; 어종</string>
     <string name="home_recentCollection">최근 잡은 물고기</string>
     <string name="home_recentCollection_seeMore">+ 더보기</string>
     <string name="home_HotFeed">이 달의 HOT 게시글</string>
