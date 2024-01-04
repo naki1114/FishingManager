@@ -12,27 +12,10 @@ class GetRandomResult {
         var i = 0
         var c : Char
 
-        for (j in 0..6) {
+        for (j in 0..5) {
 
-            type = random.nextInt(2)
-
-            if (type == 0) {
-
-                while (i < 65) {
-
-                    i = random.nextInt(91)
-
-                }
-
-                c = i.toChar();
-                result += c
-
-            } else {
-
-                i = random.nextInt(9)
-                result += i.toString()
-
-            }
+            i = random.nextInt(9)
+            result += i.toString()
 
         }
 
