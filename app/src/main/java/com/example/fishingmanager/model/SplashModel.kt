@@ -1,26 +1,25 @@
 package com.example.fishingmanager.model
 
-import android.util.Log
+import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
 import com.example.fishingmanager.function.GetDate
-import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.network.RetrofitInterface
 
 class SplashModel {
 
     private val weatherRetrofitInterface: RetrofitInterface =
-        RetrofitClient().getWeatherAPI().create(RetrofitInterface::class.java)
+        RetrofitClient.getWeatherAPI().create(RetrofitInterface::class.java)
 
     private val tideRetrofitInterface: RetrofitInterface =
-        RetrofitClient().getTideAPI().create(RetrofitInterface::class.java)
+        RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
     private val indexRetrofitInterface: RetrofitInterface =
-        RetrofitClient().getIndexAPI().create(RetrofitInterface::class.java)
+        RetrofitClient.getIndexAPI().create(RetrofitInterface::class.java)
 
     private val webServerRetrofitInterface: RetrofitInterface =
-        RetrofitClient().getWebServer().create(RetrofitInterface::class.java)
+        RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
     fun requestWeather(
         pageNo: String,
