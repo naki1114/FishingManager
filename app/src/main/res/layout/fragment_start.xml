@@ -231,6 +231,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/start_password"
+                android:inputType="textPassword"
                 android:layout_gravity="center"
                 />
 
