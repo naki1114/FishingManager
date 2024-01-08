@@ -88,8 +88,8 @@ class StartFragment : Fragment() {
             }
             else {
 
-                binding.validTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid)
-                binding.validTextView.visibility = View.VISIBLE
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid)
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
 
@@ -112,7 +112,7 @@ class StartFragment : Fragment() {
             if (startViewModel.isUsablePassword.value == true) {
 
                 viewFourthPage()
-                binding.validTextView.visibility = View.INVISIBLE
+                binding.signupValidTextView.visibility = View.INVISIBLE
 
             }
 
@@ -128,9 +128,9 @@ class StartFragment : Fragment() {
             }
             else {
 
-                binding.validTextView.text = context?.resources?.getString(R.string.start_signup_4page_valid)
-                binding.validTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                binding.validTextView.visibility = View.VISIBLE
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_4page_valid)
+                binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
 
@@ -146,8 +146,8 @@ class StartFragment : Fragment() {
             }
             else {
 
-                binding.validTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid)
-                binding.validTextView.visibility = View.VISIBLE
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid)
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
 
@@ -177,7 +177,7 @@ class StartFragment : Fragment() {
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_sub)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupPrevButton.visibility = View.INVISIBLE
         binding.signupReSendLayout.visibility = View.INVISIBLE
@@ -195,7 +195,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupPrevButton.visibility = View.VISIBLE
         binding.signupReSendLayout.visibility = View.VISIBLE
@@ -211,7 +211,7 @@ class StartFragment : Fragment() {
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_sub)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupReSendLayout.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.setText(startViewModel.userPassword)
@@ -226,7 +226,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_4page_main)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.text = null
         binding.signupNextButton.text = context?.resources?.getString(R.string.next)
@@ -240,7 +240,7 @@ class StartFragment : Fragment() {
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_sub)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupUserInfoEditText.setText(startViewModel.userNickname)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
@@ -255,7 +255,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_6page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.validTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.text = null
         binding.signupCheckEmailTextView.text = startViewModel.userID
@@ -272,16 +272,16 @@ class StartFragment : Fragment() {
 
             if (startViewModel.passwordValid.value == true) {
 
-                binding.validTextView.text = "사용 가능한 비밀번호 입니다."
-                binding.validTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
-                binding.validTextView.visibility = View.VISIBLE
+                binding.signupValidTextView.text = "사용 가능한 비밀번호 입니다."
+                binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
             else {
 
-                binding.validTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid)
-                binding.validTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                binding.validTextView.visibility = View.VISIBLE
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid)
+                binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
 
