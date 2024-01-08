@@ -47,7 +47,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/main2"
                 android:letterSpacing="0.3"
-                android:backgroundTint="@color/main1"
+                android:background="@drawable/custom_main_button_background"
                 android:layout_marginTop="30dp"
                 android:onClick='@{() -> viewModel.changeLayout("login")}'
                 />
@@ -61,7 +61,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/main2"
                 android:letterSpacing="0.3"
-                android:backgroundTint="@color/main1"
+                android:background="@drawable/custom_main_button_background"
                 android:layout_marginTop="30dp"
                 android:onClick='@{() -> viewModel.changeLayout("signup")}'
                 />
@@ -262,7 +262,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/main2"
                 android:letterSpacing="0.3"
-                android:backgroundTint="@color/main1"
+                android:background="@drawable/custom_main_button_background"
                 android:layout_gravity="center"
                 android:onClick="@{() -> viewModel.loginCheck(loginIdEditText.getText().toString(), loginPasswordEditText.getText().toString())}"
                 />
@@ -526,7 +526,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/main2"
                     android:letterSpacing="0.3"
-                    android:backgroundTint="@color/main1"
+                    android:background="@drawable/custom_main_button_background"
                     android:layout_gravity="center"
                     android:visibility="invisible"
                     android:onClick='@{() -> viewModel.clickPrevButton()}'
@@ -564,7 +564,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/main2"
                     android:letterSpacing="0.3"
-                    android:backgroundTint="@color/main1"
+                    android:background="@drawable/custom_main_button_background"
                     android:layout_gravity="center"
                     android:onClick='@{() -> viewModel.clickNextButton(signupUserInfoEditText.getText().toString())}'
                     />
@@ -614,7 +614,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/main2"
                     android:letterSpacing="0.3"
-                    android:backgroundTint="@color/main1"
+                    android:background="@drawable/custom_main_button_background"
                     android:layout_gravity="center"
                     />
 
