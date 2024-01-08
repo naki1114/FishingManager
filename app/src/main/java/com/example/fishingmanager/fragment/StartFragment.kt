@@ -1,6 +1,7 @@
 package com.example.fishingmanager.fragment
 
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -175,6 +176,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_sub)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupPrevButton.visibility = View.INVISIBLE
@@ -192,6 +194,7 @@ class StartFragment : Fragment() {
         binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupPrevButton.visibility = View.VISIBLE
@@ -207,6 +210,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_3page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_sub)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupReSendLayout.visibility = View.INVISIBLE
@@ -221,6 +225,7 @@ class StartFragment : Fragment() {
         binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_4page_hint)
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_4page_main)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.text = null
@@ -234,6 +239,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_5page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_sub)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupUserInfoEditText.setText(startViewModel.userNickname)
@@ -248,6 +254,7 @@ class StartFragment : Fragment() {
 
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_6page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
         binding.validTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.text = null
