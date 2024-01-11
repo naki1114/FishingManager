@@ -16,7 +16,7 @@ class StartViewModel : ViewModel() {
     val isCorrectAuthNumber = MutableLiveData<Boolean>()
     val isUsablePassword = MutableLiveData<Boolean>()
     val isUsableRePassword = MutableLiveData<Boolean>()
-    val isUsableNickname = MutableLiveData<Boolean>()
+    val isUsableNickname = MutableLiveData<Int>()
     val isClickedBackButton = MutableLiveData<Boolean>()
     val isCancelSignup = MutableLiveData<Boolean>()
     val isSavedUserInfo = MutableLiveData<Boolean>()
@@ -47,21 +47,21 @@ class StartViewModel : ViewModel() {
         when (pageNumber) {
 
             2 -> {
-                isUsableEmail.value = false
+                isUsableEmail.value = null
                 authNumber = ""
             }
             3 -> {
-                isCorrectAuthNumber.value = false
+                isCorrectAuthNumber.value = null
                 authNumber = model.createAuthNumber()
                 Log.d("authNumber", "clickPrevButton : $authNumber")
                 userPassword = ""
             }
-            4 -> isUsablePassword.value = false
+            4 -> isUsablePassword.value = null
             5 -> {
-                isUsableRePassword.value = false
+                isUsableRePassword.value = null
                 userNickname = ""
             }
-            6 -> isUsableNickname.value = false
+            6 -> isUsableNickname.value = null
 
         }
 
@@ -177,29 +177,41 @@ class StartViewModel : ViewModel() {
 
     private fun checkUserNickname(nickname : String) {
 
-        model.checkUserNickname(nickname).enqueue(object : Callback<String> {
+        var naki = model.checkValidNickname(nickname)
+        Log.d("authNumber", "checkUserNickname : $naki")
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    var msg : String? = response.body()
+        if (model.checkValidNickname(nickname)) {
 
-                    if (msg == "usableNickname") {
-                        userNickname = nickname
-                        isUsableNickname.value = true
-                        pageNumber++
+            model.checkUserNickname(nickname).enqueue(object : Callback<String> {
+
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful) {
+                        var msg : String? = response.body()
+
+                        if (msg == "usableNickname") {
+                            userNickname = nickname
+                            isUsableNickname.value = 0
+                            pageNumber++
+                        }
+                        else {
+                            isUsableNickname.value = 1
+                        }
+
                     }
-                    else {
-                        isUsableNickname.value = false
-                    }
-
                 }
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                isUsableNickname.value = false
-            }
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    isUsableNickname.value = 3
+                }
 
-        })
+            })
+
+        }
+        else {
+
+            isUsableNickname.value = 2
+
+        }
 
     } // checkUserNickname
 
