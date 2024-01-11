@@ -139,15 +139,25 @@ class StartFragment : Fragment() {
         // nickname observe
         startViewModel.isUsableNickname.observe(viewLifecycleOwner) {
 
-            if (startViewModel.isUsableNickname.value == true) {
+            when (startViewModel.isUsableNickname.value) {
 
-                viewSixthPage()
+                0 -> {
 
-            }
-            else {
+                    viewSixthPage()
 
-                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid)
-                binding.signupValidTextView.visibility = View.VISIBLE
+                }
+                1 -> {
+
+                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_using)
+                    binding.signupValidTextView.visibility = View.VISIBLE
+
+                }
+                2 -> {
+
+                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid)
+                    binding.signupValidTextView.visibility = View.VISIBLE
+
+                }
 
             }
 
