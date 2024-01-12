@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.databinding.FragmentStartBinding
+import com.example.fishingmanager.other.GmailSender
 import com.example.fishingmanager.viewModel.StartViewModel
 
 class StartFragment : Fragment() {
@@ -84,6 +85,7 @@ class StartFragment : Fragment() {
             if (startViewModel.isUsableEmail.value == true) {
 
                 viewSecondPage()
+                sendEmail()
 
             }
             else {
@@ -332,6 +334,15 @@ class StartFragment : Fragment() {
 
         }
 
-    }
+    } // loginCheck
+
+    private fun sendEmail() {
+
+        val email = startViewModel.userID
+        val authNumber = startViewModel.authNumber
+
+        GmailSender().sendMail(authNumber, email)
+
+    } // sendEmail
 
 }
