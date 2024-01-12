@@ -88,9 +88,21 @@ class StartFragment : Fragment() {
                 sendEmail()
 
             }
-            else {
+            else if (startViewModel.isUsableEmail.value == false) {
 
-                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid)
+                binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+
+                if (binding.signupUserInfoEditText.length() == 0) {
+
+                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_not_input)
+
+                }
+                else {
+
+                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_using)
+
+                }
+
                 binding.signupValidTextView.visibility = View.VISIBLE
 
             }
@@ -105,6 +117,11 @@ class StartFragment : Fragment() {
                 viewThirdPage()
 
             }
+            else {
+
+                // 인증 실패 시 코드
+
+            }
 
         }
 
@@ -114,7 +131,6 @@ class StartFragment : Fragment() {
             if (startViewModel.isUsablePassword.value == true) {
 
                 viewFourthPage()
-                binding.signupValidTextView.visibility = View.INVISIBLE
 
             }
 
@@ -130,8 +146,8 @@ class StartFragment : Fragment() {
             }
             else {
 
-                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_4page_valid)
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_4page_valid)
                 binding.signupValidTextView.visibility = View.VISIBLE
 
             }
@@ -156,14 +172,14 @@ class StartFragment : Fragment() {
                 }
                 2 -> {
 
-                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid)
+                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_false)
                     binding.signupValidTextView.visibility = View.VISIBLE
 
                 }
 
             }
 
-        }
+        } // nickname observe
 
         // pageNumber observe
         startViewModel.pageNumberLiveData.observe(viewLifecycleOwner) {
@@ -178,105 +194,129 @@ class StartFragment : Fragment() {
 
             }
 
-        }
+        } // pageNumber observe
 
     } // changeSignupPage
 
     private fun viewFirstPage() {
 
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_1page_hint)
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_sub)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
-        binding.signupPrevButton.visibility = View.INVISIBLE
-        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
+        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_1page_hint)
+        binding.signupUserInfoEditText.text = null
         binding.signupUserInfoEditText.setText(startViewModel.userID)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupInputLayout.visibility = View.VISIBLE
+        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupCheckEmailTextView.text = null
+        binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
-        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
+        binding.signupPrevButton.visibility = View.INVISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
     } // viewFirstPage
 
     private fun viewSecondPage() {
 
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupSubInfoTextView.text = null
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
-        binding.signupPrevButton.visibility = View.VISIBLE
-        binding.signupReSendLayout.visibility = View.VISIBLE
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
+        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
         binding.signupUserInfoEditText.text = null
-        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
+        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupInputLayout.visibility = View.VISIBLE
+        binding.signupReSendLayout.visibility = View.VISIBLE
+        binding.signupCheckEmailTextView.text = null
+        binding.signupCheckNicknameTextView.text = null
+        binding.signupCheckInfoLayout.visibility = View.GONE
+        binding.signupPrevButton.visibility = View.VISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
     } // viewSecondPage
 
     private fun viewThirdPage() {
 
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_3page_hint)
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_3page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_sub)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
-        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_3page_hint)
+        binding.signupUserInfoEditText.text = null
         binding.signupUserInfoEditText.setText(startViewModel.userPassword)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
-        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
+        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupInputLayout.visibility = View.VISIBLE
+        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupCheckEmailTextView.text = null
+        binding.signupCheckNicknameTextView.text = null
+        binding.signupCheckInfoLayout.visibility = View.GONE
+        binding.signupPrevButton.visibility = View.VISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_3page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewThirdPage
+    } // viewThirdPage <- password
 
     private fun viewFourthPage() {
 
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_4page_hint)
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_4page_main)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupSubInfoTextView.text = null
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_4page_hint)
         binding.signupUserInfoEditText.text = null
-        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
+        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupInputLayout.visibility = View.VISIBLE
+        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupCheckEmailTextView.text = null
+        binding.signupCheckNicknameTextView.text = null
+        binding.signupCheckInfoLayout.visibility = View.GONE
+        binding.signupPrevButton.visibility = View.VISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFourthPage
+    } // viewFourthPage <- rePassword
 
     private fun viewFifthPage() {
 
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_5page_hint)
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_5page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_main)
         binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_sub)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupSubInfoTextView.visibility = View.VISIBLE
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
+        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_5page_hint)
+        binding.signupUserInfoEditText.text = null
         binding.signupUserInfoEditText.setText(startViewModel.userNickname)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
+        binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupInputLayout.visibility = View.VISIBLE
+        binding.signupReSendLayout.visibility = View.INVISIBLE
+        binding.signupCheckEmailTextView.text = null
+        binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
-        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
+        binding.signupPrevButton.visibility = View.VISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_5page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFifthPage
+    } // viewFifthPage <- nickname
 
     private fun viewSixthPage() {
 
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_6page)
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupValidTextView.visibility = View.INVISIBLE
-        binding.signupSubInfoTextView.visibility = View.INVISIBLE
-        binding.signupUserInfoEditText.text = null
+        binding.signupInputLayout.visibility = View.GONE
+        binding.signupReSendLayout.visibility = View.INVISIBLE
         binding.signupCheckEmailTextView.text = startViewModel.userID
         binding.signupCheckNicknameTextView.text = startViewModel.userNickname
-        binding.signupInputLayout.visibility = View.GONE
         binding.signupCheckInfoLayout.visibility = View.VISIBLE
-        binding.signupNextButton.text = context?.resources?.getString(R.string.complete)
+        binding.signupPrevButton.visibility = View.VISIBLE
+        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_6page)
+        binding.signupNextButton.text =  context?.resources?.getString(R.string.complete)
 
-    } // viewSixthPage
+    } // viewSixthPage <- checkInfo
 
     private fun passwordValidView() {
 
@@ -284,15 +324,15 @@ class StartFragment : Fragment() {
 
             if (startViewModel.passwordValid.value == true) {
 
-                binding.signupValidTextView.text = "사용 가능한 비밀번호 입니다."
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid_true)
                 binding.signupValidTextView.visibility = View.VISIBLE
 
             }
             else {
 
-                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid)
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid_false)
                 binding.signupValidTextView.visibility = View.VISIBLE
 
             }
