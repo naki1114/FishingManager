@@ -38,14 +38,16 @@
     <string name="start_signup_6page_main">입력하신 정보를\n확인해 주세요.</string>
     <string name="start_signup_1page_sub">입력하신 이메일로 인증 번호가 발송됩니다.</string>
     <string name="start_signup_3page_sub">비밀번호는 영문자, 숫자, 특수문자를\n포함하여 8~16자로 사용해 주세요.</string>
-    <string name="start_signup_5page_sub">닉네임은 2~10자로 사용하실 수 있으며\n추후 변경이 불가합니다.</string>
-    <string name="start_signup_1page_valid">이미 사용 중인 이메일입니다.</string>
+    <string name="start_signup_5page_sub">닉네임은 2~8자로 사용하실 수 있으며\n추후 변경이 불가합니다.</string>
+    <string name="start_signup_1page_valid_using">이미 사용 중인 이메일입니다.</string>
+    <string name="start_signup_1page_valid_not_input">이메일을 입력해주세요.</string>
     <string name="start_signup_2page_valid_timeOut">인증 시간이 만료되었습니다.</string>
     <string name="start_signup_2page_valid_mismatch">인증 번호가 일치하지 않습니다.</string>
-    <string name="start_signup_3page_valid">비밀번호 양식에 맞게 입력해 주세요.</string>
+    <string name="start_signup_3page_valid_true">사용 가능한 비밀번호 입니다.</string>
+    <string name="start_signup_3page_valid_false">비밀번호 양식에 맞게 입력해 주세요.</string>
     <string name="start_signup_4page_valid">비밀번호가 일치하지 않습니다.</string>
-    <string name="start_signup_5page_valid">닉네임 양식에 맞게 입력해 주세요.</string>
     <string name="start_signup_5page_valid_using">이미 사용 중인 닉네임입니다.</string>
+    <string name="start_signup_5page_valid_false">닉네임 양식에 맞게 입력해 주세요.</string>
     <string name="start_resend">재전송</string>
     <string name="start_resend_info">인증 번호가 오지 않나요?</string>
     <string name="start_signup_back">초기 화면으로 돌아가면\n작성한 내용이 모두 사라집니다.\n\n이동하시겠습니까?</string>
@@ -163,5 +165,7 @@
         <item>11월</item>
         <item>12월</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
