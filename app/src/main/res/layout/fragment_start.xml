@@ -438,7 +438,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:layout_gravity="center"
-                    android:text="@string/start_signup_1page_valid"
+                    android:text="@string/start_signup_1page_valid_using"
                     android:textSize="12dp"
                     android:textColor="@color/red"
                     android:visibility="invisible"

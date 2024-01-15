@@ -45,6 +45,7 @@ class StartFragment : Fragment() {
         finishSignup()
 
         loginCheck()
+        timer()
     }
 
     // Custom Method
@@ -119,11 +120,13 @@ class StartFragment : Fragment() {
             }
             else {
 
-                // 인증 실패 시 코드
+                binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_2page_valid_mismatch)
+                binding.signupValidTextView.visibility = View.VISIBLE
 
             }
 
-        }
+        } // authNumber observe
 
         // password observe
         startViewModel.isUsablePassword.observe(viewLifecycleOwner) {
@@ -218,7 +221,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFirstPage
+    } // viewFirstPage <- id
 
     private fun viewSecondPage() {
 
@@ -228,7 +231,7 @@ class StartFragment : Fragment() {
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
         binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
         binding.signupUserInfoEditText.text = null
-        binding.signupValidTextView.visibility = View.INVISIBLE
+        binding.signupValidTextView.visibility = View.VISIBLE
         binding.signupInputLayout.visibility = View.VISIBLE
         binding.signupReSendLayout.visibility = View.VISIBLE
         binding.signupCheckEmailTextView.text = null
@@ -238,7 +241,7 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewSecondPage
+    } // viewSecondPage <- authNumber
 
     private fun viewThirdPage() {
 
@@ -384,5 +387,38 @@ class StartFragment : Fragment() {
         GmailSender().sendMail(authNumber, email)
 
     } // sendEmail
+
+    private fun timer() {
+
+        startViewModel.authTime.observe(viewLifecycleOwner) {
+
+            val time = startViewModel.authTime.value
+
+            if (time!! >= 0) {
+
+                val sec = if (time % 60 < 10) "0" + (time % 60).toString() else (time % 60).toString()
+                val min = "0" + (time / 60).toString()
+
+                requireActivity().runOnUiThread {
+
+                    binding.signupValidTextView.text = "$min : $sec"
+
+                }
+
+            }
+
+        }
+
+        startViewModel.isTimeOutAuth.observe(viewLifecycleOwner) {
+
+            if (startViewModel.isTimeOutAuth.value == false) {
+
+                binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_2page_valid_timeOut)
+
+            }
+
+        }
+
+    } // timer
 
 }
