@@ -616,6 +616,7 @@
                     android:letterSpacing="0.3"
                     android:background="@drawable/custom_main_button_background"
                     android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.reSendMail()}"
                     />
 
                 <View
