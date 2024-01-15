@@ -228,7 +228,7 @@ class StartFragment : Fragment() {
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
         binding.signupSubInfoTextView.text = null
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
+        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_NUMBER
         binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
         binding.signupUserInfoEditText.text = null
         binding.signupValidTextView.visibility = View.VISIBLE
@@ -399,11 +399,7 @@ class StartFragment : Fragment() {
                 val sec = if (time % 60 < 10) "0" + (time % 60).toString() else (time % 60).toString()
                 val min = "0" + (time / 60).toString()
 
-                requireActivity().runOnUiThread {
-
-                    binding.signupValidTextView.text = "$min : $sec"
-
-                }
+                binding.signupValidTextView.text = "$min : $sec"
 
             }
 

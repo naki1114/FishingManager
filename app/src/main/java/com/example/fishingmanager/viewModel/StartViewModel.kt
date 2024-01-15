@@ -58,7 +58,7 @@ class StartViewModel : ViewModel() {
             2 -> {
                 isUsableEmail.value = null
                 authNumber = ""
-                stopTimer()
+                stopTimer(1)
             }
             3 -> {
                 isCorrectAuthNumber.value = null
@@ -155,12 +155,12 @@ class StartViewModel : ViewModel() {
         if (isCorrectAuthNumber.value == true) {
 
             pageNumber++
-            stopTimer()
+            stopTimer(1)
 
         }
         else {
 
-            stopTimer()
+            stopTimer(1)
             isCorrectAuthNumber.value = false
 
         }
@@ -273,18 +273,19 @@ class StartViewModel : ViewModel() {
 
     private fun startTimer() {
 
+        time = AUTH_TIME
+
         timerTask = timer(period = 1000) {
 
-            if (time > 0) {
+            if (time >= 0) {
 
-                time--
                 authTime.postValue(time)
+                time--
 
             }
             else {
 
-                isTimeOutAuth.postValue(false)
-                stopTimer()
+                stopTimer(0)
 
             }
 
@@ -292,14 +293,26 @@ class StartViewModel : ViewModel() {
 
     } // startTimer
 
-    private fun stopTimer() {
+    private fun stopTimer(type : Int) {
 
-        model.authenticationNumber = ""
         timerTask?.cancel()
-        isTimeOutAuth.value = null
-        time = AUTH_TIME
-        authTime.value = time
+        model.authenticationNumber = "!"
+        if (type == 0) {
+            isTimeOutAuth.postValue(false)
+            authTime.postValue(time)
+        }
+        else {
+            authTime.value = time
+        }
 
     } // stopTimer
+
+    fun reSendMail() {
+
+        authNumber = model.createAuthNumber()
+        isUsableEmail.value = true
+        startTimer()
+
+    } // reSendMail
 
 }
