@@ -1,14 +1,19 @@
 package com.example.fishingmanager.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.model.StartModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Timer
+import kotlin.concurrent.timer
 
 class StartViewModel : ViewModel() {
+
+    companion object {
+        private const val AUTH_TIME = 15
+    }
 
     val layoutLiveData = MutableLiveData<String>()
 
@@ -21,6 +26,7 @@ class StartViewModel : ViewModel() {
     val isCancelSignup = MutableLiveData<Boolean>()
     val isSavedUserInfo = MutableLiveData<Boolean>()
     val isTimeOutAuth = MutableLiveData<Boolean>()
+    val authTime = MutableLiveData<Int>()
 
     val passwordValid = MutableLiveData<Boolean>()
 
@@ -36,6 +42,9 @@ class StartViewModel : ViewModel() {
     var userNickname : String = ""
     var authNumber : String = ""
 
+    private var time  = AUTH_TIME
+    private var timerTask : Timer? = null
+
     fun changeLayout(layout : String) {
 
         layoutLiveData.value = layout
@@ -49,12 +58,14 @@ class StartViewModel : ViewModel() {
             2 -> {
                 isUsableEmail.value = null
                 authNumber = ""
+                stopTimer()
             }
             3 -> {
                 isCorrectAuthNumber.value = null
                 authNumber = model.createAuthNumber()
-                Log.d("authNumber", "clickPrevButton : $authNumber")
                 userPassword = ""
+                isUsableEmail.value = true
+                startTimer()
             }
             4 -> isUsablePassword.value = null
             5 -> {
@@ -77,7 +88,7 @@ class StartViewModel : ViewModel() {
             1 -> {
                 checkUserEmail(getText)
                 authNumber = model.createAuthNumber()
-                Log.d("authNumber", "clickNextButton : $authNumber")
+                startTimer()
             }
             2 -> {
                 checkAuthNumber(getText)
@@ -144,6 +155,13 @@ class StartViewModel : ViewModel() {
         if (isCorrectAuthNumber.value == true) {
 
             pageNumber++
+            stopTimer()
+
+        }
+        else {
+
+            stopTimer()
+            isCorrectAuthNumber.value = false
 
         }
 
@@ -157,7 +175,6 @@ class StartViewModel : ViewModel() {
 
             userPassword = password
             pageNumber++
-            Log.d("TAG", "checkPassword : $pageNumber")
 
         }
 
@@ -176,9 +193,6 @@ class StartViewModel : ViewModel() {
     } // checkRePassword
 
     private fun checkUserNickname(nickname : String) {
-
-        var naki = model.checkValidNickname(nickname)
-        Log.d("authNumber", "checkUserNickname : $naki")
 
         if (model.checkValidNickname(nickname)) {
 
@@ -217,14 +231,11 @@ class StartViewModel : ViewModel() {
 
     private fun saveUserInfo() {
 
-        Log.d("authNumber", "saveUserInfo : $userID, $userPassword, $userNickname")
-
         model.saveUserInfo(userID, userPassword, userNickname).enqueue(object : Callback<String> {
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
                     var msg : String? = response.body()
-                    Log.d("TAG", "onResponse : $msg")
 
                     if (msg == "usable") {
                         isSavedUserInfo.value = true
@@ -258,6 +269,37 @@ class StartViewModel : ViewModel() {
 
         })
 
-    } // checkUserInfo
+    } // loginCheck
+
+    private fun startTimer() {
+
+        timerTask = timer(period = 1000) {
+
+            if (time > 0) {
+
+                time--
+                authTime.postValue(time)
+
+            }
+            else {
+
+                isTimeOutAuth.postValue(false)
+                stopTimer()
+
+            }
+
+        }
+
+    } // startTimer
+
+    private fun stopTimer() {
+
+        model.authenticationNumber = ""
+        timerTask?.cancel()
+        isTimeOutAuth.value = null
+        time = AUTH_TIME
+        authTime.value = time
+
+    } // stopTimer
 
 }

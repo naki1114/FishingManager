@@ -9,7 +9,7 @@ class StartModel {
 
     private val responseServer = RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
-    private lateinit var authenticationNumber : String
+    lateinit var authenticationNumber : String
 
     fun checkUserEmail(id : String) = responseServer.checkUserEmail(id)
 
