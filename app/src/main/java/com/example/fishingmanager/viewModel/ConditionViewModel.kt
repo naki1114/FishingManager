@@ -13,16 +13,19 @@ import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.model.ConditionModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ConditionViewModel(
-    weatherList: ArrayList<Weather.Item>,
+    weatherList: ArrayList<ConditionWeather>,
     tideList: ArrayList<Tide.Item>,
     indexList: ArrayList<Index.Item>,
-    sharedLocation : String
+    searchLocation: SearchLocation
 ) : ViewModel() {
 
-    val TAG = "ConditionViewModel"
     val model = ConditionModel()
+    val TAG = "ConditionViewModel"
 
     val liveDataCurrentLayout = MutableLiveData<String>()
     lateinit var previousLayout : String
@@ -35,14 +38,14 @@ class ConditionViewModel(
     val liveDataSearchLocationList = MutableLiveData<ArrayList<SearchLocation>>()
 
     val liveDataDate = MutableLiveData<String>()
-    val liveDataLocation = MutableLiveData<String>()
+    val liveDataSearchLocation = MutableLiveData<SearchLocation>()
     val liveDataFish = MutableLiveData<String>()
 
 
     init {
 
-        this.liveDataWeatherList.value = model.getWeatherList(weatherList)
-        this.liveDataTideList.value = model.getTideList(tideList)
+        this.liveDataWeatherList.value = weatherList
+        this.liveDataTideList.value = model.getTideList(tideList, GetDate().getFormatDate2(GetDate().getTime()))
         this.liveDataIndex.value = model.getIndex(indexList)
         this.liveDataIndexTotal.value = model.getIndexList(indexList)
         this.liveDataCombineList.value = model.getCombineList(
@@ -51,7 +54,7 @@ class ConditionViewModel(
             liveDataIndexTotal.value!!
         )
         liveDataSearchLocationList.value = model.getSearchLocationList("")
-        liveDataLocation.value = sharedLocation
+        liveDataSearchLocation.value = searchLocation
         liveDataCurrentLayout.value = "combine"
         liveDataDate.value = GetDate().getFormatDate3(GetDate().getTime())
 
@@ -75,10 +78,36 @@ class ConditionViewModel(
 
     fun setLocation(location : SearchLocation) {
 
-        liveDataLocation.value = location.location
+        liveDataSearchLocation.value = location
         liveDataCurrentLayout.value = previousLayout
 
     } // setLocation()
+
+    fun changeDate(date : String) {
+
+        model.requestWeather("1", "1000", "JSON", date, "2300", liveDataSearchLocation.value!!.lat, liveDataSearchLocation.value!!.lon)
+            .enqueue(object : Callback<Weather> {
+                override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
+
+                    if (response.isSuccessful) {
+
+                        val basicWeatherList = model.getBasicWeatherList(response)
+
+                        liveDataWeatherList.value = model.getWeatherList(basicWeatherList, date)
+
+                    } else {
+                        Log.d(TAG, "onResponse : isFailure : ${response.message()}")
+                    }
+
+                }
+
+                override fun onFailure(call: Call<Weather>, t: Throwable) {
+                    Log.d(TAG, "onFailure : $t")
+                }
+
+            })
+
+    } // changeDate()
 
 
 }

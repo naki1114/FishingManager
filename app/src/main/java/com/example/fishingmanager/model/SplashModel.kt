@@ -92,7 +92,7 @@ class SplashModel {
 
                         "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
                         "6", "7", "8" -> skyImage = R.drawable.cloudy
-                        "9", "10" -> skyImage = R.drawable.rain
+                        "9", "10" -> skyImage = R.drawable.fade
 
                     }
 
@@ -102,7 +102,7 @@ class SplashModel {
                     when (list[i].fcstValue) {
 
                         "1", "4" -> skyImage = R.drawable.rain
-                        "2", "3" -> skyImage = R.drawable.rain
+                        "2", "3" -> skyImage = R.drawable.snow
 
                     }
 

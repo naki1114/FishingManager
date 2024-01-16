@@ -12,10 +12,19 @@ import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
 import com.example.fishingmanager.function.GetDate
+import com.example.fishingmanager.network.RetrofitClient
+import com.example.fishingmanager.network.RetrofitInterface
+import retrofit2.Response
 import kotlin.math.roundToInt
 
 
 class ConditionModel {
+
+    private val weatherRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getWeatherAPI().create(RetrofitInterface::class.java)
+
+    private val tideRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
     val combineList = ArrayList<ConditionCombine>()
     val weatherList = ArrayList<ConditionWeather>()
@@ -63,6 +72,41 @@ class ConditionModel {
         locationBaseList.add(SearchLocation("후포", "DT_0011", "37", "129"))
 
     }
+
+    fun getBasicWeatherList(response : Response<Weather>) : ArrayList<Weather.Item> {
+
+        val list = ArrayList<Weather.Item>()
+        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
+        val listSize = responseList.size
+
+        for (i in 0 until listSize) {
+
+            if (responseList[i].category == "TMP" || responseList[i].category == "REH" ||
+                responseList[i].category == "WSD" || responseList[i].category == "SKY" || responseList[i].category == "PTY") {
+
+                list.add(responseList[i])
+
+            }
+
+        }
+
+        return list
+
+    } // getBasicWeatherList()
+
+
+    fun requestWeather(
+        pageNo: String,
+        numOfRows: String,
+        dataType: String,
+        baseDate: String,
+        baseTime: String,
+        nx: String,
+        ny: String
+    ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
+
+    fun requestTide(baseDate: String, location: String, resultType: String) =
+        tideRetrofitInterface.requestTide(baseDate, location, resultType)
 
 
     fun getCombineList(weatherList : ArrayList<ConditionWeather>, tideList : ArrayList<ConditionTide>, indexTotal : ArrayList<Int>): ArrayList<ConditionCombine> {
@@ -124,7 +168,7 @@ class ConditionModel {
     } // getCombineList()
 
 
-    fun getWeatherList(responseList : ArrayList<Weather.Item>): ArrayList<ConditionWeather> {
+    fun getWeatherList(responseList : ArrayList<Weather.Item>, date : String): ArrayList<ConditionWeather> {
 
         var time: String = ""
         var temp: String = ""
@@ -146,7 +190,16 @@ class ConditionModel {
 
                     "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
                     "6", "7", "8" -> skyImage = R.drawable.cloudy
-                    "9", "10" -> skyImage = R.drawable.rain
+                    "9", "10" -> skyImage = R.drawable.fade
+
+                }
+
+            } else if (responseList[i].category == "PTY") {
+
+                when (responseList[i].fcstValue) {
+
+                    "1", "4" -> skyImage = R.drawable.rain
+                    "2", "3" -> skyImage = R.drawable.snow
 
                 }
 
@@ -170,7 +223,7 @@ class ConditionModel {
     } // getWeatherList()
 
 
-    fun getTideList(responseList: ArrayList<Tide.Item>): ArrayList<ConditionTide> {
+    fun getTideList(responseList: ArrayList<Tide.Item>, date : String): ArrayList<ConditionTide> {
 
         var time : String = ""
         var upDownImage: Int = 0
