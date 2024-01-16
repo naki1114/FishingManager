@@ -25,6 +25,7 @@ import com.example.fishingmanager.fragment.SplashFragment
 import com.example.fishingmanager.fragment.StartFragment
 import com.example.fishingmanager.fragment.WriteFragment
 import com.example.fishingmanager.R
+import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.viewModel.MainViewModel
 import com.example.fishingmanager.viewModel.SplashViewModel
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel : MainViewModel
     private lateinit var splashViewModel: SplashViewModel
 
-    private lateinit var weatherList : ArrayList<Weather.Item>
+    private lateinit var weatherList : ArrayList<ConditionWeather>
     private lateinit var tideList : ArrayList<Tide.Item>
     private lateinit var indexList : ArrayList<Index.Item>
     private lateinit var collectionList : ArrayList<Collection>
@@ -142,7 +143,7 @@ class MainActivity : AppCompatActivity() {
     } // removeFragmentStack()
 
 
-    fun getWeatherList() : ArrayList<Weather.Item> {
+    fun getWeatherList() : ArrayList<ConditionWeather> {
 
         return weatherList
 
@@ -191,7 +192,7 @@ class MainActivity : AppCompatActivity() {
     } // getUserInfo()
 
 
-    fun setWeatherList(weatherList : ArrayList<Weather.Item>) {
+    fun setWeatherList(weatherList : ArrayList<ConditionWeather>) {
 
         this.weatherList = weatherList
 
