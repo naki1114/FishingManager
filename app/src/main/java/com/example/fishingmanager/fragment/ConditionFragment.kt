@@ -20,6 +20,7 @@ import com.example.fishingmanager.adapter.ConditionSearchLocationAdapter
 import com.example.fishingmanager.adapter.ConditionSelectFishAdapter
 import com.example.fishingmanager.adapter.ConditionTideAdapter
 import com.example.fishingmanager.adapter.ConditionWeatherAdapter
+import com.example.fishingmanager.data.SearchLocation
 import com.example.fishingmanager.databinding.FragmentConditionBinding
 import com.example.fishingmanager.viewModel.ConditionViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -47,7 +48,7 @@ class ConditionFragment : Fragment() {
 
     lateinit var conditionSharedPreferences : SharedPreferences
     lateinit var conditionEditor: SharedPreferences.Editor
-    lateinit var sharedLocation : String
+    lateinit var searchLocation : SearchLocation
 
 
     override fun onCreateView(
@@ -79,7 +80,7 @@ class ConditionFragment : Fragment() {
             (activity as MainActivity).getWeatherList(),
             (activity as MainActivity).getTideList(),
             (activity as MainActivity).getIndexList(),
-            sharedLocation
+            searchLocation
         )
         binding.viewModel = viewModel
 
@@ -161,6 +162,7 @@ class ConditionFragment : Fragment() {
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
             weatherAdapter.setItem(it)
+            (activity as MainActivity).setWeatherList(it)
 
         })
 
@@ -183,11 +185,14 @@ class ConditionFragment : Fragment() {
 
         })
 
-        viewModel.liveDataLocation.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataSearchLocation.observe(viewLifecycleOwner, Observer {
 
-            conditionEditor.putString("location", it)
+            conditionEditor.putString("location", it.location)
+            conditionEditor.putString("obsCode", it.obsCode)
+            conditionEditor.putString("lat", it.lat)
+            conditionEditor.putString("lon", it.lon)
             conditionEditor.commit()
-            binding.conditionSelectLocationButton.text = it
+            binding.conditionSelectLocationButton.text = it.location
 
         })
 
@@ -200,12 +205,18 @@ class ConditionFragment : Fragment() {
         conditionEditor = conditionSharedPreferences.edit()
 
         var locationValue : String = conditionSharedPreferences!!.getString("location", "").toString()
+        var obsCodeValue : String = conditionSharedPreferences!!.getString("obsCode", "").toString()
+        var lat : String = conditionSharedPreferences!!.getString("lat", "").toString()
+        var lon : String = conditionSharedPreferences!!.getString("lon", "").toString()
 
         if (locationValue == "") {
-            locationValue = "궁평항"
+            locationValue = "영흥도"
+            obsCodeValue = "DT_0043"
+            lat = "37"
+            lon = "126"
         }
 
-        sharedLocation = locationValue
+        searchLocation = SearchLocation(locationValue, obsCodeValue, lat, lon)
 
 
     } // checkedLocationSharedPreference()

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Combine
+import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.Index
@@ -22,7 +23,7 @@ class SplashViewModel : ViewModel() {
     val TAG : String = "SplashViewModel"
     lateinit var model : SplashModel
 
-    val liveDataWeatherList = MutableLiveData<ArrayList<Weather.Item>>()
+    val liveDataWeatherList = MutableLiveData<ArrayList<ConditionWeather>>()
     val liveDataTideList = MutableLiveData<ArrayList<Tide.Item>>()
     val liveDataIndexList = MutableLiveData<ArrayList<Index.Item>>()
     val liveDataCombineData = MutableLiveData<Boolean>()
@@ -32,7 +33,6 @@ class SplashViewModel : ViewModel() {
     val liveDataUserInfo = MutableLiveData<UserInfo>()
 
 
-    // Model에서 요청한 날씨 API에 대한 Callback
     // Model에서 요청한 날씨 API에 대한 Callback
     fun getWeather(pageNo : String, numOfRows : String, dataType : String, baseDate : String, baseTime : String, nx : String, ny : String) {
         model = SplashModel()
