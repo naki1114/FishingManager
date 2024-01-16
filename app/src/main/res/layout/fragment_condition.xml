@@ -272,7 +272,7 @@
                 android:background="@drawable/custom_main_button_background"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:text="@{viewModel.liveDataLocation}"
+                android:text="@{viewModel.liveDataSearchLocation.component1()}"
                 android:onClick='@{() -> viewModel.changeLayout("searchLocation")}'
                 />
 
