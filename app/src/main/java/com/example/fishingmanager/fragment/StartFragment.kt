@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.fishingmanager.R
@@ -352,6 +353,7 @@ class StartFragment : Fragment() {
 
                 viewFirstPage()
                 binding.signupLayout.visibility = View.GONE
+                saveUserInfoToShared()
                 (activity as MainActivity).changeFragment("home")
 
             }
@@ -366,6 +368,7 @@ class StartFragment : Fragment() {
 
             if (startViewModel.isPossibleLogin.value == true) {
 
+                saveUserInfoToShared()
                 (activity as MainActivity).changeFragment("home")
 
             }
@@ -416,5 +419,15 @@ class StartFragment : Fragment() {
         }
 
     } // timer
+
+    private fun saveUserInfoToShared() {
+
+        val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        val edit = sharedPreferences?.edit()
+
+        edit?.putString("nickname", startViewModel.userNickname)
+        edit?.commit()
+
+    } // saveUserInfoToShared
 
 }

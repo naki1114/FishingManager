@@ -257,9 +257,10 @@ class StartViewModel : ViewModel() {
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
-                    var msg : String? = response.body()
+                    var msg = response.body()?.split(" ")
 
-                    isPossibleLogin.value = msg == "successLogin"
+                    userNickname = msg?.get(1).toString()
+                    isPossibleLogin.value = msg?.get(0) == "successLogin"
                 }
             }
 
