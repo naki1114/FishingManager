@@ -69,7 +69,8 @@ class SplashFragment : Fragment() {
     // API 데이터 요청
     fun requestData() {
 
-        viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate2(GetDate().getTime()), "0500", "37", "127")
+        // 각 메서드 인수에 들어갈 데이터 수정 예정 - SharedPreference에서 얻어와야 함.
+        viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "0500", "37", "127")
         viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), "DT_0001", "json")
         viewModel.getIndex("SF", "json")
 
