@@ -26,6 +26,10 @@ class SplashFragment : Fragment() {
     private lateinit var progressView: ProgressView
     private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
+    private lateinit var userNickname: String
+    private lateinit var obsCode: String
+    private lateinit var lat : String
+    private lateinit var lon : String
 
     val delayToStart = thread(false) {
         Thread.sleep(1000)
@@ -61,7 +65,8 @@ class SplashFragment : Fragment() {
         viewModel = SplashViewModel()
         progressText = activity?.findViewById(R.id.progressText)!!
         progressView = activity?.findViewById(R.id.progressView)!!
-        checkSharedPreferense = checkSharedPreference()
+        checkSharedPreferense = checkLoginSharedPreference()
+        getLocationSharedPreference()
 
     } // setVariable()
 
@@ -70,9 +75,13 @@ class SplashFragment : Fragment() {
     fun requestData() {
 
         // 각 메서드 인수에 들어갈 데이터 수정 예정 - SharedPreference에서 얻어와야 함.
-        viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "0500", "37", "127")
-        viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), "DT_0001", "json")
+        viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", lat, lon)
+        viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), obsCode, "json")
         viewModel.getIndex("SF", "json")
+
+        if (userNickname != "") {
+            viewModel.getCombine(userNickname)
+        }
 
     } // requestData()
 
@@ -169,14 +178,39 @@ class SplashFragment : Fragment() {
 
 
     // SharedPreference 체크
-    fun checkSharedPreference() : Boolean {
+    fun checkLoginSharedPreference() : Boolean {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
-        val checkValue = sharedPreferences?.getString("nickname", "")
+        userNickname = sharedPreferences?.getString("nickname", "").toString()
 
-        return checkValue == ""
+        return userNickname == ""
 
-    } // checkSharedPreference()
+    } // checkLoginSharedPreference()
+
+
+    fun getLocationSharedPreference() {
+
+        val sharedPreferences = activity?.getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences!!.edit()
+        obsCode = sharedPreferences?.getString("obsCode", "").toString()
+        lat = sharedPreferences?.getString("lat", "").toString()
+        lon = sharedPreferences?.getString("lon", "").toString()
+
+        if (obsCode == "") {
+
+            editor.putString("location", "영흥도")
+            editor.putString("obsCode", "DT_0043")
+            editor.putString("lat", "37")
+            editor.putString("lon", "126")
+            editor.commit()
+
+            obsCode = sharedPreferences?.getString("obsCode", "").toString()
+            lat = sharedPreferences.getString("lat", "").toString()
+            lon = sharedPreferences.getString("lon", "").toString()
+
+        }
+
+    } // getLocationSharedPreference()
 
 
 }

@@ -5,6 +5,7 @@ data class ConditionWeather(
     var skyImage: Int,
     var temp: String,
     var humidity: String,
-    var windSpeed: String
+    var windSpeed: String,
+    var date: String
 )
 
