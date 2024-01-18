@@ -27,8 +27,7 @@ class ConditionModel {
         RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
     val combineList = ArrayList<ConditionCombine>()
-    val weatherList = ArrayList<ConditionWeather>()
-    val tideList = ArrayList<ConditionTide>()
+
     lateinit var index: ConditionIndex
     lateinit var searchLocationList : ArrayList<SearchLocation>
     val selectFish = ArrayList<SelectFish>()
@@ -73,16 +72,15 @@ class ConditionModel {
 
     }
 
-    fun getBasicWeatherList(response : Response<Weather>) : ArrayList<Weather.Item> {
+    fun changeWeatherList(responseList: ArrayList<ConditionWeather>, date : String) : ArrayList<ConditionWeather> {
 
-        val list = ArrayList<Weather.Item>()
-        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
-        val listSize = responseList.size
+        val formatDate = date.substring(0,4) + date.substring(5,7) + date.substring(8,10)
 
-        for (i in 0 until listSize) {
+        val list = ArrayList<ConditionWeather>()
 
-            if (responseList[i].category == "TMP" || responseList[i].category == "REH" ||
-                responseList[i].category == "WSD" || responseList[i].category == "SKY" || responseList[i].category == "PTY") {
+        for (i in 0 until responseList.size) {
+
+            if (responseList[i].date == formatDate) {
 
                 list.add(responseList[i])
 
@@ -92,7 +90,149 @@ class ConditionModel {
 
         return list
 
-    } // getBasicWeatherList()
+    }
+
+
+    fun getWeatherList(response : Response<Weather>, date : String) : ArrayList<ConditionWeather> {
+
+        val list = ArrayList<Weather.Item>()
+        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
+        val listSize = responseList.size
+        var formatDate = date.substring(0,4) + date.substring(5,7) + date.substring(8,10)
+
+        for (i in 0 until listSize) {
+
+            if (responseList[i].fcstDate == formatDate) {
+
+                if (responseList[i].category == "TMP" || responseList[i].category == "REH" ||
+                    responseList[i].category == "WSD" || responseList[i].category == "SKY" || responseList[i].category == "PTY") {
+
+                    list.add(responseList[i])
+
+                }
+
+            }
+
+        }
+
+        val weatherList = ArrayList<ConditionWeather>()
+        var time: String = ""
+        var temp: String = ""
+        var skyImage: Int = 0
+        var humidity: String = ""
+        var windSpeed: String = ""
+        var date: String = ""
+
+        for (i in 0 until list.size) {
+
+            time = list[i].fcstTime.substring(0,2) + ":" + list[i].fcstTime.substring(2,4)
+            date = list[i].fcstDate
+
+            if (list[i].category == "TMP") {
+
+                temp = list[i].fcstValue + "˚C"
+
+            } else if (list[i].category == "SKY") {
+
+                when (list[i].fcstValue) {
+
+                    "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
+                    "6", "7", "8" -> skyImage = R.drawable.cloudy
+                    "9", "10" -> skyImage = R.drawable.fade
+
+                }
+
+            } else if (list[i].category == "PTY") {
+
+                when (list[i].fcstValue) {
+
+                    "1", "4" -> skyImage = R.drawable.rain
+                    "2", "3" -> skyImage = R.drawable.snow
+
+                }
+
+            } else if (list[i].category == "WSD") {
+
+                windSpeed = list[i].fcstValue + "m/s"
+
+            } else if (list[i].category == "REH") {
+
+                humidity = list[i].fcstValue + "%"
+
+                val conditionWeather = ConditionWeather(time, skyImage, temp, humidity, windSpeed, date)
+                weatherList.add(conditionWeather)
+
+            }
+
+        }
+
+        return weatherList
+
+    } // getWeatherList()
+
+
+    fun getTideList(response : Response<Tide>) : ArrayList<ConditionTide> {
+
+        val list = ArrayList<Tide.Item>()
+        val responseList = response.body()!!.result.data
+        val listSize = responseList.size
+        var tideString = ""
+
+        for (i in 0 until listSize) {
+
+            tideString = responseList[i].tph_time.substring(11, 16)
+
+            list.add(Tide.Item(responseList[i].tph_level, tideString, responseList[i].hl_code))
+
+        }
+
+        val tideList = ArrayList<ConditionTide>()
+        var time : String = ""
+        var upDownImage: Int = 0
+        var tide : String = ""
+        var waterHeightImage: Int = 0
+        var waterHeight : String = ""
+
+        for (i in 0 until list.size) {
+
+            time = list[i].tph_time.substring(0)
+            waterHeight = list[i].tph_level + "cm"
+
+            when (list[i].hl_code) {
+
+                "고조" -> tide = "만조"
+                "저조" -> tide = "간조"
+
+            }
+
+            when (list[i].hl_code) {
+
+                "고조" -> {
+                    upDownImage = R.drawable.tide_high
+                    waterHeightImage = R.drawable.water_height_high
+                }
+
+                "저조" -> {
+                    upDownImage = R.drawable.tide_low
+                    waterHeightImage = R.drawable.water_height_low
+                }
+
+            }
+
+            val conditionTide = ConditionTide(
+                time,
+                upDownImage,
+                tide,
+                waterHeightImage,
+                waterHeight
+            )
+            tideList.add(conditionTide)
+
+        }
+
+        return tideList
+
+    } // getBasicTideList()
 
 
     fun requestWeather(
@@ -168,114 +308,8 @@ class ConditionModel {
     } // getCombineList()
 
 
-    fun getWeatherList(responseList : ArrayList<Weather.Item>, date : String): ArrayList<ConditionWeather> {
+    fun getIndex(responseList: ArrayList<Index.Item>, date : String, fishName : String, location: String): ConditionIndex {
 
-        var time: String = ""
-        var temp: String = ""
-        var skyImage: Int = 0
-        var humidity: String = ""
-        var windSpeed: String = ""
-
-        for (i in 0 until responseList.size) {
-
-            time = responseList[i].fcstTime.substring(0,2) + ":" + responseList[i].fcstTime.substring(2,4)
-
-            if (responseList[i].category == "TMP") {
-
-                temp = responseList[i].fcstValue + "˚C"
-
-            } else if (responseList[i].category == "SKY") {
-
-                when (responseList[i].fcstValue) {
-
-                    "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
-                    "6", "7", "8" -> skyImage = R.drawable.cloudy
-                    "9", "10" -> skyImage = R.drawable.fade
-
-                }
-
-            } else if (responseList[i].category == "PTY") {
-
-                when (responseList[i].fcstValue) {
-
-                    "1", "4" -> skyImage = R.drawable.rain
-                    "2", "3" -> skyImage = R.drawable.snow
-
-                }
-
-            } else if (responseList[i].category == "WSD") {
-
-                windSpeed = responseList[i].fcstValue + "m/s"
-
-            } else if (responseList[i].category == "REH") {
-
-                humidity = responseList[i].fcstValue + "%"
-
-                val conditionWeather = ConditionWeather(time, skyImage, temp, humidity, windSpeed)
-                weatherList.add(conditionWeather)
-
-            }
-
-        }
-
-        return weatherList
-
-    } // getWeatherList()
-
-
-    fun getTideList(responseList: ArrayList<Tide.Item>, date : String): ArrayList<ConditionTide> {
-
-        var time : String = ""
-        var upDownImage: Int = 0
-        var tide : String = ""
-        var waterHeightImage: Int = 0
-        var waterHeight : String = ""
-
-        for (i in 0 until responseList.size) {
-
-            time = responseList[i].tph_time.substring(0)
-            waterHeight = responseList[i].tph_level + "cm"
-
-            when (responseList[i].hl_code) {
-
-                "고조" -> tide = "만조"
-                "저조" -> tide = "간조"
-
-            }
-
-            when (responseList[i].hl_code) {
-
-                "고조" -> {
-                    upDownImage = R.drawable.tide_high
-                    waterHeightImage = R.drawable.water_height_high
-                }
-
-                "저조" -> {
-                    upDownImage = R.drawable.tide_low
-                    waterHeightImage = R.drawable.water_height_low
-                }
-
-            }
-
-            val conditionTide = ConditionTide(
-                time,
-                upDownImage,
-                tide,
-                waterHeightImage,
-                waterHeight
-            )
-            tideList.add(conditionTide)
-
-        }
-
-        return tideList
-
-    } // getTideList()
-
-
-    fun getIndex(responseList: ArrayList<Index.Item>): ConditionIndex {
-
-        var fishName = "우럭"
         var amWaterTemp: String = ""
         var amWaveHeight: String = ""
         var amTide: String = ""
@@ -287,41 +321,52 @@ class ConditionModel {
         var pmTotal: String = ""
         var pmTotalImage: Int = 0
 
+        var containFishName = fishName
+
+
         for (i in 0 until responseList.size) {
 
-            if (responseList[i].date == GetDate().getFormatDate3(GetDate().getTime()) && responseList[i].fish_name == fishName && responseList[i].name == "거문도") {
+            if (responseList[i].date == date && responseList[i].name == location) {
 
-                if (responseList[i].time_type == "오전") {
+                if (containFishName == "") {
+                    containFishName = responseList[i].fish_name
+                }
 
-                    amWaterTemp = responseList[i].water_temp
-                    amWaveHeight = responseList[i].wave_height
-                    amTide = responseList[i].tide_time_score
-                    amTotal = responseList[i].total_score
+                if (responseList[i].fish_name == containFishName) {
 
-                    when (responseList[i].total_score) {
+                    if (responseList[i].time_type == "오전") {
 
-                        "매우나쁨" -> amTotalImage = R.drawable.index_very_bad
-                        "나쁨" -> amTotalImage = R.drawable.index_bad
-                        "보통" -> amTotalImage = R.drawable.index_normal
-                        "좋음" -> amTotalImage = R.drawable.index_good
-                        "매우좋음" -> amTotalImage = R.drawable.index_very_good
+                        amWaterTemp = responseList[i].water_temp
+                        amWaveHeight = responseList[i].wave_height
+                        amTide = responseList[i].tide_time_score
+                        amTotal = responseList[i].total_score
 
-                    }
+                        when (responseList[i].total_score) {
 
-                } else {
+                            "매우나쁨" -> amTotalImage = R.drawable.index_very_bad
+                            "나쁨" -> amTotalImage = R.drawable.index_bad
+                            "보통" -> amTotalImage = R.drawable.index_normal
+                            "좋음" -> amTotalImage = R.drawable.index_good
+                            "매우좋음" -> amTotalImage = R.drawable.index_very_good
 
-                    pmWaterTemp = responseList[i].water_temp
-                    pmWaveHeight = responseList[i].wave_height
-                    pmTide = responseList[i].tide_time_score
-                    pmTotal = responseList[i].total_score
+                        }
 
-                    when (responseList[i].total_score) {
+                    } else {
 
-                        "매우나쁨" -> pmTotalImage = R.drawable.index_very_bad
-                        "나쁨" -> pmTotalImage = R.drawable.index_bad
-                        "보통" -> pmTotalImage = R.drawable.index_normal
-                        "좋음" -> pmTotalImage = R.drawable.index_good
-                        "매우좋음" -> pmTotalImage = R.drawable.index_very_good
+                        pmWaterTemp = responseList[i].water_temp
+                        pmWaveHeight = responseList[i].wave_height
+                        pmTide = responseList[i].tide_time_score
+                        pmTotal = responseList[i].total_score
+
+                        when (responseList[i].total_score) {
+
+                            "매우나쁨" -> pmTotalImage = R.drawable.index_very_bad
+                            "나쁨" -> pmTotalImage = R.drawable.index_bad
+                            "보통" -> pmTotalImage = R.drawable.index_normal
+                            "좋음" -> pmTotalImage = R.drawable.index_good
+                            "매우좋음" -> pmTotalImage = R.drawable.index_very_good
+
+                        }
 
                     }
 

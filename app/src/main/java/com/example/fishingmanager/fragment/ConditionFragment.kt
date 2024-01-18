@@ -89,7 +89,7 @@ class ConditionFragment : Fragment() {
         tideAdapter = ConditionTideAdapter()
         selectFishAdapter = ConditionSelectFishAdapter()
         searchLocationAdapter = ConditionSearchLocationAdapter(ConditionSearchLocationAdapter.ItemClickListener {
-            viewModel.setLocation(it)
+            viewModel.changeLocation(it)
         })
 
         binding.conditionCombineRecyclerView.adapter = combineAdapter
@@ -135,10 +135,9 @@ class ConditionFragment : Fragment() {
 
         })
 
-        binding.conditionSelectDateTitleLayout.setOnClickListener {
+        binding.conditionSelectDateChoiceButton.setOnClickListener {
 
-            // 여기 부분 데이터 바인딩 포기할까 고민중..
-            Log.d(TAG, "setView: ${binding.conditionSelectDateCalendarView.selectedDate!!.date.toString()}")
+            viewModel.changeDate(binding.conditionSelectDateCalendarView.selectedDate!!.date.toString())
 
         }
 
@@ -162,7 +161,6 @@ class ConditionFragment : Fragment() {
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
             weatherAdapter.setItem(it)
-            (activity as MainActivity).setWeatherList(it)
 
         })
 
@@ -217,7 +215,6 @@ class ConditionFragment : Fragment() {
         }
 
         searchLocation = SearchLocation(locationValue, obsCodeValue, lat, lon)
-
 
     } // checkedLocationSharedPreference()
 
