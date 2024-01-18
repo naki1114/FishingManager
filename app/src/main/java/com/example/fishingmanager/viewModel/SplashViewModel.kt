@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Combine
+import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
@@ -24,7 +25,7 @@ class SplashViewModel : ViewModel() {
     lateinit var model : SplashModel
 
     val liveDataWeatherList = MutableLiveData<ArrayList<ConditionWeather>>()
-    val liveDataTideList = MutableLiveData<ArrayList<Tide.Item>>()
+    val liveDataTideList = MutableLiveData<ArrayList<ConditionTide>>()
     val liveDataIndexList = MutableLiveData<ArrayList<Index.Item>>()
     val liveDataCombineData = MutableLiveData<Boolean>()
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()

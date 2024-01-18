@@ -25,6 +25,7 @@ import com.example.fishingmanager.fragment.SplashFragment
 import com.example.fishingmanager.fragment.StartFragment
 import com.example.fishingmanager.fragment.WriteFragment
 import com.example.fishingmanager.R
+import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.viewModel.MainViewModel
 import com.example.fishingmanager.viewModel.SplashViewModel
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var splashViewModel: SplashViewModel
 
     private lateinit var weatherList : ArrayList<ConditionWeather>
-    private lateinit var tideList : ArrayList<Tide.Item>
+    private lateinit var tideList : ArrayList<ConditionTide>
     private lateinit var indexList : ArrayList<Index.Item>
     private lateinit var collectionList : ArrayList<Collection>
     private lateinit var historyList : ArrayList<History>
@@ -150,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     } // getWeatherList()
 
 
-    fun getTideList() : ArrayList<Tide.Item> {
+    fun getTideList() : ArrayList<ConditionTide> {
 
         return tideList
 
@@ -199,7 +200,7 @@ class MainActivity : AppCompatActivity() {
     } // setWeatherList()
 
 
-    fun setTideList(tideList : ArrayList<Tide.Item>) {
+    fun setTideList(tideList : ArrayList<ConditionTide>) {
 
         this.tideList = tideList
 
