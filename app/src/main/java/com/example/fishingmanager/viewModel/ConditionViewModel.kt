@@ -40,6 +40,7 @@ class ConditionViewModel(
     val liveDataDate = MutableLiveData<String>()
     val liveDataSearchLocation = MutableLiveData<SearchLocation>()
     val liveDataFish = MutableLiveData<String>()
+    val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
 
     val basicWeatherList = weatherList
     val basicIndexList = indexList
@@ -51,12 +52,14 @@ class ConditionViewModel(
         liveDataSearchLocation.value = searchLocation
         liveDataCurrentLayout.value = "combine"
         liveDataDate.value = GetDate().getFormatDate3(GetDate().getTime())
+        liveDataFishList.value = model.getFishList(indexList, searchLocation, liveDataDate.value!!)
+        liveDataFish.value = model.getFish(liveDataFishList.value!!)
 
-        this.liveDataWeatherList.value = model.changeWeatherList(weatherList, liveDataDate.value!!)
-        this.liveDataTideList.value = tideList
-        this.liveDataIndex.value = model.getIndex(indexList, liveDataDate.value!!, "", liveDataSearchLocation.value!!.location)
-        this.liveDataIndexTotal.value = model.getIndexList(indexList)
-        this.liveDataCombineList.value = model.getCombineList(
+        liveDataWeatherList.value = model.changeWeatherList(weatherList, liveDataDate.value!!)
+        liveDataTideList.value = tideList
+        liveDataIndex.value = model.getIndex(indexList, liveDataDate.value!!, liveDataFish.value!!, liveDataSearchLocation.value!!.location)
+        liveDataIndexTotal.value = model.getIndexList(indexList)
+        liveDataCombineList.value = model.getCombineList(
             liveDataWeatherList.value!!,
             liveDataTideList.value!!,
             liveDataIndexTotal.value!!
@@ -110,13 +113,12 @@ class ConditionViewModel(
 
         })
 
-        Log.d(TAG, "changeDate: ${basicIndexList[0].fish_name} / ${liveDataDate.value} / ${liveDataFish.value} / ${liveDataSearchLocation.value!!.location}")
-
-        if (liveDataFish.value == null) {
-            liveDataIndex.value = model.getIndex(basicIndexList, liveDataDate.value!!, "", liveDataSearchLocation.value!!.location)
-        } else {
-            liveDataIndex.value = model.getIndex(basicIndexList, liveDataDate.value!!, liveDataFish.value!!, liveDataSearchLocation.value!!.location)
-        }
+        liveDataIndex.value = model.getIndex(
+            basicIndexList,
+            liveDataDate.value!!,
+            liveDataFish.value!!,
+            liveDataSearchLocation.value!!.location
+        )
 
     } // changeDate()
 
@@ -125,8 +127,6 @@ class ConditionViewModel(
 
         liveDataSearchLocation.value = location
         liveDataCurrentLayout.value = previousLayout
-
-        Log.d(TAG, "changeLocation: ${liveDataDate.value} / ${liveDataSearchLocation.value!!.location}")
 
         model.requestWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", liveDataSearchLocation.value!!.lat, liveDataSearchLocation.value!!.lon)
             .enqueue(object : Callback<Weather> {
@@ -170,13 +170,16 @@ class ConditionViewModel(
 
         })
 
-        Log.d(TAG, "changeLocation : ${basicIndexList[0].name} / ${liveDataDate.value} / ${liveDataFish.value} / ${liveDataSearchLocation.value!!.location}")
+        liveDataFishList.value =
+            model.getFishList(basicIndexList, liveDataSearchLocation.value!!, liveDataDate.value!!)
+        liveDataFish.value = model.getFish(liveDataFishList.value!!)
 
-        if (liveDataFish.value == null) {
-            liveDataIndex.value = model.getIndex(basicIndexList, liveDataDate.value!!, "", liveDataSearchLocation.value!!.location)
-        } else {
-            liveDataIndex.value = model.getIndex(basicIndexList, liveDataDate.value!!, liveDataFish.value!!, liveDataSearchLocation.value!!.location)
-        }
+        liveDataIndex.value = model.getIndex(
+            basicIndexList,
+            liveDataDate.value!!,
+            liveDataFish.value!!,
+            liveDataSearchLocation.value!!.location
+        )
 
 
 
@@ -189,6 +192,8 @@ class ConditionViewModel(
         liveDataFish.value = fishName
 
         liveDataIndex.value = model.getIndex(basicIndexList, liveDataDate.value!!, liveDataFish.value!!, liveDataSearchLocation.value!!.location)
+
+        liveDataCurrentLayout.value = previousLayout
 
     } // changeFish()
 

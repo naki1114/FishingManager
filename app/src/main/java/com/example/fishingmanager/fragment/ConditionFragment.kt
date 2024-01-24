@@ -196,6 +196,12 @@ class ConditionFragment : Fragment() {
 
         })
 
+        viewModel.liveDataFishList.observe(viewLifecycleOwner, Observer {
+
+            selectFishAdapter.setItem(it)
+
+        })
+
     } // observeLiveData()
 
 
