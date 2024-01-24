@@ -463,16 +463,16 @@
 
             <ImageView
                 android:id="@+id/conditionLoadingRightImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:src="@drawable/loading_right"
                 android:layout_gravity="center"
                 />
 
             <ImageView
                 android:id="@+id/conditionLoadingLeftImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:src="@drawable/loading_left"
                 android:layout_gravity="center"
                 android:visibility="gone"
