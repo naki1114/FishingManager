@@ -201,7 +201,7 @@ class ConditionFragment : Fragment() {
 
     fun checkedLocationSharedPreference() {
 
-        conditionSharedPreferences = requireActivity().getSharedPreferences("conditionInfo", AppCompatActivity.MODE_PRIVATE)
+        conditionSharedPreferences = requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
         conditionEditor = conditionSharedPreferences.edit()
 
         var locationValue : String = conditionSharedPreferences!!.getString("location", "").toString()
