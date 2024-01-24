@@ -83,6 +83,7 @@ class ConditionFragment : Fragment() {
             searchLocation
         )
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         weatherAdapter = ConditionWeatherAdapter()
         combineAdapter = ConditionCombineAdapter()
@@ -192,7 +193,6 @@ class ConditionFragment : Fragment() {
             conditionEditor.putString("lat", it.lat)
             conditionEditor.putString("lon", it.lon)
             conditionEditor.commit()
-            binding.conditionSelectLocationButton.text = it.location
 
         })
 
