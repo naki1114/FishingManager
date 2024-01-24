@@ -305,11 +305,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:background="@drawable/custom_main_button_background"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:text="우 럭"
-                android:visibility="gone"
                 android:onClick='@{() -> viewModel.changeLayout("selectFish")}'
+                android:text="@{viewModel.liveDataFish}"
+                android:textColor="@color/main2"
+                android:textStyle="bold"
+                android:visibility="gone" />
                 />
 
             <View
@@ -612,7 +612,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:textSize="18dp"
-                            android:text="@{viewModel.liveDataIndex.component1()}"
+                            android:text="@{viewModel.liveDataIndex.component1() + `˚C`}"
                             android:gravity="center"
                             android:textColor="@color/black"
                             android:textStyle="bold"
@@ -775,7 +775,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:textSize="18dp"
-                            android:text="@{viewModel.liveDataIndex.component2()}"
+                            android:text="@{viewModel.liveDataIndex.component2() + `m`}"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center"
@@ -970,7 +970,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:textSize="18dp"
-                            android:text="@{viewModel.liveDataIndex.component6()}"
+                            android:text="@{viewModel.liveDataIndex.component6() + `˚C`}"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center"
@@ -1133,7 +1133,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:textSize="18dp"
-                            android:text="@{viewModel.liveDataIndex.component7()}"
+                            android:text="@{viewModel.liveDataIndex.component7() + `m`}"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="center"
@@ -1328,6 +1328,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/conditionSelectFishRecyclerView"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />

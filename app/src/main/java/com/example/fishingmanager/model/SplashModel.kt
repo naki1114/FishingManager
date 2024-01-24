@@ -90,7 +90,7 @@ class SplashModel {
                 // 하늘 상태
             } else if (list[i].category == "SKY") {
 
-                when (responseList[i].fcstValue) {
+                when (list[i].fcstValue) {
 
                     "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
                     "6", "7", "8" -> skyImage = R.drawable.cloudy

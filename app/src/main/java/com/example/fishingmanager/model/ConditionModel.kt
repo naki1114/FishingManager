@@ -26,11 +26,7 @@ class ConditionModel {
     private val tideRetrofitInterface: RetrofitInterface =
         RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
-    val combineList = ArrayList<ConditionCombine>()
-
     lateinit var index: ConditionIndex
-    lateinit var searchLocationList : ArrayList<SearchLocation>
-    val selectFish = ArrayList<SelectFish>()
     val locationBaseList = ArrayList<SearchLocation>()
 
     init {
@@ -251,11 +247,15 @@ class ConditionModel {
 
     fun getCombineList(weatherList : ArrayList<ConditionWeather>, tideList : ArrayList<ConditionTide>, indexTotal : ArrayList<Int>): ArrayList<ConditionCombine> {
 
+        val combineList = ArrayList<ConditionCombine>()
+
         var time : String = ""
         var indexImage : Int = 0
         var skyImage : Int = 0
         var temp : String = ""
         var tide : String = ""
+
+        Log.d("test", "weatherList : ${weatherList.size}")
 
         for (i in 0 until weatherList.size) {
 
@@ -321,18 +321,12 @@ class ConditionModel {
         var pmTotal: String = ""
         var pmTotalImage: Int = 0
 
-        var containFishName = fishName
-
 
         for (i in 0 until responseList.size) {
 
             if (responseList[i].date == date && responseList[i].name == location) {
 
-                if (containFishName == "") {
-                    containFishName = responseList[i].fish_name
-                }
-
-                if (responseList[i].fish_name == containFishName) {
+                if (responseList[i].fish_name == fishName) {
 
                     if (responseList[i].time_type == "오전") {
 
@@ -394,7 +388,7 @@ class ConditionModel {
     } // getIndex()
 
 
-    fun getIndexList(responseList: ArrayList<Index.Item>) : ArrayList<Int> {
+    fun getIndexTotalList(responseList: ArrayList<Index.Item>) : ArrayList<Int> {
 
         val list = ArrayList<Int>()
         var amTotal : Int = 0
@@ -462,12 +456,31 @@ class ConditionModel {
 
         return list
 
+    } // getIndexTotalList()
+
+
+    fun getIndexList(indexList: ArrayList<Index.Item>, location: String, date : String) : ArrayList<Index.Item> {
+
+        val list = ArrayList<Index.Item>()
+
+        for (i in 0 until indexList.size) {
+
+            if (indexList[i].name == location && indexList[i].date == date) {
+
+                list.add(indexList[i])
+
+            }
+
+        }
+
+        return list
+
     } // getIndexList()
 
 
     fun getSearchLocationList(keyword: String): ArrayList<SearchLocation> {
 
-        searchLocationList = ArrayList()
+        var searchLocationList = ArrayList<SearchLocation>()
 
         for (i in 0 until locationBaseList.size) {
 
@@ -489,7 +502,91 @@ class ConditionModel {
 
         return searchLocationList
 
-    } // getlocationBaseList()
+    } // getSearchLocationList()
+
+
+    fun getFishList(
+        indexList: ArrayList<Index.Item>,
+        searchLocation: SearchLocation,
+        date: String
+    ): ArrayList<SelectFish> {
+
+        val fishList = ArrayList<SelectFish>()
+        var fishImage: Int = 0
+        var fishName: String = ""
+
+        for (i in 0 until indexList.size) {
+
+            if (searchLocation.location == indexList[i].name && indexList[i].date == date) {
+
+                if (indexList[i].time_type == "오전") {
+
+                    when (indexList[i].fish_name) {
+
+                        "우럭" -> {
+                            fishImage = R.drawable.uruck
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "광어" -> {
+                            fishImage = R.drawable.gawnga
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "볼락" -> {
+                            fishImage = R.drawable.bollock
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "농어" -> {
+                            fishImage = R.drawable.nonga
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "열기" -> {
+                            fishImage = R.drawable.yulgi
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "참돔" -> {
+                            fishImage = R.drawable.chamdom
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "감성돔" -> {
+                            fishImage = R.drawable.gamsungdom
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "돌돔" -> {
+                            fishImage = R.drawable.doldom
+                            fishName = indexList[i].fish_name
+                        }
+
+                        "벵에돔" -> {
+                            fishImage = R.drawable.bengedom
+                            fishName = indexList[i].fish_name
+                        }
+
+                    }
+
+                    fishList.add(SelectFish(fishImage, fishName))
+
+                }
+
+            }
+
+        }
+
+        return fishList
+
+    } // getSelectFish()
+
+    fun getFish(fishList : ArrayList<SelectFish>) : String {
+
+        return fishList[0].fishName
+
+    } // getFish()
 
 
 }

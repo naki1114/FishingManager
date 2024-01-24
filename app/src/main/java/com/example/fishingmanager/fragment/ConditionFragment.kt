@@ -83,11 +83,14 @@ class ConditionFragment : Fragment() {
             searchLocation
         )
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         weatherAdapter = ConditionWeatherAdapter()
         combineAdapter = ConditionCombineAdapter()
         tideAdapter = ConditionTideAdapter()
-        selectFishAdapter = ConditionSelectFishAdapter()
+        selectFishAdapter = ConditionSelectFishAdapter(ConditionSelectFishAdapter.ItemClickListener {
+            viewModel.changeFish(it.fishName)
+        })
         searchLocationAdapter = ConditionSearchLocationAdapter(ConditionSearchLocationAdapter.ItemClickListener {
             viewModel.changeLocation(it)
         })
@@ -190,7 +193,12 @@ class ConditionFragment : Fragment() {
             conditionEditor.putString("lat", it.lat)
             conditionEditor.putString("lon", it.lon)
             conditionEditor.commit()
-            binding.conditionSelectLocationButton.text = it.location
+
+        })
+
+        viewModel.liveDataFishList.observe(viewLifecycleOwner, Observer {
+
+            selectFishAdapter.setItem(it)
 
         })
 
@@ -199,7 +207,7 @@ class ConditionFragment : Fragment() {
 
     fun checkedLocationSharedPreference() {
 
-        conditionSharedPreferences = requireActivity().getSharedPreferences("conditionInfo", AppCompatActivity.MODE_PRIVATE)
+        conditionSharedPreferences = requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
         conditionEditor = conditionSharedPreferences.edit()
 
         var locationValue : String = conditionSharedPreferences!!.getString("location", "").toString()
