@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.databinding.ConditionSelectFishItemBinding
 
-class ConditionSelectFishAdapter : RecyclerView.Adapter<ConditionSelectFishAdapter.ViewHolder>() {
+class ConditionSelectFishAdapter(val itemClickListener: ItemClickListener) : RecyclerView.Adapter<ConditionSelectFishAdapter.ViewHolder>() {
 
     val TAG = "ConditionSelectFishAdapter"
 
@@ -17,7 +17,7 @@ class ConditionSelectFishAdapter : RecyclerView.Adapter<ConditionSelectFishAdapt
 
         val binding = ConditionSelectFishItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return ViewHolder(binding)
+        return ViewHolder(binding, itemClickListener)
 
     } // onCreateViewHolder()
 
@@ -44,14 +44,21 @@ class ConditionSelectFishAdapter : RecyclerView.Adapter<ConditionSelectFishAdapt
     } // setItem()
 
 
-    class ViewHolder(val binding : ConditionSelectFishItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding : ConditionSelectFishItemBinding, val itemClickListener: ItemClickListener) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(fishList: SelectFish) {
 
             binding.fishItem = fishList
+            binding.conditionSelectFishFishImage.setImageResource(fishList.fishImage)
+            binding.clickListener = itemClickListener
 
         }
 
     } // ViewHolder
+
+
+    class ItemClickListener(val clickListener : (selectFish: SelectFish) -> Unit) {
+        fun onClick(selectFish: SelectFish) = clickListener(selectFish)
+    }
 
 }

@@ -87,7 +87,9 @@ class ConditionFragment : Fragment() {
         weatherAdapter = ConditionWeatherAdapter()
         combineAdapter = ConditionCombineAdapter()
         tideAdapter = ConditionTideAdapter()
-        selectFishAdapter = ConditionSelectFishAdapter()
+        selectFishAdapter = ConditionSelectFishAdapter(ConditionSelectFishAdapter.ItemClickListener {
+            viewModel.changeFish(it.fishName)
+        })
         searchLocationAdapter = ConditionSearchLocationAdapter(ConditionSearchLocationAdapter.ItemClickListener {
             viewModel.changeLocation(it)
         })
