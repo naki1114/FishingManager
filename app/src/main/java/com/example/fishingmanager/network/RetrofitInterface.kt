@@ -118,6 +118,17 @@ interface RetrofitInterface {
     fun getFeed(): Call<ArrayList<Feed>>
 
 
+    // 게시글 추가 (이미지 미포함)
+    @FormUrlEncoded
+    @POST("File/Feed/InsertFeed.php")
+    fun insertFeed(
+        @Field("nickname") nickname: String,
+        @Field("title") title: String,
+        @Field("content") content: String,
+        @Field("date") date: Int
+    ): Call<String>
+
+
     // 게시글 추가
     @Multipart
     @FormUrlEncoded

@@ -1,9 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.WriteFragment">
 
-</FrameLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.fishingmanager.viewModel.WriteViewModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.WriteFragment"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/main2"
+            android:weightSum="1"
+            android:visibility="visible"
+            >
+
+            <LinearLayout
+                android:id="@+id/writeTitleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:paddingVertical="13dp"
+                android:background="@drawable/custom_titlebar_background"
+                >
+
+                <ImageView
+                    android:id="@+id/writeBackButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/btnbackcream"
+                    android:onClick='@{()->viewModel.writeBackLayout("back")}'
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/write_title"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/writeFinishTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/complete"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    android:onClick='@{()->viewModel.writeBackLayout("complete", writeTitleEditText.getText().toString(), writeContentEditText.getText().toString())}'
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <ImageView
+                android:id="@+id/writeImageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_white_circle_background"
+                android:src="@drawable/btnimg"
+                android:onClick="@{()->viewModel.toGallery()}"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <EditText
+                android:id="@+id/writeTitleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:background="@drawable/custom_feed_background"
+                android:hint="@string/title"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:maxLength="20"
+                android:onTextChanged="@{()->viewModel.titleChanged(writeTitleEditText.getText().toString())}"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.05"
+                />
+
+            <TextView
+                android:id="@+id/writeLimitCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_gravity="end"
+                android:text="@string/write_limit"
+                android:textColor="@color/gray2"
+                />
+
+            <EditText
+                android:id="@+id/writeContentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.75"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="top"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
+                android:background="@drawable/custom_feed_background"
+                android:hint="@string/content"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:maxLength="1000"
+                android:onTextChanged="@{()->viewModel.contentChanged(writeContentEditText.getText().toString())}"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/writeBackLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#DDB9B9B9"
+            android:weightSum="1"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:paddingVertical="30dp"
+                android:paddingHorizontal="40dp"
+                android:orientation="vertical"
+                android:background="@drawable/custom_dialog_background"
+                >
+
+                <TextView
+                    android:id="@+id/writeBackTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/writeBackCancelTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cancel"
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:onClick="@{()->viewModel.clickCancel()}"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:id="@+id/writeBackCheckTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/check"
+                        android:textColor="@color/blue"
+                        android:textStyle="bold"
+                        android:onClick="@{()->viewModel.clickCheck()}"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>
