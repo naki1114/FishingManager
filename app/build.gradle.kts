@@ -106,4 +106,8 @@ dependencies {
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation("com.jakewharton.threetenabp:threetenabp:1.2.1")
 
+    // Navigation
+    implementation("androidx.navigation:navigation-fragment:2.3.2")
+    implementation("androidx.navigation:navigation-ui:2.3.2")
+
 }

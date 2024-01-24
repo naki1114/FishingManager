@@ -353,7 +353,7 @@ class StartFragment : Fragment() {
 
                 viewFirstPage()
                 binding.signupLayout.visibility = View.GONE
-                saveUserInfoToShared()
+//                saveUserInfoToShared()
                 (activity as MainActivity).changeFragment("home")
 
             }
@@ -368,8 +368,8 @@ class StartFragment : Fragment() {
 
             if (startViewModel.isPossibleLogin.value == true) {
 
-                saveUserInfoToShared()
-                (activity as MainActivity).changeFragment("write")
+//                saveUserInfoToShared()
+                (activity as MainActivity).changeFragment("home")
 
             }
             else {

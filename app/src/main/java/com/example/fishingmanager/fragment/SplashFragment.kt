@@ -79,9 +79,9 @@ class SplashFragment : Fragment() {
         viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), obsCode, "json")
         viewModel.getIndex("SF", "json")
 
-        if (userNickname != "") {
-            viewModel.getCombine(userNickname)
-        }
+//        if (userNickname != "") {
+//            viewModel.getCombine(userNickname)
+//        }
 
     } // requestData()
 
