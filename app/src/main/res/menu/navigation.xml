@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home_fragment"
+        android:enabled="true"
+        android:icon="@drawable/btnhome"
+        android:title="home"
+        />
+
+    <item
+        android:id="@+id/condition_fragment"
+        android:enabled="true"
+        android:icon="@drawable/btncondition"
+        android:title="condition"
+        />
+
+    <item
+        android:id="@+id/checkingFish_fragment"
+        android:enabled="true"
+        android:icon="@drawable/btncheckingfish"
+        android:title="checkingFish"
+        />
+
+    <item
+        android:id="@+id/feed_fragment"
+        android:enabled="true"
+        android:icon="@drawable/btnfeed"
+        android:title="feed"
+        />
+
+    <item
+        android:id="@+id/profile_fragment"
+        android:enabled="true"
+        android:icon="@drawable/btnprofile"
+        android:title="profile"
+        />
+
+</menu>
