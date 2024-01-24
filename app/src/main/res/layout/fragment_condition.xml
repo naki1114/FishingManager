@@ -447,6 +447,60 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/conditionLoadingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:id="@+id/conditionLoadingRightImage"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/loading_right"
+                android:layout_gravity="center"
+                />
+
+            <ImageView
+                android:id="@+id/conditionLoadingLeftImage"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/loading_left"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:text="@string/loading"
+                android:layout_gravity="center"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/conditionCombineLayout"
@@ -1252,7 +1306,6 @@
                 android:id="@+id/conditionSelectDateCalendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mcv_firstDayOfWeek="sunday"
                 android:theme="@style/CalenderViewCustom"
                 app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
                 app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"

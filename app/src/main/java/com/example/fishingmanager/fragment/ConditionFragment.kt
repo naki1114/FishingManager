@@ -2,13 +2,20 @@ package com.example.fishingmanager.fragment
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.icu.util.LocaleData
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -30,6 +37,10 @@ import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter
 import java.lang.StringBuilder
+import java.util.Calendar
+import java.util.Locale
+import javax.mail.Quota.Resource
+import kotlin.concurrent.thread
 
 
 class ConditionFragment : Fragment() {
@@ -46,15 +57,22 @@ class ConditionFragment : Fragment() {
     lateinit var selectFishAdapter: ConditionSelectFishAdapter
     lateinit var searchLocationAdapter: ConditionSearchLocationAdapter
 
-    lateinit var conditionSharedPreferences : SharedPreferences
+    lateinit var conditionSharedPreferences: SharedPreferences
     lateinit var conditionEditor: SharedPreferences.Editor
-    lateinit var searchLocation : SearchLocation
+    lateinit var searchLocation: SearchLocation
+
+    lateinit var loadingAnimationRight: Animation
+    lateinit var loadingAnimationLeft: Animation
+    var loadingAnimationStatus = false
+    var previousLayout = ""
+
+    lateinit var animationThread: Thread
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_condition, container, false)
 
         return binding.root
@@ -88,18 +106,24 @@ class ConditionFragment : Fragment() {
         weatherAdapter = ConditionWeatherAdapter()
         combineAdapter = ConditionCombineAdapter()
         tideAdapter = ConditionTideAdapter()
-        selectFishAdapter = ConditionSelectFishAdapter(ConditionSelectFishAdapter.ItemClickListener {
-            viewModel.changeFish(it.fishName)
-        })
-        searchLocationAdapter = ConditionSearchLocationAdapter(ConditionSearchLocationAdapter.ItemClickListener {
-            viewModel.changeLocation(it)
-        })
+        selectFishAdapter =
+            ConditionSelectFishAdapter(ConditionSelectFishAdapter.ItemClickListener {
+                viewModel.changeFish(it.fishName)
+            })
+        searchLocationAdapter =
+            ConditionSearchLocationAdapter(ConditionSearchLocationAdapter.ItemClickListener {
+                viewModel.changeLocation(it)
+            })
 
         binding.conditionCombineRecyclerView.adapter = combineAdapter
         binding.conditionWeatherRecyclerView.adapter = weatherAdapter
         binding.conditionTideRecyclerView.adapter = tideAdapter
         binding.conditionSelectFishRecyclerView.adapter = selectFishAdapter
         binding.conditionSearchLocationRecyclerView.adapter = searchLocationAdapter
+
+        loadingAnimationRight =
+            AnimationUtils.loadAnimation(activity, R.anim.loading_animation_right)
+        loadingAnimationLeft = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_left)
 
     } // setVariable()
 
@@ -120,8 +144,18 @@ class ConditionFragment : Fragment() {
                 )
             )
         )
+
+        val minDay = CalendarDay.today()
+        val maxDay = CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.DATE)+2)
+
         binding.conditionSelectDateCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
-        binding.conditionSelectDateCalendarView.addDecorator(DayDecorator(requireActivity()))
+        binding.conditionSelectDateCalendarView.addDecorators(
+            TodayDecorator(requireActivity()),
+            SundayDecorator(),
+            SaturdayDecorator(),
+            MinMaxDecorator(maxDay, minDay)
+        )
+        binding.conditionSelectDateCalendarView.selectedDate = CalendarDay.today()
         binding.conditionSelectDateCalendarView.setTitleFormatter(object : TitleFormatter {
             override fun format(day: CalendarDay?): CharSequence {
 
@@ -129,7 +163,7 @@ class ConditionFragment : Fragment() {
                 val calendarHeaderElements = inputText.toString().split("-")
                 val calendarHeaderBuilder = StringBuilder()
                 calendarHeaderBuilder.append(calendarHeaderElements[0])
-                    .append(" ")
+                    .append(" - ")
                     .append(calendarHeaderElements[1])
 
                 return calendarHeaderBuilder.toString()
@@ -202,18 +236,144 @@ class ConditionFragment : Fragment() {
 
         })
 
+        viewModel.liveDataLoadingStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
+                binding.conditionTabCombineButton.isClickable = false
+                binding.conditionTabWeatherButton.isClickable = false
+                binding.conditionTabTideButton.isClickable = false
+                binding.conditionTabIndexButton.isClickable = false
+                binding.conditionSelectLocationButton.isClickable = false
+                binding.conditionSelectDateButton.isClickable = false
+                binding.conditionSelectFishButton.isClickable = false
+
+                if (binding.conditionCombineLayout.visibility == View.VISIBLE) {
+
+                    previousLayout = "combine"
+                    binding.conditionCombineLayout.visibility = View.GONE
+
+
+                } else if (binding.conditionWeatherLayout.visibility == View.VISIBLE) {
+
+                    previousLayout = "weather"
+                    binding.conditionWeatherLayout.visibility = View.GONE
+
+                } else if (binding.conditionTideLayout.visibility == View.VISIBLE) {
+
+                    previousLayout = "tide"
+                    binding.conditionTideLayout.visibility = View.GONE
+
+                }
+                Log.d(TAG, "previous1 : $previousLayout")
+
+                binding.conditionLoadingLayout.visibility = View.VISIBLE
+                binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                binding.conditionLoadingRightImage.startAnimation(loadingAnimationRight)
+                loadingAnimationStatus = true
+
+                animationThread = thread {
+
+                    try {
+
+                        while (loadingAnimationStatus) {
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                Log.d(TAG, "이동 시작 1")
+                                binding.conditionLoadingRightImage.visibility = View.GONE
+                                binding.conditionLoadingLeftImage.visibility = View.VISIBLE
+                                binding.conditionLoadingLeftImage.startAnimation(
+                                    loadingAnimationLeft
+                                )
+
+                            }
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                Log.d(TAG, "이동 시작 2")
+                                binding.conditionLoadingLeftImage.visibility = View.GONE
+                                binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                                binding.conditionLoadingRightImage.startAnimation(
+                                    loadingAnimationRight
+                                )
+
+                            }
+
+                        }
+
+                    } catch (e: InterruptedException) {
+
+                        loadingAnimationStatus = false
+                        binding.conditionLoadingRightImage.clearAnimation()
+                        binding.conditionLoadingLeftImage.clearAnimation()
+                        binding.conditionLoadingRightImage.visibility = View.GONE
+                        binding.conditionLoadingLeftImage.visibility = View.GONE
+                        binding.conditionLoadingLayout.visibility = View.GONE
+
+                    }
+
+                }
+
+            } else {
+
+                binding.conditionTabCombineButton.isClickable = true
+                binding.conditionTabWeatherButton.isClickable = true
+                binding.conditionTabTideButton.isClickable = true
+                binding.conditionTabIndexButton.isClickable = true
+                binding.conditionSelectLocationButton.isClickable = true
+                binding.conditionSelectDateButton.isClickable = true
+                binding.conditionSelectFishButton.isClickable = true
+
+
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
+                Log.d(TAG, "previous2 : $previousLayout")
+
+                when (previousLayout) {
+
+                    "combine" -> {
+
+                        binding.conditionCombineLayout.visibility = View.VISIBLE
+
+                    }
+
+                    "weather" -> {
+
+                        binding.conditionWeatherLayout.visibility = View.VISIBLE
+
+                    }
+
+                    "tide" -> {
+
+                        binding.conditionTideLayout.visibility = View.VISIBLE
+
+                    }
+
+                }
+
+            }
+
+        })
+
     } // observeLiveData()
 
 
     fun checkedLocationSharedPreference() {
 
-        conditionSharedPreferences = requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
+        conditionSharedPreferences =
+            requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
         conditionEditor = conditionSharedPreferences.edit()
 
-        var locationValue : String = conditionSharedPreferences!!.getString("location", "").toString()
-        var obsCodeValue : String = conditionSharedPreferences!!.getString("obsCode", "").toString()
-        var lat : String = conditionSharedPreferences!!.getString("lat", "").toString()
-        var lon : String = conditionSharedPreferences!!.getString("lon", "").toString()
+        var locationValue: String = conditionSharedPreferences.getString("location", "").toString()
+        var obsCodeValue: String = conditionSharedPreferences.getString("obsCode", "").toString()
+        var lat: String = conditionSharedPreferences.getString("lat", "").toString()
+        var lon: String = conditionSharedPreferences.getString("lon", "").toString()
 
         if (locationValue == "") {
             locationValue = "영흥도"
@@ -421,7 +581,7 @@ class ConditionFragment : Fragment() {
     } // changeLayout()
 
 
-    class DayDecorator(context: Context) : DayViewDecorator {
+    class TodayDecorator(context: Context) : DayViewDecorator {
 
         val drawable: Drawable =
             ContextCompat.getDrawable(context, R.drawable.calendar_selector_color)!!
@@ -440,5 +600,52 @@ class ConditionFragment : Fragment() {
         } // decorate()
 
     } // DayDecorator
+
+
+    class SundayDecorator : DayViewDecorator {
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            val sunday = day?.date?.with(org.threeten.bp.DayOfWeek.SUNDAY)?.dayOfMonth
+            return sunday == day?.day
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.RED) {})
+        }
+
+    }
+
+
+    class SaturdayDecorator : DayViewDecorator {
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            val saturday = day?.date?.with(org.threeten.bp.DayOfWeek.SATURDAY)?.dayOfMonth
+            return saturday == day?.day
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.BLUE) {})
+        }
+
+    }
+
+
+    class MinMaxDecorator(max: CalendarDay, min: CalendarDay) : DayViewDecorator {
+
+        val maxDay = max
+        val minDay = min
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return (day?.month == maxDay.month && day.day > maxDay.day)
+                    || (day?.month == minDay.month && day.day < minDay.day)
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.parseColor("#D9D9D9")) {})
+            view?.setDaysDisabled(true)
+        }
+
+    }
+
 
 }

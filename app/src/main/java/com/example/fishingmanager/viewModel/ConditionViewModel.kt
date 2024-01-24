@@ -42,6 +42,7 @@ class ConditionViewModel(
     val liveDataSearchLocation = MutableLiveData<SearchLocation>()
     val liveDataFish = MutableLiveData<String>()
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
+    val liveDataLoadingStatus = MutableLiveData<Boolean>()
 
     val basicWeatherList = weatherList
     val basicIndexList = indexList
@@ -87,6 +88,7 @@ class ConditionViewModel(
 
     fun changeDate(date : String) {
 
+        liveDataLoadingStatus.value = true
         liveDataDate.value = date
         liveDataCurrentLayout.value = previousLayout
         liveDataWeatherList.value = model.changeWeatherList(basicWeatherList, liveDataDate.value!!)
@@ -114,6 +116,8 @@ class ConditionViewModel(
                         liveDataIndexTotal.value!!
                     )
 
+                    liveDataLoadingStatus.value = false
+
                 } else {
 
                     Log.d(TAG, "onResponse : isFailure : ${response.message()}")
@@ -133,6 +137,7 @@ class ConditionViewModel(
     fun changeLocation(location : SearchLocation) {
 
         callBackStatus = 0
+        liveDataLoadingStatus.value = true
 
         liveDataSearchLocation.value = location
         liveDataCurrentLayout.value = previousLayout
@@ -169,6 +174,8 @@ class ConditionViewModel(
                                 liveDataIndexTotal.value!!
                             )
 
+                            liveDataLoadingStatus.value = false
+
                         }
 
                     } else {
@@ -203,6 +210,8 @@ class ConditionViewModel(
                             liveDataTideList.value!!,
                             liveDataIndexTotal.value!!
                         )
+
+                        liveDataLoadingStatus.value = false
 
                     }
 
