@@ -1306,7 +1306,6 @@
                 android:id="@+id/conditionSelectDateCalendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mcv_firstDayOfWeek="sunday"
                 android:theme="@style/CalenderViewCustom"
                 app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
                 app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
