@@ -45,6 +45,7 @@ class ConditionViewModel(
 
     val basicWeatherList = weatherList
     val basicIndexList = indexList
+    var callBackStatus = 0
 
 
     init {
@@ -59,7 +60,7 @@ class ConditionViewModel(
         liveDataWeatherList.value = model.changeWeatherList(weatherList, liveDataDate.value!!)
         liveDataTideList.value = tideList
         liveDataIndex.value = model.getIndex(indexList, liveDataDate.value!!, liveDataFish.value!!, liveDataSearchLocation.value!!.location)
-        liveDataIndexTotal.value = model.getIndexList(indexList)
+        liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(indexList, searchLocation.location, liveDataDate.value!!))
         liveDataCombineList.value = model.getCombineList(
             liveDataWeatherList.value!!,
             liveDataTideList.value!!,
@@ -86,11 +87,15 @@ class ConditionViewModel(
 
     fun changeDate(date : String) {
 
-        Log.d(TAG, "changeDate: $date")
         liveDataDate.value = date
         liveDataCurrentLayout.value = previousLayout
-
         liveDataWeatherList.value = model.changeWeatherList(basicWeatherList, liveDataDate.value!!)
+        liveDataIndex.value = model.getIndex(
+            basicIndexList,
+            liveDataDate.value!!,
+            liveDataFish.value!!,
+            liveDataSearchLocation.value!!.location
+        )
 
         var requestDate = ""
         requestDate = liveDataDate.value!!.substring(0,4) + liveDataDate.value!!.substring(5,7) + liveDataDate.value!!.substring(8,10)
@@ -100,6 +105,14 @@ class ConditionViewModel(
                 if (response.isSuccessful) {
 
                     liveDataTideList.value = model.getTideList(response)
+
+                    liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
+
+                    liveDataCombineList.value = model.getCombineList(
+                        liveDataWeatherList.value!!,
+                        liveDataTideList.value!!,
+                        liveDataIndexTotal.value!!
+                    )
 
                 } else {
 
@@ -114,6 +127,20 @@ class ConditionViewModel(
 
         })
 
+    } // changeDate()
+
+
+    fun changeLocation(location : SearchLocation) {
+
+        callBackStatus = 0
+
+        liveDataSearchLocation.value = location
+        liveDataCurrentLayout.value = previousLayout
+
+        liveDataFishList.value =
+            model.getFishList(basicIndexList, liveDataSearchLocation.value!!, liveDataDate.value!!)
+        liveDataFish.value = model.getFish(liveDataFishList.value!!)
+
         liveDataIndex.value = model.getIndex(
             basicIndexList,
             liveDataDate.value!!,
@@ -121,21 +148,28 @@ class ConditionViewModel(
             liveDataSearchLocation.value!!.location
         )
 
-    } // changeDate()
-
-
-    fun changeLocation(location : SearchLocation) {
-
-        liveDataSearchLocation.value = location
-        liveDataCurrentLayout.value = previousLayout
-
         model.requestWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", liveDataSearchLocation.value!!.lat, liveDataSearchLocation.value!!.lon)
             .enqueue(object : Callback<Weather> {
                 override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
                     if (response.isSuccessful) {
 
-                        liveDataWeatherList.value = model.getWeatherList(response, liveDataDate.value!!)
+                        liveDataWeatherList.value =
+                            model.getWeatherList(response, liveDataDate.value!!)
+
+                        liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
+
+                        callBackStatus++
+
+                        if (callBackStatus == 2) {
+
+                            liveDataCombineList.value = model.getCombineList(
+                                liveDataWeatherList.value!!,
+                                liveDataTideList.value!!,
+                                liveDataIndexTotal.value!!
+                            )
+
+                        }
 
                     } else {
                         Log.d(TAG, "onResponse : isFailure : ${response.message()}")
@@ -158,6 +192,20 @@ class ConditionViewModel(
 
                     liveDataTideList.value = model.getTideList(response)
 
+                    liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
+
+                    callBackStatus++
+
+                    if (callBackStatus == 2) {
+
+                        liveDataCombineList.value = model.getCombineList(
+                            liveDataWeatherList.value!!,
+                            liveDataTideList.value!!,
+                            liveDataIndexTotal.value!!
+                        )
+
+                    }
+
                 } else {
 
                     Log.d(TAG, "onResponse : isFailure : ${response.message()}")
@@ -170,20 +218,6 @@ class ConditionViewModel(
             }
 
         })
-
-        liveDataFishList.value =
-            model.getFishList(basicIndexList, liveDataSearchLocation.value!!, liveDataDate.value!!)
-        liveDataFish.value = model.getFish(liveDataFishList.value!!)
-
-        liveDataIndex.value = model.getIndex(
-            basicIndexList,
-            liveDataDate.value!!,
-            liveDataFish.value!!,
-            liveDataSearchLocation.value!!.location
-        )
-
-
-
 
     } // changeLocation()
 

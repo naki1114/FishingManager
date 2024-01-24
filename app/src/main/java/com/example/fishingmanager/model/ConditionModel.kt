@@ -26,10 +26,7 @@ class ConditionModel {
     private val tideRetrofitInterface: RetrofitInterface =
         RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
-    val combineList = ArrayList<ConditionCombine>()
-
     lateinit var index: ConditionIndex
-    lateinit var searchLocationList : ArrayList<SearchLocation>
     val locationBaseList = ArrayList<SearchLocation>()
 
     init {
@@ -250,11 +247,15 @@ class ConditionModel {
 
     fun getCombineList(weatherList : ArrayList<ConditionWeather>, tideList : ArrayList<ConditionTide>, indexTotal : ArrayList<Int>): ArrayList<ConditionCombine> {
 
+        val combineList = ArrayList<ConditionCombine>()
+
         var time : String = ""
         var indexImage : Int = 0
         var skyImage : Int = 0
         var temp : String = ""
         var tide : String = ""
+
+        Log.d("test", "weatherList : ${weatherList.size}")
 
         for (i in 0 until weatherList.size) {
 
@@ -387,7 +388,7 @@ class ConditionModel {
     } // getIndex()
 
 
-    fun getIndexList(responseList: ArrayList<Index.Item>) : ArrayList<Int> {
+    fun getIndexTotalList(responseList: ArrayList<Index.Item>) : ArrayList<Int> {
 
         val list = ArrayList<Int>()
         var amTotal : Int = 0
@@ -455,12 +456,31 @@ class ConditionModel {
 
         return list
 
+    } // getIndexTotalList()
+
+
+    fun getIndexList(indexList: ArrayList<Index.Item>, location: String, date : String) : ArrayList<Index.Item> {
+
+        val list = ArrayList<Index.Item>()
+
+        for (i in 0 until indexList.size) {
+
+            if (indexList[i].name == location && indexList[i].date == date) {
+
+                list.add(indexList[i])
+
+            }
+
+        }
+
+        return list
+
     } // getIndexList()
 
 
     fun getSearchLocationList(keyword: String): ArrayList<SearchLocation> {
 
-        searchLocationList = ArrayList()
+        var searchLocationList = ArrayList<SearchLocation>()
 
         for (i in 0 until locationBaseList.size) {
 
@@ -482,7 +502,7 @@ class ConditionModel {
 
         return searchLocationList
 
-    } // getlocationBaseList()
+    } // getSearchLocationList()
 
 
     fun getFishList(
