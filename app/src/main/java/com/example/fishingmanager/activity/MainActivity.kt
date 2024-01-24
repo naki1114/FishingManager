@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -23,7 +24,10 @@ import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.databinding.ActivityMainBinding
-import com.example.fishingmanager.viewModel.SplashViewModel
+import com.example.fishingmanager.fragment.FeedFragment
+import com.example.fishingmanager.fragment.PayFragment
+import com.example.fishingmanager.fragment.ProfileFragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setVariable()
         setListener()
@@ -124,27 +128,27 @@ class MainActivity : AppCompatActivity() {
             }
 
             "feed" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(FeedFragment())
                 navigationVisible()
             }
 
             "write" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(WriteFragment())
                 navigationGone()
             }
 
             "profile" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(ProfileFragment())
                 navigationVisible()
             }
 
             "pay" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(PayFragment())
                 navigationGone()
             }
 
             "photoView" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(PhotoViewFragment())
                 navigationGone()
             }
 
