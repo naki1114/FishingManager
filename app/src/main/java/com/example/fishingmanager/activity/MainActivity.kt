@@ -3,39 +3,32 @@ package com.example.fishingmanager.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.Index
-import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.UserInfo
-import com.example.fishingmanager.data.Weather
 import com.example.fishingmanager.fragment.CheckingFishFragment
 import com.example.fishingmanager.fragment.ConditionFragment
-import com.example.fishingmanager.fragment.FeedFragment
 import com.example.fishingmanager.fragment.HomeFragment
-import com.example.fishingmanager.fragment.PayFragment
 import com.example.fishingmanager.fragment.PhotoViewFragment
-import com.example.fishingmanager.fragment.ProfileFragment
 import com.example.fishingmanager.fragment.SplashFragment
 import com.example.fishingmanager.fragment.StartFragment
 import com.example.fishingmanager.fragment.WriteFragment
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
-import com.example.fishingmanager.viewModel.MainViewModel
+import com.example.fishingmanager.databinding.ActivityMainBinding
 import com.example.fishingmanager.viewModel.SplashViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG : String = "MainActivity"
-
-    private lateinit var mainViewModel : MainViewModel
-    private lateinit var splashViewModel: SplashViewModel
+    lateinit var binding: ActivityMainBinding
 
     private lateinit var weatherList : ArrayList<ConditionWeather>
     private lateinit var tideList : ArrayList<ConditionTide>
@@ -56,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         setVariable()
         setListener()
-        observeLiveDate()
 
     }
 
@@ -64,10 +56,9 @@ class MainActivity : AppCompatActivity() {
     // 변수 초기화
     fun setVariable() {
 
+        binding.lifecycleOwner = this
         fragmentManager = supportFragmentManager
         fragmentTransaction = fragmentManager.beginTransaction()
-        mainViewModel = MainViewModel()
-        splashViewModel = SplashViewModel()
         fragmentTransaction.add(R.id.mainFragment, SplashFragment()).commit()
 
     } // setView()
@@ -82,43 +73,98 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        binding.navigation.setOnItemSelectedListener { item ->
+
+            when (item.itemId) {
+
+                R.id.home_fragment -> changeFragment("home")
+                R.id.condition_fragment -> changeFragment("condition")
+                R.id.checkingFish_fragment -> changeFragment("checkingFish")
+                R.id.feed_fragment -> changeFragment("feed")
+                R.id.profile_fragment -> changeFragment("profile")
+
+            }
+
+            true
+        }
+
     } // setListener()
 
 
-    // ViewModel - LiveData 관찰
-    fun observeLiveDate() {
-
-        // 전환할 Fragment 이름 - String 감지
-        mainViewModel.liveDataCurrentFragment.observe(this, Observer { s ->
-
-            changeFragment(s)
-
-        })
-
-    } // observeLiveData()
-
-
     // Fragment 전환
-    fun changeFragment(fragmentName : String) {
+    fun changeFragment(fragmentName: String) {
 
         fragmentTransaction = fragmentManager.beginTransaction()
 
         when (fragmentName) {
 
-            "splash" -> pickOutFragment(SplashFragment())
-            "start" -> pickOutFragment(StartFragment())
-            "home" -> pickOutFragment(HomeFragment())
-            "condition" -> pickOutFragment(ConditionFragment())
-            "checkingFish" -> pickOutFragment(CheckingFishFragment())
-            "feed" -> pickOutFragment(FeedFragment())
-            "write" -> pickOutFragment(WriteFragment())
-            "profile" -> pickOutFragment(ProfileFragment())
-            "pay" -> pickOutFragment(PayFragment())
-            "photoView" -> pickOutFragment(PhotoViewFragment())
+            "splash" -> {
+                pickOutFragment(SplashFragment())
+                navigationGone()
+            }
+
+            "start" -> {
+                pickOutFragment(StartFragment())
+                navigationGone()
+            }
+
+            "home" -> {
+                pickOutFragment(HomeFragment())
+                navigationVisible()
+            }
+
+            "condition" -> {
+                pickOutFragment(ConditionFragment())
+                navigationVisible()
+            }
+
+            "checkingFish" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationVisible()
+            }
+
+            "feed" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationVisible()
+            }
+
+            "write" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationGone()
+            }
+
+            "profile" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationVisible()
+            }
+
+            "pay" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationGone()
+            }
+
+            "photoView" -> {
+                pickOutFragment(CheckingFishFragment())
+                navigationGone()
+            }
 
         }
 
     } // changeFragment()
+
+
+    fun navigationGone() {
+
+        binding.navigation.visibility = View.GONE
+
+    } // navigationGone()
+
+
+    fun navigationVisible() {
+
+        binding.navigation.visibility = View.VISIBLE
+
+    } // navigationVisible()
 
 
     // 백스택 쌓을 Fragment 구분
