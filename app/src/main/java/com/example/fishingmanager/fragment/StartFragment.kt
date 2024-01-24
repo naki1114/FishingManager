@@ -369,7 +369,7 @@ class StartFragment : Fragment() {
             if (startViewModel.isPossibleLogin.value == true) {
 
                 saveUserInfoToShared()
-                (activity as MainActivity).changeFragment("home")
+                (activity as MainActivity).changeFragment("write")
 
             }
             else {
@@ -424,6 +424,7 @@ class StartFragment : Fragment() {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
         val edit = sharedPreferences?.edit()
+        (activity as MainActivity).nickname = startViewModel.userNickname
 
         edit?.putString("nickname", startViewModel.userNickname)
         edit?.commit()

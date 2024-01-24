@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var feedList : ArrayList<Feed>
     private lateinit var userInfo : UserInfo
 
+    lateinit var nickname : String
     lateinit var fragmentManager : FragmentManager
     lateinit var fragmentTransaction: FragmentTransaction
 

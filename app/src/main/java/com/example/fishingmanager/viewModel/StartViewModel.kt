@@ -259,12 +259,11 @@ class StartViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     var msg = response.body()?.split(" ")
 
-                    isPossibleLogin.value = msg?.get(0) == "successLogin"
-
                     if (msg?.size == 2) {
                         userNickname = msg?.get(1).toString()
                     }
 
+                    isPossibleLogin.value = msg?.get(0) == "successLogin"
                 }
             }
 
