@@ -9,6 +9,7 @@ import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.SearchLocation
+import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
 import com.example.fishingmanager.function.GetDate
