@@ -309,11 +309,16 @@ class ConditionFragment : Fragment() {
                     } catch (e: InterruptedException) {
 
                         loadingAnimationStatus = false
-                        binding.conditionLoadingRightImage.clearAnimation()
-                        binding.conditionLoadingLeftImage.clearAnimation()
-                        binding.conditionLoadingRightImage.visibility = View.GONE
-                        binding.conditionLoadingLeftImage.visibility = View.GONE
-                        binding.conditionLoadingLayout.visibility = View.GONE
+
+                        Handler(Looper.getMainLooper()).post {
+
+                            binding.conditionLoadingRightImage.clearAnimation()
+                            binding.conditionLoadingLeftImage.clearAnimation()
+                            binding.conditionLoadingRightImage.visibility = View.GONE
+                            binding.conditionLoadingLeftImage.visibility = View.GONE
+                            binding.conditionLoadingLayout.visibility = View.GONE
+
+                        }
 
                     }
 
