@@ -151,9 +151,9 @@ class ConditionFragment : Fragment() {
         binding.conditionSelectDateCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
         binding.conditionSelectDateCalendarView.addDecorators(
             TodayDecorator(requireActivity()),
-            MinMaxDecorator(maxDay, minDay),
             SundayDecorator(),
-            SaturdayDecorator()
+            SaturdayDecorator(),
+            MinMaxDecorator(maxDay, minDay)
         )
         binding.conditionSelectDateCalendarView.selectedDate = CalendarDay.today()
         binding.conditionSelectDateCalendarView.setTitleFormatter(object : TitleFormatter {
