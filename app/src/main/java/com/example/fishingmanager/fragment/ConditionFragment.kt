@@ -163,7 +163,7 @@ class ConditionFragment : Fragment() {
                 val calendarHeaderElements = inputText.toString().split("-")
                 val calendarHeaderBuilder = StringBuilder()
                 calendarHeaderBuilder.append(calendarHeaderElements[0])
-                    .append(" - ")
+                    .append("   ")
                     .append(calendarHeaderElements[1])
 
                 return calendarHeaderBuilder.toString()
@@ -641,8 +641,7 @@ class ConditionFragment : Fragment() {
         val minDay = min
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
-            return (day?.month == maxDay.month && day.day > maxDay.day)
-                    || (day?.month == minDay.month && day.day < minDay.day)
+            return return  (day!!.month != minDay.month) || (day.day > maxDay.day) || (day.day < minDay.day)
         }
 
         override fun decorate(view: DayViewFacade?) {
