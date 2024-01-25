@@ -1,4 +1,21 @@
 package com.example.fishingmanager.viewModel
 
-class HomeViewModel {
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.HomeWeather
+import com.example.fishingmanager.model.HomeModel
+
+class HomeViewModel(weatherList: ArrayList<ConditionWeather>) : ViewModel() {
+
+    val model = HomeModel()
+    val basicWeatherList = weatherList
+    val liveDataWeather = MutableLiveData<HomeWeather>()
+
+    fun getWeather() {
+
+        liveDataWeather.value = model.getWeather(basicWeatherList)
+
+    }
+
 }
