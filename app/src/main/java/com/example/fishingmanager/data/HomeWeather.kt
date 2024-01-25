@@ -6,6 +6,5 @@ data class HomeWeather(
     var temp: String,
     var humidity: String,
     var windSpeed: String,
-    var date: String,
     var location: String
 )
