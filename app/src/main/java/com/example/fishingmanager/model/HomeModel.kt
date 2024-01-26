@@ -6,32 +6,29 @@ import com.example.fishingmanager.function.GetDate
 
 class HomeModel {
 
-    fun getWeather(weatherList : ArrayList<ConditionWeather>) : HomeWeather {
+    fun getWeather(weatherList : ArrayList<ConditionWeather>, location : String) : HomeWeather {
 
-        val currentDate = GetDate().getFormatDate3(GetDate().getTime())
-        val currentTime = ""
-        var time = ""
+        val currentDate = GetDate().getFormatDate2(GetDate().getTime())
+        val currentTime = GetDate().getFormatTime(GetDate().getTime())
         var skyImage = 0
         var temp = ""
         var humidity = ""
         var windSpeed = ""
-        var location = ""
 
         for (i in 0 until weatherList.size) {
 
             if (weatherList[i].date == currentDate && weatherList[i].time == currentTime) {
 
-                time = weatherList[i].time
+                skyImage = weatherList[i].skyImage
                 temp = weatherList[i].temp
                 humidity = weatherList[i].humidity
                 windSpeed = weatherList[i].windSpeed
-
 
             }
 
         }
 
-        return HomeWeather(time, skyImage, temp, humidity, windSpeed, location)
+        return HomeWeather(location, skyImage, temp, humidity, windSpeed)
 
     }
 

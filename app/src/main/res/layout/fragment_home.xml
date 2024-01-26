@@ -10,9 +10,6 @@
             name="viewModel"
             type="com.example.fishingmanager.viewModel.HomeViewModel" />
 
-        <variable
-            name="weatherItem"
-            type="com.example.fishingmanager.data.HomeWeather" />
 
     </data>
 
@@ -121,7 +118,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_gravity="center"
-                    android:text="@{weatherItem.component6()}"
+                    android:text="@{viewModel.liveDataWeather.component1()}"
                     />
 
                 <View
@@ -140,7 +137,7 @@
                         android:id="@+id/homeWeatherSkyImage"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         />
 
                     <TextView
@@ -148,8 +145,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="@{weatherItem.component3()}"
+                        android:text="@{viewModel.liveDataWeather.component3()}"
                         android:layout_gravity="center"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
                         />
 
                 </LinearLayout>
@@ -167,10 +166,11 @@
                     >
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
                         android:src="@drawable/humidity"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="5dp"
                         />
 
                     <TextView
@@ -178,8 +178,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="@{weatherItem.component4()}"
+                        android:text="@{viewModel.liveDataWeather.component4()}"
                         android:layout_gravity="center"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
                         />
 
                 </LinearLayout>
@@ -197,10 +199,11 @@
                     >
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
                         android:src="@drawable/wind_speed"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="5dp"
                         />
 
                     <TextView
@@ -208,8 +211,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="@{weatherItem.component5()}"
+                        android:text="@{viewModel.liveDataWeather.component5()}"
+                        android:textSize="16dp"
                         android:layout_gravity="center"
+                        android:textStyle="bold"
                         />
 
                 </LinearLayout>

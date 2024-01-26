@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.databinding.FragmentHomeBinding
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkSharedPreference()
         setVariable()
         setView()
         observeLiveData()
@@ -45,12 +47,10 @@ class HomeFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = HomeViewModel((activity as MainActivity).getWeatherList())
+        viewModel = HomeViewModel((activity as MainActivity).getWeatherList(), location)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-
-        checkSharedPreference()
 
     } // setVariable()
 
@@ -64,7 +64,11 @@ class HomeFragment : Fragment() {
 
     fun observeLiveData() {
 
+        viewModel.liveDataWeather.observe(viewLifecycleOwner, Observer {
 
+            binding.homeWeatherSkyImage.setImageResource(it.skyImage)
+
+        })
 
     } // observeLiveData()
 

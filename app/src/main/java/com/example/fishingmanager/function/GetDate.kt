@@ -59,7 +59,7 @@ class GetDate {
     @SuppressLint("SimpleDateFormat")
     fun getFormatTime(time : Long) : String {
 
-        var format = SimpleDateFormat("HH00")
+        var format = SimpleDateFormat("HH:00")
         var formatTime : String = format.format(time)
 
         return formatTime
