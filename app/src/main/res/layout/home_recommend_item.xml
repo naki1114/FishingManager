@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:layout_width="135dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="8dp"
         android:paddingHorizontal="10dp"
         android:background="@drawable/custom_home_item_background"
         >

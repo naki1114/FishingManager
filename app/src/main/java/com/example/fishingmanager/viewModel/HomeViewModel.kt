@@ -14,6 +14,8 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     val basicWeatherList = weatherList
     val basicIndexList = indexList
     val location = location
+
+    val liveDataChangeFragment = MutableLiveData<String>()
     val liveDataWeather = MutableLiveData<HomeWeather>()
     val liveDataRecommendList = MutableLiveData<ArrayList<HomeRecommend>>()
 
@@ -29,5 +31,12 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
         liveDataRecommendList.value = model.getRecommendList(basicIndexList)
 
     } // getRecommendList()
+
+
+    fun changeFragment(fragment: String) {
+
+        liveDataChangeFragment.value = fragment
+
+    } // changeFragment()
 
 }

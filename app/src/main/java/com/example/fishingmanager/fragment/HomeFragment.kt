@@ -81,6 +81,12 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).changeFragmentWithData(it)
+
+        })
+
     } // observeLiveData()
 
 
