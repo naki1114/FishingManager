@@ -1,7 +1,12 @@
 package com.example.fishingmanager.function
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 class GetDate {
 
@@ -65,6 +70,23 @@ class GetDate {
         return formatTime
 
     } // getFormatTime()
+
+
+    fun getDayOfWeek(date: String): String {
+
+        var dayOfWeek = ""
+        val array = date.split("-")
+
+        val year = Integer.parseInt(array[0])
+        val month = Integer.parseInt(array[1])
+        val day = Integer.parseInt(array[2])
+
+        dayOfWeek =
+            LocalDate.of(year, month, day).dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
+
+        return " (" + dayOfWeek.substring(0, 1) + ")"
+
+    }
 
 
 }
