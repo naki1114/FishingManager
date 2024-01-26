@@ -1,7 +1,9 @@
 package com.example.fishingmanager.model
 
 import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
+import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.function.GetDate
 
 class HomeModel {
@@ -30,6 +32,26 @@ class HomeModel {
 
         return HomeWeather(location, skyImage, temp, humidity, windSpeed)
 
+    } // getWeather()
+
+
+    fun getRecommendList(indexList : ArrayList<Index.Item>) : ArrayList<HomeRecommend>{
+
+        val list = ArrayList<HomeRecommend>()
+        var date = ""
+        var location = ""
+        var fishName = ""
+        var fishImage = 0
+
+        for (i in 0 until indexList.size) {
+
+            
+
+        }
+
+        return list
+
     }
+
 
 }

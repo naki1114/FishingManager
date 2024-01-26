@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
+import com.example.fishingmanager.adapter.HomeRecommendAdapter
 import com.example.fishingmanager.databinding.FragmentHomeBinding
 import com.example.fishingmanager.viewModel.HomeViewModel
 
@@ -21,6 +22,7 @@ class HomeFragment : Fragment() {
 
     lateinit var locationShared: SharedPreferences
     lateinit var location: String
+    lateinit var recommendAdapter: HomeRecommendAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,17 +42,20 @@ class HomeFragment : Fragment() {
         setVariable()
         setView()
         observeLiveData()
-        viewModel.getWeather()
+        getData()
 
     } // onViewCreated()
 
 
     fun setVariable() {
 
-        viewModel = HomeViewModel((activity as MainActivity).getWeatherList(), location)
+        viewModel = HomeViewModel((activity as MainActivity).getWeatherList(), location, (activity as MainActivity).getIndexList())
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        recommendAdapter = HomeRecommendAdapter()
+        binding.homeRecommendRecyclerView.adapter = recommendAdapter
 
     } // setVariable()
 
@@ -70,7 +75,21 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataRecommendList.observe(viewLifecycleOwner, Observer {
+
+            recommendAdapter.setItem(it)
+
+        })
+
     } // observeLiveData()
+
+
+    fun getData() {
+
+        viewModel.getWeather()
+        viewModel.getRecommendList()
+
+    } // getData()
 
 
     fun checkSharedPreference() {
