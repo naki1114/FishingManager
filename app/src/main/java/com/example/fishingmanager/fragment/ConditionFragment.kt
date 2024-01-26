@@ -366,6 +366,12 @@ class ConditionFragment : Fragment() {
 
         })
 
+        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setWeatherList(it)
+
+        })
+
     } // observeLiveData()
 
 

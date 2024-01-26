@@ -44,7 +44,7 @@ class ConditionViewModel(
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
 
-    val basicWeatherList = weatherList
+    val liveDataBasicWeatherList = MutableLiveData<ArrayList<ConditionWeather>>()
     val basicIndexList = indexList
     var callBackStatus = 0
 
@@ -67,6 +67,7 @@ class ConditionViewModel(
             liveDataTideList.value!!,
             liveDataIndexTotal.value!!
         )
+        liveDataBasicWeatherList.value = weatherList
 
     }
 
@@ -91,7 +92,7 @@ class ConditionViewModel(
         liveDataLoadingStatus.value = true
         liveDataDate.value = date
         liveDataCurrentLayout.value = previousLayout
-        liveDataWeatherList.value = model.changeWeatherList(basicWeatherList, liveDataDate.value!!)
+        liveDataWeatherList.value = model.changeWeatherList(liveDataBasicWeatherList.value!!, liveDataDate.value!!)
         liveDataIndex.value = model.getIndex(
             basicIndexList,
             liveDataDate.value!!,
@@ -162,11 +163,13 @@ class ConditionViewModel(
                         liveDataWeatherList.value =
                             model.getWeatherList(response, liveDataDate.value!!)
 
-                        liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
+                        liveDataBasicWeatherList.value = model.getBasicWeatherList(response)
 
                         callBackStatus++
 
                         if (callBackStatus == 2) {
+
+                            liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
 
                             liveDataCombineList.value = model.getCombineList(
                                 liveDataWeatherList.value!!,
@@ -199,11 +202,11 @@ class ConditionViewModel(
 
                     liveDataTideList.value = model.getTideList(response)
 
-                    liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
-
                     callBackStatus++
 
                     if (callBackStatus == 2) {
+
+                        liveDataIndexTotal.value = model.getIndexTotalList(model.getIndexList(basicIndexList, liveDataSearchLocation.value!!.location, liveDataDate.value!!))
 
                         liveDataCombineList.value = model.getCombineList(
                             liveDataWeatherList.value!!,
