@@ -56,4 +56,15 @@ class GetDate {
     } // getFormatDate4()
 
 
+    @SuppressLint("SimpleDateFormat")
+    fun getFormatTime(time : Long) : String {
+
+        var format = SimpleDateFormat("HH00")
+        var formatTime : String = format.format(time)
+
+        return formatTime
+
+    } // getFormatTime()
+
+
 }
