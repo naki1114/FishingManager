@@ -145,8 +145,12 @@ class ConditionFragment : Fragment() {
             )
         )
 
+        val calendar : Calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, 2)
+        calendar.add(Calendar.MONTH, 1)
+
         val minDay = CalendarDay.today()
-        val maxDay = CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.DATE)+2)
+        val maxDay = CalendarDay.from(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
 
         binding.conditionSelectDateCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
         binding.conditionSelectDateCalendarView.addDecorators(

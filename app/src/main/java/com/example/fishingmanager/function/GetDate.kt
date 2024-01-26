@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.TextStyle
+import java.util.Calendar
 import java.util.Locale
 
 class GetDate {
@@ -85,6 +86,21 @@ class GetDate {
             LocalDate.of(year, month, day).dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
 
         return " (" + dayOfWeek.substring(0, 1) + ")"
+
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
+    fun getTwoDaysLater() : String {
+
+        val calendar = Calendar.getInstance()
+
+        calendar.add(Calendar.DATE, 2)
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        val formatTime : String = format.format(calendar.time)
+
+        return formatTime
 
     }
 
