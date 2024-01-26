@@ -8,6 +8,7 @@ import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.function.GetDate
+import java.util.Random
 
 class HomeModel {
 
@@ -46,20 +47,45 @@ class HomeModel {
 
             if (indexList[i].total_score == "매우좋음") {
 
-                val date = indexList[i].date.substring(5,7) + " / " + indexList[i].date.substring(8,10) + GetDate().getDayOfWeek(indexList[i].date)
-                val location = indexList[i].name + " - " + indexList[i].time_type
-                val fishName = indexList[i].fish_name
-                val fishImage = getFishImage(fishName)
+                if (indexList[i].date == GetDate().getDaysLater(0) || indexList[i].date == GetDate().getDaysLater(1) || indexList[i].date == GetDate().getDaysLater(2)) {
 
-                veryGoodList.add(HomeRecommend(date, location, fishName, fishImage))
+                    val date = indexList[i].date.substring(5,7) + " / " + indexList[i].date.substring(8,10) + GetDate().getDayOfWeek(indexList[i].date)
+                    val location = indexList[i].name + " - " + indexList[i].time_type
+                    val fishName = indexList[i].fish_name
+                    val fishImage = getFishImage(fishName)
+
+                    veryGoodList.add(HomeRecommend(date, location, fishName, fishImage))
+
+                }
 
             }
             
         }
 
+        val veryGoodListSize = veryGoodList.size
+        var list = ArrayList<HomeRecommend>()
+        val random = Random()
+        var randomBound = veryGoodListSize
 
+        if (veryGoodListSize >= 10) {
+
+            for (i in 0..9) {
+
+                val result = random.nextInt(randomBound)
+
+                list.add(veryGoodList[result])
+                veryGoodList.removeAt(result)
+                randomBound--
+
+            }
+
+        } else {
+
+            list = veryGoodList
+
+        }
         
-        return veryGoodList
+        return list
         
     } // getRecommendList()
 

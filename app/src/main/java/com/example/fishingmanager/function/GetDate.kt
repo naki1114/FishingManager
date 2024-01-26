@@ -91,11 +91,11 @@ class GetDate {
 
 
     @SuppressLint("SimpleDateFormat")
-    fun getTwoDaysLater() : String {
+    fun getDaysLater(date : Int) : String {
 
         val calendar = Calendar.getInstance()
 
-        calendar.add(Calendar.DATE, 2)
+        calendar.add(Calendar.DATE, date)
 
         val format = SimpleDateFormat("yyyy-MM-dd")
         val formatTime : String = format.format(calendar.time)
