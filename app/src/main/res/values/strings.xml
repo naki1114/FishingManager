@@ -85,7 +85,7 @@
     <string name="home_title">홈</string>
     <string name="home_recommend">추천 장소 &amp; 어종</string>
     <string name="home_recentCollection">최근 잡은 물고기</string>
-    <string name="home_recentCollection_seeMore">+ 더보기</string>
+    <string name="home_recentCollection_seeMore">+ 자세히보기</string>
     <string name="home_HotFeed">이 달의 HOT 게시글</string>
     <string name="condition_combine_title">통합 컨디션</string>
     <string name="condition_weather_title">날씨</string>
