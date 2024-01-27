@@ -144,6 +144,7 @@
     <string name="pay_removeAD_year">광고 제거 일 년 이용권</string>
     <string name="pay_month">월</string>
     <string name="pay_year">년</string>
+    <string name="condition_calendar_info">정확도를 높이기 위해 3일간의 데이터만 제공합니다.</string>
 
     <string-array name="custom_weekdays">
         <item>월</item>
