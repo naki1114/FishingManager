@@ -31,20 +31,22 @@ import com.example.fishingmanager.fragment.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG : String = "MainActivity"
+    private val TAG: String = "MainActivity"
     lateinit var binding: ActivityMainBinding
 
-    private lateinit var weatherList : ArrayList<ConditionWeather>
-    private lateinit var tideList : ArrayList<ConditionTide>
-    private lateinit var indexList : ArrayList<Index.Item>
-    private lateinit var collectionList : ArrayList<Collection>
-    private lateinit var historyList : ArrayList<History>
-    private lateinit var feedList : ArrayList<Feed>
-    private lateinit var userInfo : UserInfo
+    private lateinit var weatherList: ArrayList<ConditionWeather>
+    private lateinit var tideList: ArrayList<ConditionTide>
+    private lateinit var indexList: ArrayList<Index.Item>
+    private lateinit var collectionList: ArrayList<Collection>
+    private lateinit var historyList: ArrayList<History>
+    private lateinit var feedList: ArrayList<Feed>
+    private lateinit var userInfo: UserInfo
 
-    lateinit var nickname : String
-    lateinit var fragmentManager : FragmentManager
+    lateinit var nickname: String
+    lateinit var fragmentManager: FragmentManager
     lateinit var fragmentTransaction: FragmentTransaction
+    var bundleString = ""
+    lateinit var bundle : Bundle
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +56,15 @@ class MainActivity : AppCompatActivity() {
         setVariable()
         setListener()
 
-    }
+    } // onCreate()
+
+
+    override fun onStart() {
+        super.onStart()
+
+        // 현재 프래그먼트 확인해서 바텀 네비게이션 visible 처리
+
+    } // onStart()
 
 
     // 변수 초기화
@@ -82,7 +92,28 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
 
                 R.id.home_fragment -> changeFragment("home")
-                R.id.condition_fragment -> changeFragment("condition")
+                R.id.condition_fragment -> {
+
+                    if (bundleString == "") {
+
+                        changeFragment("condition")
+
+                    } else if (bundleString == "weather") {
+
+                        fragmentTransaction = fragmentManager.beginTransaction()
+                        fragmentManager.setFragmentResult("layout", bundle)
+                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
+
+                    } else if (bundleString == "index") {
+
+                        fragmentTransaction = fragmentManager.beginTransaction()
+                        fragmentManager.setFragmentResult("layout", bundle)
+                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
+
+                    }
+
+                }
+
                 R.id.checkingFish_fragment -> changeFragment("checkingFish")
                 R.id.feed_fragment -> changeFragment("feed")
                 R.id.profile_fragment -> changeFragment("profile")
@@ -157,6 +188,42 @@ class MainActivity : AppCompatActivity() {
     } // changeFragment()
 
 
+    fun changeFragmentWithData(fragmentName: String) {
+
+        bundle = Bundle()
+
+        when (fragmentName) {
+
+            "conditionWeather" -> {
+                bundleString = "weather"
+                bundle.putString("layout", bundleString)
+                binding.navigation.selectedItemId = R.id.condition_fragment
+                bundleString = ""
+            }
+
+            "conditionIndex" -> {
+                bundleString = "index"
+                bundle.putString("layout", bundleString)
+                binding.navigation.selectedItemId = R.id.condition_fragment
+                bundleString = ""
+            }
+
+        }
+
+
+    } // changeFragmentWithData()
+
+
+    fun goPhotoView(image : String) {
+
+        bundle = Bundle()
+        bundle.putString("image", image)
+        fragmentManager.setFragmentResult("image", bundle)
+        changeFragment("photoView")
+
+    } // changeFragmentToPhotoView()
+
+
     fun navigationGone() {
 
         binding.navigation.visibility = View.GONE
@@ -172,11 +239,12 @@ class MainActivity : AppCompatActivity() {
 
 
     // 백스택 쌓을 Fragment 구분
-    fun pickOutFragment(fragmentName : Fragment) {
+    fun pickOutFragment(fragmentName: Fragment) {
 
         if (fragmentName == WriteFragment() || fragmentName == PhotoViewFragment()) {
 
-            fragmentTransaction.replace(R.id.mainFragment, fragmentName).addToBackStack(null).commit()
+            fragmentTransaction.replace(R.id.mainFragment, fragmentName).addToBackStack(null)
+                .commit()
 
         } else {
 
@@ -195,70 +263,70 @@ class MainActivity : AppCompatActivity() {
     } // removeFragmentStack()
 
 
-    fun getWeatherList() : ArrayList<ConditionWeather> {
+    fun getWeatherList(): ArrayList<ConditionWeather> {
 
         return weatherList
 
     } // getWeatherList()
 
 
-    fun getTideList() : ArrayList<ConditionTide> {
+    fun getTideList(): ArrayList<ConditionTide> {
 
         return tideList
 
     } // getTideList()
 
 
-    fun getIndexList() : ArrayList<Index.Item> {
+    fun getIndexList(): ArrayList<Index.Item> {
 
         return indexList
 
     } // getIndexList()
 
 
-    fun getCollectionList() : ArrayList<Collection> {
+    fun getCollectionList(): ArrayList<Collection> {
 
         return collectionList
 
     } // getCollectionList()
 
 
-    fun getHistoryList() : ArrayList<History> {
+    fun getHistoryList(): ArrayList<History> {
 
         return historyList
 
     }
 
 
-    fun getFeedList() : ArrayList<Feed> {
+    fun getFeedList(): ArrayList<Feed> {
 
         return feedList
 
     } // getFeedList()
 
 
-    fun getUserInfo() : UserInfo {
+    fun getUserInfo(): UserInfo {
 
         return userInfo
 
     } // getUserInfo()
 
 
-    fun setWeatherList(weatherList : ArrayList<ConditionWeather>) {
+    fun setWeatherList(weatherList: ArrayList<ConditionWeather>) {
 
         this.weatherList = weatherList
 
     } // setWeatherList()
 
 
-    fun setTideList(tideList : ArrayList<ConditionTide>) {
+    fun setTideList(tideList: ArrayList<ConditionTide>) {
 
         this.tideList = tideList
 
     } // setTideList()
 
 
-    fun setIndexList(indexList : ArrayList<Index.Item>) {
+    fun setIndexList(indexList: ArrayList<Index.Item>) {
 
         this.indexList = indexList
 

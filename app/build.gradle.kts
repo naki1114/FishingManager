@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.fishingmanager"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -102,12 +102,15 @@ dependencies {
     // NaverLogin
 //    implementation("com.navercorp.nid:oauth:5.5.0")
 
-    //CalendarView
+    // CalendarView
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation("com.jakewharton.threetenabp:threetenabp:1.2.1")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment:2.3.2")
     implementation("androidx.navigation:navigation-ui:2.3.2")
+
+    // PhotoView
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 
 }

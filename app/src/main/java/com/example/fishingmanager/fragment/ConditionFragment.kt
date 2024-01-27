@@ -65,6 +65,7 @@ class ConditionFragment : Fragment() {
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
     var previousLayout = ""
+    var getBundleString = "combine"
 
     lateinit var animationThread: Thread
 
@@ -91,6 +92,13 @@ class ConditionFragment : Fragment() {
 
 
     fun setVariable() {
+
+        parentFragmentManager.setFragmentResultListener("layout", this) { key, bundle ->
+
+            getBundleString = bundle.getString("layout")!!
+            viewModel.changeLayout(getBundleString)
+
+        }
 
         checkedLocationSharedPreference()
 
@@ -145,8 +153,12 @@ class ConditionFragment : Fragment() {
             )
         )
 
+        val calendar : Calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, 2)
+        calendar.add(Calendar.MONTH, 1)
+
         val minDay = CalendarDay.today()
-        val maxDay = CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.DATE)+2)
+        val maxDay = CalendarDay.from(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
 
         binding.conditionSelectDateCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
         binding.conditionSelectDateCalendarView.addDecorators(
@@ -363,6 +375,12 @@ class ConditionFragment : Fragment() {
                 }
 
             }
+
+        })
+
+        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setWeatherList(it)
 
         })
 

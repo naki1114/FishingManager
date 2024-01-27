@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.example.fishingmanager.data.Feed" />
+
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.HomeHotFeedAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingVertical="10dp"
+        android:onClick="@{() -> clickListener.onClick(feed)}"
+        >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+        <TextView
+            android:id="@+id/homeHotFeedItemTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@{feed.component3()}"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            />
+
+        <TextView
+            android:id="@+id/homeHotFeedItemNicknameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@{feed.component1()}"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            />
+
+        <TextView
+            android:id="@+id/homeHotFeedItemDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/gray3"
+            android:textStyle="bold"
+            android:text="@{feed.component7()}"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+    </LinearLayout>
+
+</layout>

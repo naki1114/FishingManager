@@ -167,6 +167,83 @@ class ConditionModel {
     } // getWeatherList()
 
 
+    fun getBasicWeatherList(response : Response<Weather>) : ArrayList<ConditionWeather> {
+
+        val list = ArrayList<Weather.Item>()
+        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
+        val listSize = responseList.size
+
+        for (i in 0 until listSize) {
+
+                if (responseList[i].category == "TMP" || responseList[i].category == "REH" ||
+                    responseList[i].category == "WSD" || responseList[i].category == "SKY" || responseList[i].category == "PTY") {
+
+                    list.add(responseList[i])
+
+                }
+        }
+
+        val weatherList = ArrayList<ConditionWeather>()
+        var time: String = ""
+        var temp: String = ""
+        var skyImage: Int = 0
+        var humidity: String = ""
+        var windSpeed: String = ""
+        var date: String = ""
+
+        for (i in 0 until list.size) {
+
+            date = list[i].fcstDate
+            time = list[i].fcstTime.substring(0, 2) + ":" + list[i].fcstTime.substring(2, 4)
+
+            // 온도
+            if (list[i].category == "TMP") {
+
+                temp = list[i].fcstValue + "˚C"
+
+                // 하늘 상태
+            } else if (list[i].category == "SKY") {
+
+                when (list[i].fcstValue) {
+
+                    "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
+                    "6", "7", "8" -> skyImage = R.drawable.cloudy
+                    "9", "10" -> skyImage = R.drawable.fade
+
+                }
+
+                // 강수 타입
+            } else if (list[i].category == "PTY") {
+
+                when (list[i].fcstValue) {
+
+                    "1", "4" -> skyImage = R.drawable.rain
+                    "2", "3" -> skyImage = R.drawable.snow
+
+                }
+
+                // 풍속
+            } else if (list[i].category == "WSD") {
+
+                windSpeed = list[i].fcstValue + "m/s"
+
+                // 습도
+            } else if (list[i].category == "REH") {
+
+                humidity = list[i].fcstValue + "%"
+
+                val conditionWeather = ConditionWeather(time, skyImage, temp, humidity, windSpeed, date)
+                weatherList.add(conditionWeather)
+
+            }
+
+        }
+
+        return weatherList
+
+    } // getBasicWeatherList()
+
+
     fun getTideList(response : Response<Tide>) : ArrayList<ConditionTide> {
 
         val list = ArrayList<Tide.Item>()
