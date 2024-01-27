@@ -92,6 +92,12 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataChangeLayout.observe(viewLifecycleOwner, Observer {
+
+            changeLayout(it)
+
+        })
+
     } // observeLiveData()
 
 
@@ -114,6 +120,35 @@ class HomeFragment : Fragment() {
         }
 
     }
+
+
+    fun changeLayout(layout : String) {
+
+        when(layout) {
+
+            "main" -> {
+
+                binding.homeSeeMoreLayout.visibility = View.GONE
+                binding.homeRecentCollectionTitleLayout.visibility = View.GONE
+
+                binding.homeMainLayout.visibility = View.VISIBLE
+                binding.homeTitleLayout.visibility = View.VISIBLE
+
+            }
+
+            "seeMore" -> {
+
+                binding.homeMainLayout.visibility = View.GONE
+                binding.homeTitleLayout.visibility = View.GONE
+
+                binding.homeSeeMoreLayout.visibility = View.VISIBLE
+                binding.homeRecentCollectionTitleLayout.visibility = View.VISIBLE
+
+            }
+
+        }
+
+    } // changeLayout()
 
 
 }

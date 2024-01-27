@@ -73,6 +73,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick='@{() -> viewModel.changeLayout("main")}'
                         />
 
                     <View
@@ -315,6 +316,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/home_recentCollection_seeMore"
                             android:layout_gravity="center"
+                            android:onClick='@{() -> viewModel.changeLayout("seeMore")}'
                             />
 
                     </LinearLayout>
