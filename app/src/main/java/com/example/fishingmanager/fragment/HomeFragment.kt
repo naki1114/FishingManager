@@ -13,6 +13,7 @@ import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.HomeRecentCollectionAdapter
 import com.example.fishingmanager.adapter.HomeRecommendAdapter
+import com.example.fishingmanager.adapter.HomeSeeMoreRecentCollectionAdapter
 import com.example.fishingmanager.databinding.FragmentHomeBinding
 import com.example.fishingmanager.viewModel.HomeViewModel
 
@@ -25,6 +26,7 @@ class HomeFragment : Fragment() {
     lateinit var location: String
     lateinit var recommendAdapter: HomeRecommendAdapter
     lateinit var recentCollectionAdapter : HomeRecentCollectionAdapter
+    lateinit var seeMoreAdapter : HomeSeeMoreRecentCollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,9 +61,11 @@ class HomeFragment : Fragment() {
         recentCollectionAdapter = HomeRecentCollectionAdapter(HomeRecentCollectionAdapter.ItemClickListener {
             viewModel.goPhotoView(it.fishImage)
         })
+        seeMoreAdapter = HomeSeeMoreRecentCollectionAdapter()
 
         binding.homeRecommendRecyclerView.adapter = recommendAdapter
         binding.homeRecentCollectionRecyclerView.adapter = recentCollectionAdapter
+        binding.homeSeeMoreRecyclerView.adapter = seeMoreAdapter
 
     } // setVariable()
 
@@ -98,6 +102,13 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataRecentCollectionList.observe(viewLifecycleOwner, Observer {
+
+            recentCollectionAdapter.setItem(it)
+            seeMoreAdapter.setItem(it)
+
+        })
+
     } // observeLiveData()
 
 
@@ -105,6 +116,7 @@ class HomeFragment : Fragment() {
 
         viewModel.getWeather()
         viewModel.getRecommendList()
+        viewModel.getRecentCollectionList()
 
     } // getData()
 

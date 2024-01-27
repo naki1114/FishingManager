@@ -3,6 +3,7 @@ package com.example.fishingmanager.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
@@ -20,6 +21,8 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     val liveDataWeather = MutableLiveData<HomeWeather>()
     val liveDataRecommendList = MutableLiveData<ArrayList<HomeRecommend>>()
     val liveDataClickedFishImage = MutableLiveData<String>()
+    val liveDataRecentCollectionList = MutableLiveData<ArrayList<HomeRecentCollection>>()
+
 
     fun getWeather() {
 
@@ -33,6 +36,13 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
         liveDataRecommendList.value = model.getRecommendList(basicIndexList)
 
     } // getRecommendList()
+
+
+    fun getRecentCollectionList() {
+
+        liveDataRecentCollectionList.value = model.getRecentCollectionList()
+
+    } // getRecentCollectionList()
 
 
     fun changeFragment(fragment: String) {
