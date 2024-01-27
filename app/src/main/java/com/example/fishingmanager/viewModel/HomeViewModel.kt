@@ -18,6 +18,7 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     val liveDataChangeFragment = MutableLiveData<String>()
     val liveDataWeather = MutableLiveData<HomeWeather>()
     val liveDataRecommendList = MutableLiveData<ArrayList<HomeRecommend>>()
+    val liveDataClickedFishImage = MutableLiveData<String>()
 
     fun getWeather() {
 
@@ -38,5 +39,12 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
         liveDataChangeFragment.value = fragment
 
     } // changeFragment()
+
+
+    fun goPhotoView(image : String) {
+
+        liveDataClickedFishImage.value = image
+
+    } // goPhotoView()
 
 }

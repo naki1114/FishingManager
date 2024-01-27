@@ -56,7 +56,15 @@ class MainActivity : AppCompatActivity() {
         setVariable()
         setListener()
 
-    }
+    } // onCreate()
+
+
+    override fun onStart() {
+        super.onStart()
+
+        // 현재 프래그먼트 확인해서 바텀 네비게이션 visible 처리
+
+    } // onStart()
 
 
     // 변수 초기화
@@ -204,6 +212,16 @@ class MainActivity : AppCompatActivity() {
 
 
     } // changeFragmentWithData()
+
+
+    fun goPhotoView(image : String) {
+
+        bundle = Bundle()
+        bundle.putString("image", image)
+        fragmentManager.setFragmentResult("image", bundle)
+        changeFragment("photoView")
+
+    } // changeFragmentToPhotoView()
 
 
     fun navigationGone() {

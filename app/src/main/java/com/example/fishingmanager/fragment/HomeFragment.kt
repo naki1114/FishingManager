@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
+import com.example.fishingmanager.adapter.HomeRecentCollectionAdapter
 import com.example.fishingmanager.adapter.HomeRecommendAdapter
 import com.example.fishingmanager.databinding.FragmentHomeBinding
 import com.example.fishingmanager.viewModel.HomeViewModel
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
     lateinit var locationShared: SharedPreferences
     lateinit var location: String
     lateinit var recommendAdapter: HomeRecommendAdapter
+    lateinit var recentCollectionAdapter : HomeRecentCollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +42,6 @@ class HomeFragment : Fragment() {
 
         checkSharedPreference()
         setVariable()
-        setView()
         observeLiveData()
         getData()
 
@@ -55,16 +56,14 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = this
 
         recommendAdapter = HomeRecommendAdapter()
+        recentCollectionAdapter = HomeRecentCollectionAdapter(HomeRecentCollectionAdapter.ItemClickListener {
+            viewModel.goPhotoView(it.fishImage)
+        })
+
         binding.homeRecommendRecyclerView.adapter = recommendAdapter
+        binding.homeRecentCollectionRecyclerView.adapter = recentCollectionAdapter
 
     } // setVariable()
-
-
-    fun setView() {
-
-
-
-    } // setView()
 
 
     fun observeLiveData() {
@@ -84,6 +83,12 @@ class HomeFragment : Fragment() {
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
             (activity as MainActivity).changeFragmentWithData(it)
+
+        })
+
+        viewModel.liveDataClickedFishImage.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).goPhotoView(it)
 
         })
 
