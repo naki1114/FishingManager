@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
@@ -119,7 +120,7 @@ class HomeModel {
 
         return fishImage
 
-    }
+    } // getFishImage()
 
 
     fun getRecentCollectionList() : ArrayList<HomeRecentCollection>{
@@ -131,6 +132,17 @@ class HomeModel {
         return list
 
     } // getRecentCollectionList()
+
+
+    fun getHotFeedList() : ArrayList<Feed> {
+
+        val list = ArrayList<Feed>()
+
+
+
+        return list
+
+    } // getHotFeedList()
     
 
 }

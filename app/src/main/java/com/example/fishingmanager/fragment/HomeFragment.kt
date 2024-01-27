@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
+import com.example.fishingmanager.adapter.HomeHotFeedAdapter
 import com.example.fishingmanager.adapter.HomeRecentCollectionAdapter
 import com.example.fishingmanager.adapter.HomeRecommendAdapter
 import com.example.fishingmanager.adapter.HomeSeeMoreRecentCollectionAdapter
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     lateinit var recommendAdapter: HomeRecommendAdapter
     lateinit var recentCollectionAdapter : HomeRecentCollectionAdapter
     lateinit var seeMoreAdapter : HomeSeeMoreRecentCollectionAdapter
+    lateinit var hotFeedAdapter : HomeHotFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +64,9 @@ class HomeFragment : Fragment() {
             viewModel.goPhotoView(it.fishImage)
         })
         seeMoreAdapter = HomeSeeMoreRecentCollectionAdapter()
+        hotFeedAdapter = HomeHotFeedAdapter(HomeHotFeedAdapter.ItemClickListener {
+            viewModel.goHotFeed(it.feedNum)
+        })
 
         binding.homeRecommendRecyclerView.adapter = recommendAdapter
         binding.homeRecentCollectionRecyclerView.adapter = recentCollectionAdapter
@@ -109,6 +114,18 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataHotFeedList.observe(viewLifecycleOwner, Observer {
+
+            hotFeedAdapter.setItem(it)
+
+        })
+
+        viewModel.liveDataHotFeedNum.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).changeFragment("feed")
+
+        })
+
     } // observeLiveData()
 
 
@@ -117,6 +134,7 @@ class HomeFragment : Fragment() {
         viewModel.getWeather()
         viewModel.getRecommendList()
         viewModel.getRecentCollectionList()
+        viewModel.getHotFeedList()
 
     } // getData()
 

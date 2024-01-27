@@ -3,6 +3,7 @@ package com.example.fishingmanager.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
@@ -22,6 +23,8 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     val liveDataRecommendList = MutableLiveData<ArrayList<HomeRecommend>>()
     val liveDataClickedFishImage = MutableLiveData<String>()
     val liveDataRecentCollectionList = MutableLiveData<ArrayList<HomeRecentCollection>>()
+    val liveDataHotFeedList = MutableLiveData<ArrayList<Feed>>()
+    val liveDataHotFeedNum = MutableLiveData<Int>()
 
 
     fun getWeather() {
@@ -45,6 +48,13 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     } // getRecentCollectionList()
 
 
+    fun getHotFeedList() {
+
+        liveDataHotFeedList.value = model.getHotFeedList()
+
+    } // getHotFeedList()
+
+
     fun changeFragment(fragment: String) {
 
         liveDataChangeFragment.value = fragment
@@ -64,5 +74,12 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
         liveDataChangeLayout.value = layout
 
     }
+
+
+    fun goHotFeed(feedNum : Int) {
+
+        liveDataHotFeedNum.value = feedNum
+
+    } // goHotFeed()
 
 }
