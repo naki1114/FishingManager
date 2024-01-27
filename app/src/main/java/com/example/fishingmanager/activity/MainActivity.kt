@@ -92,13 +92,15 @@ class MainActivity : AppCompatActivity() {
 
                     } else if (bundleString == "weather") {
 
-                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
+                        fragmentTransaction = fragmentManager.beginTransaction()
                         fragmentManager.setFragmentResult("layout", bundle)
+                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
 
                     } else if (bundleString == "index") {
 
-                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
+                        fragmentTransaction = fragmentManager.beginTransaction()
                         fragmentManager.setFragmentResult("layout", bundle)
+                        fragmentTransaction.replace(R.id.mainFragment, ConditionFragment()).commit()
 
                     }
 
@@ -184,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
         when (fragmentName) {
 
-            "conditionWeahter" -> {
+            "conditionWeather" -> {
                 bundleString = "weather"
                 bundle.putString("layout", bundleString)
                 binding.navigation.selectedItemId = R.id.condition_fragment

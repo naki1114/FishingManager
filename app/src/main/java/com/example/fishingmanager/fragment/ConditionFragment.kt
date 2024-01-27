@@ -65,7 +65,7 @@ class ConditionFragment : Fragment() {
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
     var previousLayout = ""
-    var getBundleString = ""
+    var getBundleString = "combine"
 
     lateinit var animationThread: Thread
 
@@ -95,17 +95,8 @@ class ConditionFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("layout", this) { key, bundle ->
 
-            val result = bundle.getString("layout")
-
-            if (result == "weather") {
-
-
-
-            } else if (result == "index") {
-
-
-
-            }
+            getBundleString = bundle.getString("layout")!!
+            viewModel.changeLayout(getBundleString)
 
         }
 
