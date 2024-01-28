@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="history"
+            type="com.example.fishingmanager.data.History" />
+
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.CheckingFishHistoryAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_white_button"
+        android:onClick="@{() -> clickListener.onClick(history)}"
+        >
+
+        <ImageView
+            android:id="@+id/checkingFishHistoryItemImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </LinearLayout>
+
+</layout>
