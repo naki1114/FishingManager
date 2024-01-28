@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <variable
+            name="selectFish"
+            type="com.example.fishingmanager.data.SelectFish" />
+
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.ProfileSelectFishAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/custom_white_button"
+        android:onClick="@{() -> clickListener.onClick(fishItem)}"
+        >
+
+        <ImageView
+            android:id="@+id/profileSelectFishItemFishImage"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerCrop"
+            />
+
+        <TextView
+            android:id="@+id/profileSelectFishItemFishNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_marginBottom="30dp"
+            android:text="@{selectFish.fishName}"
+            />
+
+    </LinearLayout>
+
+</layout>
