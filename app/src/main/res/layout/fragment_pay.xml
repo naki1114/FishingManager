@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.fishingmanager.viewModel.PayViewModel" />
+
+    </data>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".fragment.PayFragment">
+        tools:context=".fragment.PayFragment"
+        android:background="@color/main2"
+        >
 
         <LinearLayout
             android:id="@+id/payTitleLayout"
@@ -26,6 +36,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:src="@drawable/btnbackcream"
+                android:onClick="@{() -> viewModel.backToPrevious()}"
                 />
 
             <View
@@ -51,6 +62,15 @@
                 />
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/payRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="20dp"
+            />
 
     </LinearLayout>
 
