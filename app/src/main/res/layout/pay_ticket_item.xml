@@ -8,6 +8,10 @@
             name="payTicket"
             type="com.example.fishingmanager.data.PayTicket" />
 
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.PayTicketAdapter.ItemClickListener" />
+
     </data>
 
     <LinearLayout
@@ -51,11 +55,24 @@
                 android:layout_gravity="center"
                 />
 
+            <View
+                android:id="@+id/payIconSpace"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
             <ImageView
                 android:id="@+id/payIcon2Image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
                 />
 
             <TextView
@@ -81,6 +98,7 @@
             android:background="@drawable/custom_main_button_background"
             android:text="@{payTicket.component5()}"
             android:layout_gravity="center"
+            android:onClick="@{() -> clickListener.onClick(payTicket)}"
             />
 
     </LinearLayout>

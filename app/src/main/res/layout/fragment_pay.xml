@@ -36,6 +36,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:src="@drawable/btnbackcream"
+                android:onClick="@{() -> viewModel.backToPrevious()}"
                 />
 
             <View
