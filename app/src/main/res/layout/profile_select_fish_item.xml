@@ -23,7 +23,7 @@
         android:layout_margin="10dp"
         android:paddingHorizontal="20dp"
         android:background="@drawable/custom_white_button"
-        android:onClick="@{() -> clickListener.onClick(fishItem)}"
+        android:onClick="@{() -> clickListener.onClick(selectFish)}"
         >
 
         <ImageView
