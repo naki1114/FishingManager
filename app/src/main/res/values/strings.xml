@@ -135,6 +135,11 @@
     <string name="profile_delete_account">회원탈퇴</string>
     <string name="profile_logout_dialog">로그아웃 하시겠습니까?</string>
     <string name="profile_delete_account_dialog">회원탈퇴와 함께 등록된 모든\n개인 정보는 삭제 처리되며\n복구되지 않습니다.\n\n회원탈퇴 하시겠습니까?</string>
+    <string name="profile_select_length_all">전 체</string>
+    <string name="profile_select_length_30cm">~ 30cm</string>
+    <string name="profile_select_length_60cm">31cm ~ 60cm</string>
+    <string name="profile_select_length_99cm">61cm ~ 99cm</string>
+    <string name="profile_select_length_1m">1m ~</string>
     <string name="pay_title">이용권 구매</string>
     <string name="pay_set_month">FM 세트 한 달 이용권</string>
     <string name="pay_set_year">FM 세트 일 년 이용권</string>
