@@ -10,209 +10,773 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/profileDrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".fragment.ProfileFragment">
+        >
 
         <LinearLayout
-            android:id="@+id/profileTitleLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="13dp"
-            android:background="@drawable/custom_titlebar_background"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/main2"
+            tools:context=".fragment.ProfileFragment">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/profile_title"
-                />
+
+            <LinearLayout
+                android:id="@+id/profileMainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible"
+                >
+
+                <LinearLayout
+                    android:id="@+id/profileTitleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:paddingVertical="13dp"
+                    android:background="@drawable/custom_titlebar_background"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/main2"
+                        android:textSize="18dp"
+                        android:layout_marginStart="20dp"
+                        android:text="@string/profile_title"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <ImageView
+                        android:id="@+id/profileMenuButton"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/btnhamburger"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileProfileImage"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/fishing_logo"
+                        />
+
+                    <TextView
+                        android:id="@+id/profileNicknameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+
+                        <Button
+                            android:id="@+id/profileCollectionButton"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:text="@string/profile_collection"
+                            android:background="@drawable/custom_gray_background"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            />
+
+                        <Button
+                            android:id="@+id/profileCollectionBlock"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:text="@string/profile_collection"
+                            android:background="@drawable/custom_main_button_background"
+                            android:textStyle="bold"
+                            android:textColor="@color/main2"
+                            android:layout_gravity="center"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                        <Button
+                            android:id="@+id/profileHistoryButton"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:text="@string/profile_history"
+                            android:background="@drawable/custom_gray_background"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center"
+                            />
+
+                        <Button
+                            android:id="@+id/profileHistoryBlock"
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:text="@string/profile_history"
+                            android:background="@drawable/custom_main_button_background"
+                            android:textStyle="bold"
+                            android:textColor="@color/main2"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/gray3"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profileCollectionLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/profileCollectionRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="3"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profileHistoryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="13"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="14dp"
+                                android:text="@string/profile_fish"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                />
+
+                            <Button
+                                android:id="@+id/profileHistoryFishButton"
+                                android:layout_width="90dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/custom_main_button_background"
+                                android:textColor="@color/main2"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginVertical="10dp"
+                                android:text="용치놀래기"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="14dp"
+                                android:text="@string/profile_length"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                />
+
+                            <Button
+                                android:id="@+id/profileHistoryLengthButton"
+                                android:layout_width="120dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/custom_main_button_background"
+                                android:textColor="@color/main2"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginVertical="10dp"
+                                android:text="61cm ~ 99cm"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="14dp"
+                                android:text="@string/profile_date"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                />
+
+                            <Button
+                                android:id="@+id/profileHistoryDateButton"
+                                android:layout_width="110dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/custom_main_button_background"
+                                android:textColor="@color/main2"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:layout_marginVertical="10dp"
+                                android:text="2024.01.31"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/profileHistoryRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="vertical"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profileCollectionReedMoreLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:id="@+id/profileCollectionTitleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/custom_titlebar_background"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileCollectionBackButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/btnbackcream"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/main2"
+                        android:textSize="18dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/profile_collection"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileCollectionReadMoreImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginVertical="30dp"
+                        android:layout_marginHorizontal="60dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/chamdom"
+                        />
+
+                    <TextView
+                        android:id="@+id/profileCollectionReadMoreFishNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="30dp"
+                        android:text="참돔"
+                        />
+
+                    <TextView
+                        android:id="@+id/profileCollectionReadMoreFishText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="암초지대의 수심 20~30m 에서 주로 서식하며 기록된 최대 크기는 ..."
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profileSelectFishLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:id="@+id/profileSelectFishTitleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/custom_titlebar_background"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileSelectFishBackButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/btnbackcream"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/main2"
+                        android:textSize="18dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/profile_select_fish_title"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/profileSelectFishRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profileSelectLengthLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:id="@+id/profileSelectLengthTitleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/custom_titlebar_background"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileSelectLengthBackButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/btnbackcream"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/main2"
+                        android:textSize="18dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/profile_select_length_title"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/profileSelectLengthAllButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/custom_white_button"
+                        android:text="@string/profile_select_length_all"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="30dp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/profileSelectLength30cmButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/custom_white_button"
+                        android:text="@string/profile_select_length_30cm"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="30dp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/profileSelectLength60cmButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/custom_white_button"
+                        android:text="@string/profile_select_length_60cm"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="30dp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/profileSelectLength99cmButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/custom_white_button"
+                        android:text="@string/profile_select_length_99cm"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="30dp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/profileSelectLength1mButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/custom_white_button"
+                        android:text="@string/profile_select_length_1m"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="30dp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profileSelectDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:id="@+id/profileSelectDateTitleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/custom_titlebar_background"
+                    >
+
+                    <ImageView
+                        android:id="@+id/profileSelectDateBackButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/btnbackcream"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/main2"
+                        android:textSize="18dp"
+                        android:layout_marginEnd="50dp"
+                        android:text="@string/profile_select_date_title"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                        android:id="@+id/conditionSelectDateCalendarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/CalenderViewCustom"
+                        app:mcv_dateTextAppearance="@style/CalenderViewDateCustomText"
+                        app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        />
+
+                    <Button
+                        android:id="@+id/conditionSelectDateChoiceButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_main_button_background"
+                        android:textColor="@color/main2"
+                        android:textStyle="bold"
+                        android:text="@string/choice"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/profileCollectionTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
-            android:visibility="gone"
-            >
+        <include layout="@layout/profile_drawer"/>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/profile_collection"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profileSelectFishTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
-            android:visibility="gone"
-            >
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/profile_select_fish_title"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profileSelectLengthTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
-            android:visibility="gone"
-            >
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/profile_select_length_title"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/profileSelectDateTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
-            android:visibility="gone"
-            >
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/profile_select_date_title"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>
 
