@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.databinding.ProfileCollectionItemBinding
 
-class ProfileCollectionAdapter : RecyclerView.Adapter<ProfileCollectionAdapter.ViewHolder>() {
+class ProfileCollectionAdapter(val itemClickListener : ItemClickListener) : RecyclerView.Adapter<ProfileCollectionAdapter.ViewHolder>() {
 
 
     lateinit var binding: ProfileCollectionItemBinding
@@ -17,7 +17,7 @@ class ProfileCollectionAdapter : RecyclerView.Adapter<ProfileCollectionAdapter.V
 
         binding = ProfileCollectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return ViewHolder(binding)
+        return ViewHolder(binding, itemClickListener)
 
     } // onCreateViewHolder()
 
@@ -36,7 +36,15 @@ class ProfileCollectionAdapter : RecyclerView.Adapter<ProfileCollectionAdapter.V
     } // getItemCount()
 
 
-    class ViewHolder(val binding : ProfileCollectionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun setItem(item : ArrayList<Collection>) {
+
+        collectionList = item
+        notifyDataSetChanged()
+
+    } // setItem()
+
+
+    class ViewHolder(val binding : ProfileCollectionItemBinding, val itemClickListener: ItemClickListener) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(collection: Collection) {
 

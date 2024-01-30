@@ -35,6 +35,14 @@ class ProfileHistoryAdapter : RecyclerView.Adapter<ProfileHistoryAdapter.ViewHol
     } // getItemCount()
 
 
+    fun setItem(item : ArrayList<History>) {
+
+        historyList = item
+        notifyDataSetChanged()
+
+    } // setItem()
+
+
     class ViewHolder(val binding : ProfileHistoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(history : History) {
