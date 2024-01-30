@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var indexList: ArrayList<Index.Item>
     private lateinit var collectionList: ArrayList<Collection>
     private lateinit var historyList: ArrayList<History>
-    private lateinit var feedList: ArrayList<Feed>
+//    private lateinit var feedList: ArrayList<Feed>
+    var feedList = ArrayList<Feed>()
     private lateinit var userInfo: UserInfo
 
     lateinit var nickname: String
@@ -159,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "feed" -> {
-                pickOutFragment(FeedFragment())
+                pickOutFragment(FeedFragment(feedList))
                 navigationVisible()
             }
 
@@ -298,11 +299,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun getFeedList(): ArrayList<Feed> {
-
-        return feedList
-
-    } // getFeedList()
+//    fun getFeedList(): ArrayList<Feed> {
+//
+//        return feedList
+//
+//    } // getFeedList()
 
 
     fun getUserInfo(): UserInfo {
