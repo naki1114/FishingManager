@@ -368,7 +368,7 @@ class StartFragment : Fragment() {
 
             if (startViewModel.isPossibleLogin.value == true) {
 
-//                saveUserInfoToShared()
+                saveUserInfoToShared()
                 (activity as MainActivity).changeFragment("home")
 
             }

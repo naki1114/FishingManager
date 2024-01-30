@@ -108,11 +108,10 @@ class SplashViewModel : ViewModel() {
 
                 if (response.isSuccessful) {
 
-                    val combine = response.body()?.response
-                    liveDataCollectionList.value = combine!!.collection
-                    liveDataHistoryList.value = combine.history
-                    liveDataFeedList.value = combine.feed
-                    liveDataUserInfo.value = combine.userInfo
+                    liveDataCollectionList.value = response.body()?.collection
+                    liveDataHistoryList.value = response.body()?.history
+                    liveDataFeedList.value = response.body()?.feed
+                    liveDataUserInfo.value = response.body()?.userInfo
 
                     liveDataCombineData.value = true
 

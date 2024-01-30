@@ -79,9 +79,9 @@ class SplashFragment : Fragment() {
         viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), obsCode, "json")
         viewModel.getIndex("SF", "json")
 
-//        if (userNickname != "") {
-//            viewModel.getCombine(userNickname)
-//        }
+        if (userNickname != "") {
+            viewModel.getCombine(userNickname)
+        }
 
     } // requestData()
 
@@ -113,14 +113,33 @@ class SplashFragment : Fragment() {
 
         })
 
-        // DB 데이터 - Boolean 감지
         viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer {
 
-            if (it) {
+            updateProgressView()
 
-                updateProgressView()
+        })
 
-            }
+        viewModel.liveDataCollectionList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setCollectionList(it)
+
+        })
+
+        viewModel.liveDataHistoryList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setHistoryList(it)
+
+        })
+
+        viewModel.liveDataFeedList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setFeedList(it)
+
+        })
+
+        viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).setUserInfo(it)
 
         })
 

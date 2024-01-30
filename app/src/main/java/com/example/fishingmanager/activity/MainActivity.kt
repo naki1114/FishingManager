@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var indexList: ArrayList<Index.Item>
     private lateinit var collectionList: ArrayList<Collection>
     private lateinit var historyList: ArrayList<History>
-//    private lateinit var feedList: ArrayList<Feed>
-    var feedList = ArrayList<Feed>()
+    private lateinit var feedList: ArrayList<Feed>
+//    var feedList = ArrayList<Feed>()
     private lateinit var userInfo: UserInfo
 
     lateinit var nickname: String
@@ -227,14 +227,14 @@ class MainActivity : AppCompatActivity() {
 
     fun navigationGone() {
 
-        binding.navigation.visibility = View.GONE
+        runOnUiThread { binding.navigation.visibility = View.GONE }
 
     } // navigationGone()
 
 
     fun navigationVisible() {
 
-        binding.navigation.visibility = View.VISIBLE
+        runOnUiThread { binding.navigation.visibility = View.VISIBLE }
 
     } // navigationVisible()
 
@@ -299,11 +299,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-//    fun getFeedList(): ArrayList<Feed> {
-//
-//        return feedList
-//
-//    } // getFeedList()
+    fun getFeedList(): ArrayList<Feed> {
+
+        return feedList
+
+    } // getFeedList()
 
 
     fun getUserInfo(): UserInfo {
@@ -332,6 +332,34 @@ class MainActivity : AppCompatActivity() {
         this.indexList = indexList
 
     } // setIndexList()
+
+
+    fun setCollectionList(collectionList : ArrayList<Collection>) {
+
+        this.collectionList = collectionList
+
+    } // setCollectionList()
+
+
+    fun setHistoryList(historyList : ArrayList<History>) {
+
+        this.historyList = historyList
+
+    } // setHistoryList()
+
+
+    fun setFeedList(feedList : ArrayList<Feed>) {
+
+        this.feedList = feedList
+
+    } // setFeedList()
+
+
+    fun setUserInfo(userInfo : UserInfo) {
+
+        this.userInfo = userInfo
+
+    } // setUserInfo()
 
 
 }
