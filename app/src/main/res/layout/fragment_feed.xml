@@ -1,80 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.fishingmanager.viewModel.FeedViewModel" />
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".fragment.FeedFragment">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/feedTitleLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="13dp"
-            android:background="@drawable/custom_titlebar_background"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/main2"
+            tools:context=".fragment.FeedFragment">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/feedTitleLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/feed_title"
-                />
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:paddingVertical="13dp"
+                android:background="@drawable/custom_titlebar_background"
+                >
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:textSize="18dp"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/feed_title"
+                    />
 
-        <LinearLayout
-            android:id="@+id/feedSeeMoreTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
-            android:visibility="gone"
-            >
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="30dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                />
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:weightSum="1"
+                >
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                <Spinner
+                    android:id="@+id/feedSearchSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/custom_white_background"
+                    android:entries="@array/feed_type"
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/feed_title"
-                />
+                <EditText
+                    android:id="@+id/feedSearchEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.55"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="10dp"
+                    android:background="@drawable/custom_white_background"
+                    android:textSize="13dp"
+                    />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                <Button
+                    android:id="@+id/feedSearchButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/custom_main_button_background"
+                    android:text="@string/search"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    android:onClick="@{() -> viewModel.searchFeed(feedSearchSpinner.getSelectedItem().toString(), feedSearchEditText.getText().toString())}"
+                    />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="10dp"
+            android:src="@drawable/btnfloat"
+            android:background="@color/main2"
+            android:scaleType="fitCenter"
+            android:onClick="@{()->viewModel.addFeed()}"
+            />
+
+    </FrameLayout>
 
 </layout>
