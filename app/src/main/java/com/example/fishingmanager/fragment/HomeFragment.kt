@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = HomeViewModel((activity as MainActivity).getWeatherList(), location, (activity as MainActivity).getIndexList())
+        viewModel = HomeViewModel((activity as MainActivity).weatherList, location, (activity as MainActivity).indexList)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

@@ -103,9 +103,9 @@ class ConditionFragment : Fragment() {
         checkedLocationSharedPreference()
 
         viewModel = ConditionViewModel(
-            (activity as MainActivity).getWeatherList(),
-            (activity as MainActivity).getTideList(),
-            (activity as MainActivity).getIndexList(),
+            (activity as MainActivity).weatherList,
+            (activity as MainActivity).tideList,
+            (activity as MainActivity).indexList,
             searchLocation
         )
         binding.viewModel = viewModel
@@ -380,7 +380,7 @@ class ConditionFragment : Fragment() {
 
         viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).setWeatherList(it)
+            (activity as MainActivity).weatherList = it
 
         })
 

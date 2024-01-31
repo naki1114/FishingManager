@@ -93,7 +93,7 @@ class SplashFragment : Fragment() {
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
-            (activity as MainActivity).setWeatherList(it)
+            (activity as MainActivity).weatherList = it
 
         })
 
@@ -101,7 +101,7 @@ class SplashFragment : Fragment() {
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
-            (activity as MainActivity).setTideList(it)
+            (activity as MainActivity).tideList = it
 
         })
 
@@ -109,7 +109,7 @@ class SplashFragment : Fragment() {
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
             updateProgressView()
-            (activity as MainActivity).setIndexList(it)
+            (activity as MainActivity).indexList = it
 
         })
 
@@ -121,25 +121,25 @@ class SplashFragment : Fragment() {
 
         viewModel.liveDataCollectionList.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).setCollectionList(it)
+            (activity as MainActivity).collectionList = it
 
         })
 
         viewModel.liveDataHistoryList.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).setHistoryList(it)
+            (activity as MainActivity).historyList = it
 
         })
 
         viewModel.liveDataFeedList.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).setFeedList(it)
+            (activity as MainActivity).feedList = it
 
         })
 
         viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).setUserInfo(it)
+            (activity as MainActivity).userInfo = it
 
         })
 
