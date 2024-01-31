@@ -47,7 +47,7 @@ class ProfileHistoryAdapter : RecyclerView.Adapter<ProfileHistoryAdapter.ViewHol
 
         fun onBind(history : History) {
 
-
+            binding.profileHistoryItemFishImage.setImageResource(history.fishIconImage)
 
         } // onBind()
 

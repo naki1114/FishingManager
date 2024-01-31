@@ -48,7 +48,7 @@ class ProfileSelectFishAdapter(val itemClickListener : ItemClickListener) : Recy
 
         fun onBind(selectFish : SelectFish) {
 
-
+            binding.profileSelectFishItemFishImage.setImageResource(selectFish.fishImage)
 
         } // onBind()
 
