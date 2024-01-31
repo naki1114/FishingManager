@@ -49,6 +49,8 @@ class ProfileCollectionAdapter(val itemClickListener : ItemClickListener) : Recy
 
         fun onBind(collection: Collection) {
 
+            binding.collection = collection
+
             if (collection.fishName == "") {
 
                 binding.profileCollectionItemFishNameText.visibility = View.GONE
