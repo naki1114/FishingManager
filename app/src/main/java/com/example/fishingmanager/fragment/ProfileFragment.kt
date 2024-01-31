@@ -1,15 +1,18 @@
 package com.example.fishingmanager.fragment
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
+import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.ProfileCollectionAdapter
 import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
@@ -26,6 +29,9 @@ class ProfileFragment : Fragment() {
     lateinit var selectFishAdapter : ProfileSelectFishAdapter
     lateinit var drawerView : View
 
+    lateinit var userInfoShared : SharedPreferences
+    lateinit var nickname : String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +47,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkUserShared()
         setVariable()
         observeLiveData()
         getData()
@@ -48,10 +55,9 @@ class ProfileFragment : Fragment() {
     } // onViewCreated()
 
 
-
     fun setVariable() {
 
-        viewModel = ProfileViewModel()
+        viewModel = ProfileViewModel((activity as MainActivity).collectionList, (activity as MainActivity).historyList, nickname)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -120,5 +126,13 @@ class ProfileFragment : Fragment() {
         viewModel.init()
 
     } // getData()
+
+
+    fun checkUserShared() {
+
+        userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        nickname = userInfoShared.getString("nickname", "").toString()
+
+    } // checkUserShared()
 
 }

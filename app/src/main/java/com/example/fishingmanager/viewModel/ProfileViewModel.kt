@@ -7,9 +7,14 @@ import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.model.ProfileModel
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(
+    collectionList: ArrayList<Collection>, historyList: ArrayList<History>,
+    val nickname: String
+) : ViewModel() {
 
     val model = ProfileModel()
+    val basicCollectionList = collectionList
+    val basicHistoryList = historyList
 
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
@@ -19,25 +24,25 @@ class ProfileViewModel : ViewModel() {
     val liveDataChangeLayout = MutableLiveData<String>()
     val liveDataClickedMenu = MutableLiveData<Boolean>()
 
-    lateinit var previousLayout : String
+    lateinit var previousLayout: String
 
     fun init() {
 
-        liveDataCollectionList.value = model.getCollectionList()
-        liveDataHistoryList.value = model.getHistoryList()
+        liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
+        liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
         liveDataFishList.value = model.getFishList()
 
     } // init()
 
 
-    fun changeTab(tab : String) {
+    fun changeTab(tab: String) {
 
         liveDataChangeTab.value = tab
 
     } // changeTab()
 
 
-    fun changeLayout(layout : String) {
+    fun changeLayout(layout: String) {
 
         previousLayout = liveDataChangeLayout.value!!
         liveDataChangeLayout.value = layout
