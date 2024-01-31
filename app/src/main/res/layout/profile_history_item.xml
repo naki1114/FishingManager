@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="5dp"
         android:layout_marginVertical="2dp"
+        android:background="@color/white"
         >
 
         <View
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="@{history.component2()}"
+            android:text="@{history.component3()}"
             android:layout_gravity="center"
             />
 
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="18dp"
-            android:text="@{history.component4()}"
+            android:text="@{history.component5()}"
             android:layout_gravity="center"
             />
 
@@ -76,7 +77,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray3"
             android:textSize="20dp"
-            android:text="@{history.component5()}"
+            android:text="@{history.component6()}"
             android:layout_gravity="center"
             />
 

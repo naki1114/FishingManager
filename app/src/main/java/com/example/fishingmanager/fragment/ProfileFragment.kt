@@ -98,13 +98,13 @@ class ProfileFragment : Fragment() {
 
         viewModel.liveDataChangeTab.observe(viewLifecycleOwner, Observer {
 
-
+            changeTab(it)
 
         })
 
         viewModel.liveDataChangeLayout.observe(viewLifecycleOwner, Observer {
 
-
+            changeLayout(it)
 
         })
 
@@ -134,5 +134,81 @@ class ProfileFragment : Fragment() {
         nickname = userInfoShared.getString("nickname", "").toString()
 
     } // checkUserShared()
+
+
+    fun changeTab(tab : String) {
+
+        when(tab) {
+
+            "collection" -> {
+                binding.profileHistoryLayout.visibility = View.GONE
+                binding.profileCollectionLayout.visibility = View.VISIBLE
+                binding.profileCollectionButton.visibility = View.GONE
+                binding.profileCollectionBlock.visibility = View.VISIBLE
+                binding.profileHistoryButton.visibility = View.VISIBLE
+                binding.profileHistoryBlock.visibility = View.GONE
+            }
+
+            "history" -> {
+                binding.profileHistoryLayout.visibility = View.VISIBLE
+                binding.profileCollectionLayout.visibility = View.GONE
+                binding.profileCollectionButton.visibility = View.VISIBLE
+                binding.profileCollectionBlock.visibility = View.GONE
+                binding.profileHistoryButton.visibility = View.GONE
+                binding.profileHistoryBlock.visibility = View.VISIBLE
+            }
+
+        }
+
+    } // changeTab()
+
+
+    fun changeLayout(layout : String) {
+
+        when(layout) {
+
+            "main" -> {
+                binding.profileMainLayout.visibility = View.VISIBLE
+                binding.profileCollectionReedMoreLayout.visibility = View.GONE
+                binding.profileSelectFishLayout.visibility = View.GONE
+                binding.profileSelectLengthLayout.visibility = View.GONE
+                binding.profileSelectDateLayout.visibility = View.GONE
+            }
+
+            "readMore" -> {
+                binding.profileMainLayout.visibility = View.GONE
+                binding.profileCollectionReedMoreLayout.visibility = View.VISIBLE
+                binding.profileSelectFishLayout.visibility = View.GONE
+                binding.profileSelectLengthLayout.visibility = View.GONE
+                binding.profileSelectDateLayout.visibility = View.GONE
+            }
+
+            "selectFish" -> {
+                binding.profileMainLayout.visibility = View.GONE
+                binding.profileCollectionReedMoreLayout.visibility = View.GONE
+                binding.profileSelectFishLayout.visibility = View.VISIBLE
+                binding.profileSelectLengthLayout.visibility = View.GONE
+                binding.profileSelectDateLayout.visibility = View.GONE
+            }
+
+            "selectLength" -> {
+                binding.profileMainLayout.visibility = View.GONE
+                binding.profileCollectionReedMoreLayout.visibility = View.GONE
+                binding.profileSelectFishLayout.visibility = View.GONE
+                binding.profileSelectLengthLayout.visibility = View.VISIBLE
+                binding.profileSelectDateLayout.visibility = View.GONE
+            }
+
+            "selectDate" -> {
+                binding.profileMainLayout.visibility = View.GONE
+                binding.profileCollectionReedMoreLayout.visibility = View.GONE
+                binding.profileSelectFishLayout.visibility = View.GONE
+                binding.profileSelectLengthLayout.visibility = View.GONE
+                binding.profileSelectDateLayout.visibility = View.VISIBLE
+            }
+
+        }
+
+    } // changeLayout()
 
 }
