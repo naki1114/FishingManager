@@ -65,6 +65,29 @@ class HomeModel {
             
         }
 
+        if (veryGoodList.size == 0) {
+
+            for (i in 0 until indexList.size) {
+
+                if (indexList[i].total_score == "좋음") {
+
+                    if (indexList[i].date == GetDate().getDaysLater(0) || indexList[i].date == GetDate().getDaysLater(1) || indexList[i].date == GetDate().getDaysLater(2)) {
+
+                        val date = indexList[i].date.substring(5,7) + " / " + indexList[i].date.substring(8,10) + GetDate().getDayOfWeek(indexList[i].date)
+                        val location = indexList[i].name + " - " + indexList[i].time_type
+                        val fishName = indexList[i].fish_name
+                        val fishImage = getFishImage(fishName)
+
+                        veryGoodList.add(HomeRecommend(date, location, fishName, fishImage))
+
+                    }
+
+                }
+
+            }
+
+        }
+
         val veryGoodListSize = veryGoodList.size
         var list = ArrayList<HomeRecommend>()
         val random = Random()
