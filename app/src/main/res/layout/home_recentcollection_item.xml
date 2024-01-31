@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="homeRecentCollectionItem"
-            type="com.example.fishingmanager.data.HomeRecentCollection" />
+            name="historyItem"
+            type="com.example.fishingmanager.data.History" />
 
         <variable
             name="itemClickListener"
@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_width="180dp"
         android:layout_height="match_parent"
-        android:onClick="@{() -> itemClickListener.onClick(homeRecentCollectionItem)}"
+        android:onClick="@{() -> itemClickListener.onClick(historyItem)}"
         >
 
         <ImageView
