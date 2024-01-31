@@ -1,10 +1,12 @@
 package com.example.fishingmanager.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -18,6 +20,20 @@ class PhotoViewFragment : Fragment() {
 
     lateinit var binding : FragmentPhotoViewBinding
     lateinit var viewModel : PhotoViewViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+                (activity as MainActivity).removeFragmentStack()
+                (activity as MainActivity).navigationVisible()
+
+            }
+        })
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
