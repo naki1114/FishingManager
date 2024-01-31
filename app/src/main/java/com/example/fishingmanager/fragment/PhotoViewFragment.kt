@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.databinding.FragmentPhotoViewBinding
+import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.PhotoViewViewModel
 
 class PhotoViewFragment : Fragment() {
@@ -62,7 +63,7 @@ class PhotoViewFragment : Fragment() {
 
         viewModel.liveDataImage.observe(viewLifecycleOwner, Observer {
 
-            Glide.with((activity as MainActivity)).load(it).into(binding.photoViewImage)
+            Glide.with((activity as MainActivity)).load(RetrofitClient.BASE_URL + it).into(binding.photoViewImage)
 
         })
 
