@@ -63,6 +63,17 @@ class GetDate {
 
 
     @SuppressLint("SimpleDateFormat")
+    fun getFormatDate5(time : Long) : String {
+
+        var format = SimpleDateFormat("yyyy.MM.dd")
+        var formatTime : String = format.format(time)
+
+        return formatTime
+
+    } // getFormatDate5()
+
+
+    @SuppressLint("SimpleDateFormat")
     fun getFormatTime(time : Long) : String {
 
         var format = SimpleDateFormat("HH:00")

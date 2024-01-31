@@ -4,6 +4,7 @@ import com.example.fishingmanager.R
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
+import com.example.fishingmanager.function.GetDate
 
 class ProfileModel {
 
@@ -118,12 +119,15 @@ class ProfileModel {
 
         for (j in 0 until list.size) {
             if (list[j].fishName == fish) {
+
+                val date : Long = (list[j].date + "000").toLong()
+
                 collection = Collection(
                     list[j].nickname,
                     list[j].fishName,
                     image,
                     list[j].fishLength,
-                    list[j].date,
+                    GetDate().getFormatDate5(date),
                     explane
                 )
                 break
