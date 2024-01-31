@@ -48,6 +48,17 @@ class MainActivity : AppCompatActivity() {
     var bundleString = ""
     lateinit var bundle : Bundle
 
+    val splashFragment = SplashFragment()
+    val startFragment = StartFragment()
+    val homeFragment = HomeFragment()
+    val conditionFragment = ConditionFragment()
+    val checkingFishFragment = CheckingFishFragment()
+    val feedFragment = FeedFragment()
+    val writeFragment = WriteFragment()
+    val profileFragment = ProfileFragment()
+    val payFragment = PayFragment()
+    val photoViewFragment = PhotoViewFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,52 +145,52 @@ class MainActivity : AppCompatActivity() {
         when (fragmentName) {
 
             "splash" -> {
-                pickOutFragment(SplashFragment())
+                pickOutFragment(splashFragment)
                 navigationGone()
             }
 
             "start" -> {
-                pickOutFragment(StartFragment())
+                pickOutFragment(startFragment)
                 navigationGone()
             }
 
             "home" -> {
-                pickOutFragment(HomeFragment())
+                pickOutFragment(homeFragment)
                 navigationVisible()
             }
 
             "condition" -> {
-                pickOutFragment(ConditionFragment())
+                pickOutFragment(conditionFragment)
                 navigationVisible()
             }
 
             "checkingFish" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(checkingFishFragment)
                 navigationVisible()
             }
 
             "feed" -> {
-                pickOutFragment(FeedFragment(feedList))
+                pickOutFragment(feedFragment)
                 navigationVisible()
             }
 
             "write" -> {
-                pickOutFragment(WriteFragment())
+                pickOutFragment(writeFragment)
                 navigationGone()
             }
 
             "profile" -> {
-                pickOutFragment(ProfileFragment())
+                pickOutFragment(profileFragment)
                 navigationVisible()
             }
 
             "pay" -> {
-                pickOutFragment(PayFragment())
+                pickOutFragment(payFragment)
                 navigationGone()
             }
 
             "photoView" -> {
-                pickOutFragment(PhotoViewFragment())
+                pickOutFragment(photoViewFragment)
                 navigationGone()
             }
 
@@ -241,7 +252,7 @@ class MainActivity : AppCompatActivity() {
     // 백스택 쌓을 Fragment 구분
     fun pickOutFragment(fragmentName: Fragment) {
 
-        if (fragmentName == WriteFragment() || fragmentName == PhotoViewFragment()) {
+        if (fragmentName == writeFragment || fragmentName == photoViewFragment) {
 
             fragmentTransaction.replace(R.id.mainFragment, fragmentName).addToBackStack(null)
                 .commit()

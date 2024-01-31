@@ -56,7 +56,7 @@ class PhotoViewFragment : Fragment() {
         viewModel.liveDataCloseStatus.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-                (activity as MainActivity).finish()
+                (activity as MainActivity).onBackPressed()
             }
 
         })
