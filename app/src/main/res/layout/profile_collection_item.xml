@@ -19,6 +19,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:background="@color/white"
+        android:layout_margin="3dp"
         android:onClick="@{() -> clickListener.onClick(collection)}"
         >
 
