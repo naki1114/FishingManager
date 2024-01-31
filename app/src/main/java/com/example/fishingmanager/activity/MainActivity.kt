@@ -34,20 +34,30 @@ class MainActivity : AppCompatActivity() {
     private val TAG: String = "MainActivity"
     lateinit var binding: ActivityMainBinding
 
-    private lateinit var weatherList: ArrayList<ConditionWeather>
-    private lateinit var tideList: ArrayList<ConditionTide>
-    private lateinit var indexList: ArrayList<Index.Item>
-    private lateinit var collectionList: ArrayList<Collection>
-    private lateinit var historyList: ArrayList<History>
-    private lateinit var feedList: ArrayList<Feed>
-//    var feedList = ArrayList<Feed>()
-    private lateinit var userInfo: UserInfo
+    lateinit var weatherList: ArrayList<ConditionWeather>
+    lateinit var tideList: ArrayList<ConditionTide>
+    lateinit var indexList: ArrayList<Index.Item>
+    lateinit var collectionList: ArrayList<Collection>
+    lateinit var historyList: ArrayList<History>
+    lateinit var feedList: ArrayList<Feed>
+    lateinit var userInfo: UserInfo
 
     lateinit var nickname: String
     lateinit var fragmentManager: FragmentManager
     lateinit var fragmentTransaction: FragmentTransaction
     var bundleString = ""
     lateinit var bundle : Bundle
+
+    val splashFragment = SplashFragment()
+    val startFragment = StartFragment()
+    val homeFragment = HomeFragment()
+    val conditionFragment = ConditionFragment()
+    val checkingFishFragment = CheckingFishFragment()
+    val feedFragment = FeedFragment()
+    val writeFragment = WriteFragment()
+    val profileFragment = ProfileFragment()
+    val payFragment = PayFragment()
+    val photoViewFragment = PhotoViewFragment()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,52 +145,52 @@ class MainActivity : AppCompatActivity() {
         when (fragmentName) {
 
             "splash" -> {
-                pickOutFragment(SplashFragment())
+                pickOutFragment(splashFragment)
                 navigationGone()
             }
 
             "start" -> {
-                pickOutFragment(StartFragment())
+                pickOutFragment(startFragment)
                 navigationGone()
             }
 
             "home" -> {
-                pickOutFragment(HomeFragment())
+                pickOutFragment(homeFragment)
                 navigationVisible()
             }
 
             "condition" -> {
-                pickOutFragment(ConditionFragment())
+                pickOutFragment(conditionFragment)
                 navigationVisible()
             }
 
             "checkingFish" -> {
-                pickOutFragment(CheckingFishFragment())
+                pickOutFragment(checkingFishFragment)
                 navigationVisible()
             }
 
             "feed" -> {
-                pickOutFragment(FeedFragment(feedList))
+                pickOutFragment(feedFragment)
                 navigationVisible()
             }
 
             "write" -> {
-                pickOutFragment(WriteFragment())
+                pickOutFragment(writeFragment)
                 navigationGone()
             }
 
             "profile" -> {
-                pickOutFragment(ProfileFragment())
+                pickOutFragment(profileFragment)
                 navigationVisible()
             }
 
             "pay" -> {
-                pickOutFragment(PayFragment())
+                pickOutFragment(payFragment)
                 navigationGone()
             }
 
             "photoView" -> {
-                pickOutFragment(PhotoViewFragment())
+                pickOutFragment(photoViewFragment)
                 navigationGone()
             }
 
@@ -242,7 +252,7 @@ class MainActivity : AppCompatActivity() {
     // 백스택 쌓을 Fragment 구분
     fun pickOutFragment(fragmentName: Fragment) {
 
-        if (fragmentName == WriteFragment() || fragmentName == PhotoViewFragment()) {
+        if (fragmentName == writeFragment || fragmentName == photoViewFragment) {
 
             fragmentTransaction.replace(R.id.mainFragment, fragmentName).addToBackStack(null)
                 .commit()
@@ -262,104 +272,6 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
     } // removeFragmentStack()
-
-
-    fun getWeatherList(): ArrayList<ConditionWeather> {
-
-        return weatherList
-
-    } // getWeatherList()
-
-
-    fun getTideList(): ArrayList<ConditionTide> {
-
-        return tideList
-
-    } // getTideList()
-
-
-    fun getIndexList(): ArrayList<Index.Item> {
-
-        return indexList
-
-    } // getIndexList()
-
-
-    fun getCollectionList(): ArrayList<Collection> {
-
-        return collectionList
-
-    } // getCollectionList()
-
-
-    fun getHistoryList(): ArrayList<History> {
-
-        return historyList
-
-    }
-
-
-    fun getFeedList(): ArrayList<Feed> {
-
-        return feedList
-
-    } // getFeedList()
-
-
-    fun getUserInfo(): UserInfo {
-
-        return userInfo
-
-    } // getUserInfo()
-
-
-    fun setWeatherList(weatherList: ArrayList<ConditionWeather>) {
-
-        this.weatherList = weatherList
-
-    } // setWeatherList()
-
-
-    fun setTideList(tideList: ArrayList<ConditionTide>) {
-
-        this.tideList = tideList
-
-    } // setTideList()
-
-
-    fun setIndexList(indexList: ArrayList<Index.Item>) {
-
-        this.indexList = indexList
-
-    } // setIndexList()
-
-
-    fun setCollectionList(collectionList : ArrayList<Collection>) {
-
-        this.collectionList = collectionList
-
-    } // setCollectionList()
-
-
-    fun setHistoryList(historyList : ArrayList<History>) {
-
-        this.historyList = historyList
-
-    } // setHistoryList()
-
-
-    fun setFeedList(feedList : ArrayList<Feed>) {
-
-        this.feedList = feedList
-
-    } // setFeedList()
-
-
-    fun setUserInfo(userInfo : UserInfo) {
-
-        this.userInfo = userInfo
-
-    } // setUserInfo()
 
 
 }

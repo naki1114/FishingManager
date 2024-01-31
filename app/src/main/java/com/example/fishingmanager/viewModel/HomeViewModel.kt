@@ -4,25 +4,34 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
+import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.model.HomeModel
 
-class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, indexList : ArrayList<Index.Item>) : ViewModel() {
+class HomeViewModel(
+    weatherList: ArrayList<ConditionWeather>,
+    location: String,
+    indexList: ArrayList<Index.Item>,
+    historyList : ArrayList<History>,
+    feedList : ArrayList<Feed>
+) : ViewModel() {
 
     val model = HomeModel()
     val basicWeatherList = weatherList
     val basicIndexList = indexList
     val location = location
+    val basicHistoryList = historyList
+    val basicFeedList = feedList
 
     val liveDataChangeFragment = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
     val liveDataWeather = MutableLiveData<HomeWeather>()
     val liveDataRecommendList = MutableLiveData<ArrayList<HomeRecommend>>()
     val liveDataClickedFishImage = MutableLiveData<String>()
-    val liveDataRecentCollectionList = MutableLiveData<ArrayList<HomeRecentCollection>>()
+    val liveDataRecentCollectionList = MutableLiveData<ArrayList<History>>()
     val liveDataHotFeedList = MutableLiveData<ArrayList<Feed>>()
     val liveDataHotFeedNum = MutableLiveData<Int>()
 
@@ -43,14 +52,14 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
 
     fun getRecentCollectionList() {
 
-        liveDataRecentCollectionList.value = model.getRecentCollectionList()
+        liveDataRecentCollectionList.value = model.getRecentCollectionList(basicHistoryList)
 
     } // getRecentCollectionList()
 
 
     fun getHotFeedList() {
 
-        liveDataHotFeedList.value = model.getHotFeedList()
+        liveDataHotFeedList.value = model.getHotFeedList(basicFeedList)
 
     } // getHotFeedList()
 
@@ -62,21 +71,21 @@ class HomeViewModel(weatherList: ArrayList<ConditionWeather>, location: String, 
     } // changeFragment()
 
 
-    fun goPhotoView(image : String) {
+    fun goPhotoView(image: String) {
 
         liveDataClickedFishImage.value = image
 
     } // goPhotoView()
 
 
-    fun changeLayout(layout : String) {
+    fun changeLayout(layout: String) {
 
         liveDataChangeLayout.value = layout
 
     }
 
 
-    fun goHotFeed(feedNum : Int) {
+    fun goHotFeed(feedNum: Int) {
 
         liveDataHotFeedNum.value = feedNum
 

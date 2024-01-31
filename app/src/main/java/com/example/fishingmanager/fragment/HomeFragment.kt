@@ -26,9 +26,9 @@ class HomeFragment : Fragment() {
     lateinit var locationShared: SharedPreferences
     lateinit var location: String
     lateinit var recommendAdapter: HomeRecommendAdapter
-    lateinit var recentCollectionAdapter : HomeRecentCollectionAdapter
-    lateinit var seeMoreAdapter : HomeSeeMoreRecentCollectionAdapter
-    lateinit var hotFeedAdapter : HomeHotFeedAdapter
+    lateinit var recentCollectionAdapter: HomeRecentCollectionAdapter
+    lateinit var seeMoreAdapter: HomeSeeMoreRecentCollectionAdapter
+    lateinit var hotFeedAdapter: HomeHotFeedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,15 +54,22 @@ class HomeFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = HomeViewModel((activity as MainActivity).getWeatherList(), location, (activity as MainActivity).getIndexList())
+        viewModel = HomeViewModel(
+            (activity as MainActivity).weatherList,
+            location,
+            (activity as MainActivity).indexList,
+            (activity as MainActivity).historyList,
+            (activity as MainActivity).feedList
+        )
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         recommendAdapter = HomeRecommendAdapter()
-        recentCollectionAdapter = HomeRecentCollectionAdapter(HomeRecentCollectionAdapter.ItemClickListener {
-            viewModel.goPhotoView(it.fishImage)
-        })
+        recentCollectionAdapter =
+            HomeRecentCollectionAdapter(HomeRecentCollectionAdapter.ItemClickListener {
+                viewModel.goPhotoView(it.fishImage)
+            })
         seeMoreAdapter = HomeSeeMoreRecentCollectionAdapter()
         hotFeedAdapter = HomeHotFeedAdapter(HomeHotFeedAdapter.ItemClickListener {
             viewModel.goHotFeed(it.feedNum)
@@ -141,7 +148,8 @@ class HomeFragment : Fragment() {
 
     fun checkSharedPreference() {
 
-        locationShared = requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
+        locationShared =
+            requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
 
         location = locationShared.getString("location", "").toString()
 
@@ -152,9 +160,9 @@ class HomeFragment : Fragment() {
     }
 
 
-    fun changeLayout(layout : String) {
+    fun changeLayout(layout: String) {
 
-        when(layout) {
+        when (layout) {
 
             "main" -> {
 

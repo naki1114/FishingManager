@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
+import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
@@ -123,22 +124,30 @@ class HomeModel {
     } // getFishImage()
 
 
-    fun getRecentCollectionList() : ArrayList<HomeRecentCollection>{
+    fun getRecentCollectionList(historyList : ArrayList<History>) : ArrayList<History>{
 
-        val list = ArrayList<HomeRecentCollection>()
+        val list = ArrayList<History>()
 
+        for (i in 0 until historyList.size) {
 
+            list.add(historyList[i])
+
+        }
 
         return list
 
     } // getRecentCollectionList()
 
 
-    fun getHotFeedList() : ArrayList<Feed> {
+    fun getHotFeedList(feedList : ArrayList<Feed>) : ArrayList<Feed> {
 
         val list = ArrayList<Feed>()
 
+        for(i in 0 until feedList.size) {
 
+            list.add(feedList[i])
+
+        }
 
         return list
 

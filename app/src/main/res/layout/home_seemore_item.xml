@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="homeRecentCollectionItem"
-            type="com.example.fishingmanager.data.HomeRecentCollection" />
+            name="historyItem"
+            type="com.example.fishingmanager.data.History" />
 
     </data>
 
@@ -45,7 +45,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="10dp"
-                android:text="@{homeRecentCollectionItem.component3()}"
+                android:text="@{historyItem.component3()}"
                 />
 
             <View
@@ -62,7 +62,7 @@
                 android:textSize="16dp"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="5dp"
-                android:text="@{homeRecentCollectionItem.component4()}"
+                android:text="@{historyItem.component4()}"
                 />
 
         </LinearLayout>
