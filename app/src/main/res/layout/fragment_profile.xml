@@ -40,7 +40,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="5dp"
                     android:paddingVertical="13dp"
                     android:background="@drawable/custom_titlebar_background"
                     >
@@ -64,8 +63,8 @@
 
                     <ImageView
                         android:id="@+id/profileMenuButton"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_marginEnd="10dp"
                         android:layout_gravity="center"
                         android:src="@drawable/btnhamburger"
@@ -82,10 +81,10 @@
 
                     <ImageView
                         android:id="@+id/profileProfileImage"
-                        android:layout_width="180dp"
-                        android:layout_height="180dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:src="@drawable/fishing_logo"
                         />
 
@@ -123,6 +122,7 @@
                             android:textColor="@color/black"
                             android:layout_gravity="center"
                             android:visibility="gone"
+                            android:onClick='@{() -> viewModel.changeTab("collection")}'
                             />
 
                         <Button
@@ -151,6 +151,7 @@
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:layout_gravity="center"
+                            android:onClick='@{() -> viewModel.changeTab("history")}'
                             />
 
                         <Button
@@ -186,6 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:visibility="visible"
                     >
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -216,13 +218,13 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.4"
                             />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3"
+                            android:layout_weight="3.2"
                             android:orientation="vertical"
                             >
 
@@ -231,7 +233,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
+                                android:textSize="16dp"
                                 android:text="@string/profile_fish"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
@@ -239,7 +241,7 @@
 
                             <Button
                                 android:id="@+id/profileHistoryFishButton"
-                                android:layout_width="90dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:background="@drawable/custom_main_button_background"
                                 android:textColor="@color/main2"
@@ -247,6 +249,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
                                 android:text="용치놀래기"
+                                android:textSize="12dp"
                                 />
 
                         </LinearLayout>
@@ -254,13 +257,13 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.4"
                             />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="4"
+                            android:layout_weight="4.2"
                             android:orientation="vertical"
                             >
 
@@ -269,7 +272,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
+                                android:textSize="16dp"
                                 android:text="@string/profile_length"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
@@ -277,7 +280,7 @@
 
                             <Button
                                 android:id="@+id/profileHistoryLengthButton"
-                                android:layout_width="120dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:background="@drawable/custom_main_button_background"
                                 android:textColor="@color/main2"
@@ -285,6 +288,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
                                 android:text="61cm ~ 99cm"
+                                android:textSize="12dp"
                                 />
 
                         </LinearLayout>
@@ -292,7 +296,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.4"
                             />
 
                         <LinearLayout
@@ -307,7 +311,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
+                                android:textSize="16dp"
                                 android:text="@string/profile_date"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
@@ -315,7 +319,7 @@
 
                             <Button
                                 android:id="@+id/profileHistoryDateButton"
-                                android:layout_width="110dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:background="@drawable/custom_main_button_background"
                                 android:textColor="@color/main2"
@@ -323,6 +327,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
                                 android:text="2024.01.31"
+                                android:textSize="12dp"
                                 />
 
                         </LinearLayout>
@@ -330,7 +335,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.4"
                             />
 
                     </LinearLayout>

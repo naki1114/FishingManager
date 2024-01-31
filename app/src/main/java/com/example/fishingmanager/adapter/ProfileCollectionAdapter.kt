@@ -1,6 +1,7 @@
 package com.example.fishingmanager.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishingmanager.data.Collection
@@ -47,6 +48,18 @@ class ProfileCollectionAdapter(val itemClickListener : ItemClickListener) : Recy
     class ViewHolder(val binding : ProfileCollectionItemBinding, val itemClickListener: ItemClickListener) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(collection: Collection) {
+
+            if (collection.fishName == "") {
+
+                binding.profileCollectionItemFishNameText.visibility = View.GONE
+                binding.profileCollectionItemDateText.visibility = View.GONE
+
+            } else {
+
+                binding.profileCollectionItemFishNameText.visibility = View.VISIBLE
+                binding.profileCollectionItemDateText.visibility = View.VISIBLE
+
+            }
 
             binding.profileCollectionItemFishImage.setImageResource(collection.fishImage)
 
