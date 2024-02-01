@@ -1,10 +1,12 @@
 package com.example.fishingmanager.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
@@ -19,6 +21,10 @@ class CheckingFishFragment : Fragment() {
 
     lateinit var viewModel : CheckingFishViewModel
     lateinit var adapter : CheckingFishHistoryAdapter
+
+    lateinit var userInfoShared : SharedPreferences
+    lateinit var nickname : String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +41,7 @@ class CheckingFishFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkUserShared()
         setVariable()
         observeLiveData()
         getData()
@@ -44,7 +51,7 @@ class CheckingFishFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = CheckingFishViewModel()
+        viewModel = CheckingFishViewModel((activity as MainActivity).historyList, nickname)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -93,5 +100,13 @@ class CheckingFishFragment : Fragment() {
 
 
     } // changeLayout()
+
+
+    fun checkUserShared() {
+
+        userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        nickname = userInfoShared.getString("nickname", "").toString()
+
+    } // checkUserShared()
 
 }
