@@ -48,10 +48,6 @@
 
             </LinearLayout>
 
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -62,15 +58,29 @@
                         android:id="@+id/checkingFishCheckLayout"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="5"
+                        android:layout_weight="4"
                         android:orientation="vertical"
+                        android:background="@color/main2"
                         >
 
-                        <ImageView
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/checkingFishCameraButton"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
+                            android:layout_width="170dp"
+                            android:layout_height="170dp"
                             android:layout_gravity="center"
+                            android:background="@color/white"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
                             />
 
                         <TextView
@@ -82,13 +92,19 @@
                             android:layout_gravity="center"
                             />
 
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/checkingFishHistoryLayout"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="5"
+                        android:layout_weight="6"
                         android:orientation="vertical"
                         >
 
@@ -98,6 +114,7 @@
                             android:textColor="@color/black"
                             android:textSize="20dp"
                             android:textStyle="bold"
+                            android:layout_margin="15dp"
                             android:text="@string/checkingFish_history"
                             />
 
@@ -113,8 +130,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
 
