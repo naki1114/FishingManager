@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.ProfileCollectionAdapter
 import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
 import com.example.fishingmanager.databinding.FragmentProfileBinding
+import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
@@ -62,7 +64,7 @@ class ProfileFragment : Fragment() {
         binding.lifecycleOwner = this
 
         collectionAdapter = ProfileCollectionAdapter(ProfileCollectionAdapter.ItemClickListener {
-
+            viewModel.selectedFish(it)
         })
         historyAdapter = ProfileHistoryAdapter()
         selectFishAdapter = ProfileSelectFishAdapter(ProfileSelectFishAdapter.ItemClickListener {
@@ -93,6 +95,13 @@ class ProfileFragment : Fragment() {
         viewModel.liveDataFishList.observe(viewLifecycleOwner, Observer {
 
             selectFishAdapter.setItem(it)
+
+        })
+
+        viewModel.liveDataSelectedFish.observe(viewLifecycleOwner, Observer {
+
+            binding.collection = it
+            Glide.with(requireActivity()).load(it.fishImage).into(binding.profileCollectionReadMoreImage)
 
         })
 
@@ -173,6 +182,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationVisible()
             }
 
             "readMore" -> {
@@ -181,6 +191,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectFish" -> {
@@ -189,6 +200,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.VISIBLE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectLength" -> {
@@ -197,6 +209,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.VISIBLE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectDate" -> {
@@ -205,6 +218,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.VISIBLE
+                (activity as MainActivity).navigationGone()
             }
 
         }

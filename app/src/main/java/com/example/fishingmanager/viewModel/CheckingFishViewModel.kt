@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.model.CheckingFishModel
 
-class CheckingFishViewModel : ViewModel() {
+class CheckingFishViewModel(historyList : ArrayList<History>, val nickname : String) : ViewModel() {
 
     val model = CheckingFishModel()
+
+    val basicHistoryList = historyList
 
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataClickedFishImage = MutableLiveData<String>()
@@ -15,7 +17,7 @@ class CheckingFishViewModel : ViewModel() {
 
     fun getHistoryList() {
 
-        liveDataHistoryList.value = model.getHistoryList()
+        liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
 
     } // getHistoryList()
 

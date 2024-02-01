@@ -19,12 +19,13 @@ class ProfileViewModel(
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
+    val liveDataSelectedFish = MutableLiveData<Collection>()
 
     val liveDataChangeTab = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
     val liveDataClickedMenu = MutableLiveData<Boolean>()
 
-    lateinit var previousLayout: String
+    var previousLayout: String = ""
 
     fun init() {
 
@@ -33,6 +34,14 @@ class ProfileViewModel(
         liveDataFishList.value = model.getFishList()
 
     } // init()
+
+
+    fun selectedFish(collection: Collection) {
+
+        liveDataSelectedFish.value = collection
+        changeLayout("readMore")
+
+    } // selectedFish()
 
 
     fun changeTab(tab: String) {
@@ -44,10 +53,21 @@ class ProfileViewModel(
 
     fun changeLayout(layout: String) {
 
-        previousLayout = liveDataChangeLayout.value!!
+        if (previousLayout != "") {
+            previousLayout = liveDataChangeLayout.value!!
+        } else {
+            previousLayout = "main"
+        }
         liveDataChangeLayout.value = layout
 
     } // changeLayout()
+
+
+    fun backToMainLayout() {
+
+        liveDataChangeLayout.value = previousLayout
+
+    } // backToMainLayout()
 
 
     fun clickedMenu() {

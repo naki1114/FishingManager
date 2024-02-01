@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.databinding.CheckingfishHistoryItemBinding
+import com.example.fishingmanager.network.RetrofitClient
 
 class CheckingFishHistoryAdapter(val itemClickListener : ItemClickListener) : RecyclerView.Adapter<CheckingFishHistoryAdapter.ViewHolder>() {
 
@@ -52,7 +53,7 @@ class CheckingFishHistoryAdapter(val itemClickListener : ItemClickListener) : Re
             binding.history = history
             binding.clickListener = itemClickListener
 
-            Glide.with(context).load(history.fishImage).into(binding.checkingFishHistoryItemImage)
+            Glide.with(context).load(RetrofitClient.BASE_URL + history.fishImage).into(binding.checkingFishHistoryItemImage)
 
         } // onBind()
 
