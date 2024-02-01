@@ -78,6 +78,7 @@ class HomeFragment : Fragment() {
         binding.homeRecommendRecyclerView.adapter = recommendAdapter
         binding.homeRecentCollectionRecyclerView.adapter = recentCollectionAdapter
         binding.homeSeeMoreRecyclerView.adapter = seeMoreAdapter
+        binding.homeHotFeedRecyclerView.adapter = hotFeedAdapter
 
     } // setVariable()
 

@@ -338,7 +338,7 @@
                 <LinearLayout
                     android:id="@+id/homeHotFeedLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="400dp"
                     android:orientation="vertical"
                     android:layout_marginVertical="15dp"
                     android:background="@drawable/custom_home_background"

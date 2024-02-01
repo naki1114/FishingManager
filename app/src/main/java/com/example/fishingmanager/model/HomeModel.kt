@@ -1,6 +1,7 @@
 package com.example.fishingmanager.model
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
@@ -171,7 +172,7 @@ class HomeModel {
             list.add(feedList[i])
 
         }
-
+        Log.d("TAG", "getHotFeedList: ${list.size}")
         return list
 
     } // getHotFeedList()
