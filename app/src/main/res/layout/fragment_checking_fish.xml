@@ -74,7 +74,8 @@
                             android:layout_width="170dp"
                             android:layout_height="170dp"
                             android:layout_gravity="center"
-                            android:background="@color/white"
+                            android:background="@drawable/custom_white_circle_background"
+                            android:src="@drawable/btncarmera"
                             />
 
                         <View
