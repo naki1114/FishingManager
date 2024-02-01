@@ -1,6 +1,7 @@
 package com.example.fishingmanager.model
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
@@ -165,13 +166,20 @@ class HomeModel {
     fun getHotFeedList(feedList : ArrayList<Feed>) : ArrayList<Feed> {
 
         val list = ArrayList<Feed>()
+        var parseDate = ""
+        var date = ""
+        var feed = Feed("", 0, "", "", "", "", "")
 
         for(i in 0 until feedList.size) {
 
-            list.add(feedList[i])
+            parseDate = feedList[i].date + "000"
+            date = GetDate().getFormatDate3(parseDate.toLong())
+
+            feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date)
+            list.add(feed)
 
         }
-
+        Log.d("TAG", "getHotFeedList: ${list.size}")
         return list
 
     } // getHotFeedList()

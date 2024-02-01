@@ -71,10 +71,12 @@
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/checkingFishCameraButton"
-                            android:layout_width="170dp"
-                            android:layout_height="170dp"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
                             android:layout_gravity="center"
-                            android:background="@color/white"
+                            android:background="@drawable/custom_white_circle_background"
+                            android:src="@drawable/btncarmera"
+                            android:padding="25dp"
                             />
 
                         <View
@@ -86,7 +88,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18dp"
+                            android:textSize="15dp"
                             android:textColor="@color/gray3"
                             android:text="@string/checkingFish_limitCount"
                             android:layout_gravity="center"

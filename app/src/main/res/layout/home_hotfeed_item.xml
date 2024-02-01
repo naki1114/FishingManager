@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:paddingVertical="10dp"
+        android:background="@color/main2"
         android:onClick="@{() -> clickListener.onClick(feed)}"
         >
 
@@ -32,29 +33,13 @@
 
         <TextView
             android:id="@+id/homeHotFeedItemTitleText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:layout_weight="0.8"
+            android:textSize="17dp"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:text="@{feed.component3()}"
-            android:layout_gravity="center"
-            />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.6"
-            />
-
-        <TextView
-            android:id="@+id/homeHotFeedItemNicknameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="@{feed.component1()}"
             android:layout_gravity="center"
             />
 
@@ -65,12 +50,29 @@
             />
 
         <TextView
-            android:id="@+id/homeHotFeedItemDateText"
-            android:layout_width="wrap_content"
+            android:id="@+id/homeHotFeedItemNicknameText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:textSize="14dp"
+            android:textColor="@color/black"
+            android:text="@{feed.component1()}"
+            android:layout_gravity="center"
+            />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            />
+
+        <TextView
+            android:id="@+id/homeHotFeedItemDateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textSize="12dp"
             android:textColor="@color/gray3"
-            android:textStyle="bold"
             android:text="@{feed.component7()}"
             android:layout_gravity="center"
             />

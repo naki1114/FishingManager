@@ -112,7 +112,7 @@
     <string name="condition_index_very_good">매우 좋음</string>
     <string name="checkingFish_title">어종 확인</string>
     <string name="checkingFish_result_title">확인 결과</string>
-    <string name="checkingFish_limitCount">금일 남은 횟수</string>
+    <string name="checkingFish_limitCount">금일 남은 횟수 3 / 3</string>
     <string name="checkingFish_history">기록</string>
     <string name="checkingFish_result_save">내 기록에 저장</string>
     <string name="checkingFish_result_write">내 기록에 저장 후 게시글 작성</string>
