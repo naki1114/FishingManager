@@ -8,6 +8,10 @@
             name="viewModel"
             type="com.example.fishingmanager.viewModel.ProfileViewModel" />
 
+        <variable
+            name="collection"
+            type="com.example.fishingmanager.data.Collection" />
+
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -378,6 +382,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick="@{() -> viewModel.backToMainLayout()}"
                         />
 
                     <View
@@ -418,7 +423,6 @@
                         android:layout_marginVertical="30dp"
                         android:layout_marginHorizontal="60dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/chamdom"
                         />
 
                     <TextView
@@ -430,7 +434,7 @@
                         android:textSize="20dp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="30dp"
-                        android:text="참돔"
+                        android:text="@{collection.fishName}"
                         />
 
                     <TextView
@@ -442,7 +446,7 @@
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="30dp"
                         android:layout_marginBottom="30dp"
-                        android:text="암초지대의 수심 20~30m 에서 주로 서식하며 기록된 최대 크기는 ..."
+                        android:text="@{collection.explane}"
                         />
 
                 </LinearLayout>

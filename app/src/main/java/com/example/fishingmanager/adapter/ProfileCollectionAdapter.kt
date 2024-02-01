@@ -50,6 +50,7 @@ class ProfileCollectionAdapter(val itemClickListener : ItemClickListener) : Recy
         fun onBind(collection: Collection) {
 
             binding.collection = collection
+            binding.clickListener = itemClickListener
 
             if (collection.fishName == "") {
 
