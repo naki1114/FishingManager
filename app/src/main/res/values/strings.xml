@@ -11,6 +11,7 @@
     <string name="title">제목</string>
     <string name="content">내용</string>
     <string name="writer">작성자</string>
+    <string name="date">날짜</string>
     <string name="loading">로딩중…</string>
     <string name="failure_load_data">데이터를 불러올 수 없습니다.</string>
     <string name="refresh">새로 고침</string>
