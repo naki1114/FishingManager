@@ -38,9 +38,11 @@ class ProfileViewModel(
 
     fun selectedFish(collection: Collection) {
 
-        liveDataSelectedFish.value = collection
-        changeLayout("readMore")
-
+        if (collection.fishName != "") {
+            liveDataSelectedFish.value = collection
+            changeLayout("readMore")
+        }
+        
     } // selectedFish()
 
 
