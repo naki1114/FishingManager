@@ -182,6 +182,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationVisible()
             }
 
             "readMore" -> {
@@ -190,6 +191,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectFish" -> {
@@ -198,6 +200,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.VISIBLE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectLength" -> {
@@ -206,6 +209,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.VISIBLE
                 binding.profileSelectDateLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "selectDate" -> {
@@ -214,6 +218,7 @@ class ProfileFragment : Fragment() {
                 binding.profileSelectFishLayout.visibility = View.GONE
                 binding.profileSelectLengthLayout.visibility = View.GONE
                 binding.profileSelectDateLayout.visibility = View.VISIBLE
+                (activity as MainActivity).navigationGone()
             }
 
         }
