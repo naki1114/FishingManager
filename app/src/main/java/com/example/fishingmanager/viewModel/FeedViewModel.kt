@@ -1,27 +1,40 @@
 package com.example.fishingmanager.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.model.FeedModel
 
-class FeedViewModel(val eedList : ArrayList<Feed>) : ViewModel() {
+class FeedViewModel(val feedList : ArrayList<Feed>) : ViewModel() {
 
-    private var TAG = "FeedViewModel"
-
+    val toReadLiveData = MutableLiveData<Feed>()
     val toWriteLiveData = MutableLiveData<Boolean>()
+    val toFeedListLiveData = MutableLiveData<Boolean>()
+    val searchLiveData = MutableLiveData<ArrayList<String>>()
 
     private val model = FeedModel()
 
     fun searchFeed(type : String, keyword : String) {
-        Log.d(TAG, "spinner : $type, keyword : $keyword")
+        val search = arrayListOf(type, keyword)
+        searchLiveData.value = search
     } // searchFeed
+
+    fun readFeed(feed : Feed) {
+
+        toReadLiveData.value = feed
+
+    } // readFeed
 
     fun addFeed() {
 
         toWriteLiveData.value = true
 
     } // addFeed
+
+    fun toFeedListLayout() {
+
+        toFeedListLiveData.value = true
+
+    } // toFeedListLayout
 
 }
