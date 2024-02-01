@@ -42,7 +42,7 @@ class ProfileViewModel(
             liveDataSelectedFish.value = collection
             changeLayout("readMore")
         }
-        
+
     } // selectedFish()
 
 
