@@ -201,6 +201,7 @@ class SplashFragment : Fragment() {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
         userNickname = sharedPreferences?.getString("nickname", "").toString()
+        (activity as MainActivity).nickname = userNickname
 
         return userNickname == ""
 
