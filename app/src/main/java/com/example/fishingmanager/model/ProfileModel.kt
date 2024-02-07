@@ -120,7 +120,7 @@ class ProfileModel {
         for (j in 0 until list.size) {
             if (list[j].fishName == fish) {
 
-                val date : Long = (list[j].date + "000").toLong()
+                val date : Long = (list[j].date).toLong()
 
                 collection = Collection(
                     list[j].nickname,

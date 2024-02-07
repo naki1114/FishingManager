@@ -172,7 +172,7 @@ class HomeModel {
 
         for(i in 0 until feedList.size) {
 
-            parseDate = feedList[i].date + "000"
+            parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
             feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date)

@@ -49,7 +49,7 @@ class FeedAdapter(val itemClickListener : ItemClickListener, feedList : ArrayLis
             binding.feedItemTitleTextView.text = feed.title
             binding.feedItemWriterTextView.text = feed.nickname
             binding.feedItemViewCountTextView.text = "조회수 ${feed.viewCount}"
-            binding.feedItemWriteDateTextView.text = dateFormat.format(feed.date.toLong() * 1000).toString()
+            binding.feedItemWriteDateTextView.text = dateFormat.format(feed.date.toLong()).toString()
 
             if (feed.feedImage == null) {
 
