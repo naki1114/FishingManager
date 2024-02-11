@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.R
+import com.example.fishingmanager.databinding.FragmentSplashBinding
 import com.example.fishingmanager.viewModel.SplashViewModel
 import com.skydoves.progressview.ProgressView
 import kotlin.concurrent.thread
@@ -22,11 +24,9 @@ class SplashFragment : Fragment() {
 
     val TAG: String = "SplashFragment"
 
+    private lateinit var binding : FragmentSplashBinding
     private lateinit var viewModel : SplashViewModel
-    private lateinit var progressText: TextView
-    private lateinit var progressView: ProgressView
-    private lateinit var loadingFailLayout: LinearLayout
-    private lateinit var loadingFailCheckText: TextView
+
     private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
     private var realLoadingValue: Int = 0
@@ -49,7 +49,9 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash, container, false)
+
+        return binding.root
 
     } // onCreateView()
 
@@ -68,10 +70,9 @@ class SplashFragment : Fragment() {
     fun setVariable() {
 
         viewModel = SplashViewModel()
-        progressText = activity?.findViewById(R.id.progressText)!!
-        progressView = activity?.findViewById(R.id.progressView)!!
-        loadingFailLayout = activity?.findViewById(R.id.loadingFailLayout)!!
-        loadingFailCheckText = activity?.findViewById(R.id.loadingFailCheckText)!!
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
         checkSharedPreferense = checkLoginSharedPreference()
         getLocationSharedPreference()
 
@@ -196,16 +197,16 @@ class SplashFragment : Fragment() {
 
         realLoadingValue += 25
 
-        progressView.labelText = "${progressValue.toInt()} %"
-        progressView.progress = progressValue
+        binding.progressView.labelText = "${progressValue.toInt()} %"
+        binding.progressView.progress = progressValue
 
         when (progressValue.toInt()) {
 
-            0 -> progressText.text = resources.getString(R.string.splash_loading_0)
-            25 -> progressText.text = resources.getString(R.string.splash_loading_25)
-            50 -> progressText.text = resources.getString(R.string.splash_loading_50)
-            75 -> progressText.text = resources.getString(R.string.splash_loading_75)
-            100 -> progressText.text = resources.getString(R.string.splash_loading_100)
+            0 -> binding.progressText.text = resources.getString(R.string.splash_loading_0)
+            25 -> binding.progressText.text = resources.getString(R.string.splash_loading_25)
+            50 -> binding.progressText.text = resources.getString(R.string.splash_loading_50)
+            75 -> binding.progressText.text = resources.getString(R.string.splash_loading_75)
+            100 -> binding.progressText.text = resources.getString(R.string.splash_loading_100)
 
         }
 
@@ -228,7 +229,7 @@ class SplashFragment : Fragment() {
 
         if (checkDataStatusNum == 4) {
 
-            loadingFailLayout.visibility = View.VISIBLE
+            binding.loadingFailLayout.visibility = View.VISIBLE
 
         }
 
