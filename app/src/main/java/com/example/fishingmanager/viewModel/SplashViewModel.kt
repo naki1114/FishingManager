@@ -32,6 +32,11 @@ class SplashViewModel : ViewModel() {
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataFeedList = MutableLiveData<ArrayList<Feed>>()
     val liveDataUserInfo = MutableLiveData<UserInfo>()
+    val liveDataFailureWeather = MutableLiveData<Boolean>()
+    val liveDataFailureTide = MutableLiveData<Boolean>()
+    val liveDataFailureIndex = MutableLiveData<Boolean>()
+    val liveDataFailureCombine = MutableLiveData<Boolean>()
+    val liveDataFinishStatus = MutableLiveData<Boolean>()
 
 
     // Model에서 요청한 날씨 API에 대한 Callback
@@ -45,11 +50,13 @@ class SplashViewModel : ViewModel() {
 
                 } else {
                     Log.d(TAG, "getWeather - onResponse : isFailure : ${response.message()}")
+                    liveDataFailureWeather.value = true
                 }
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.d(TAG, "getWeather - onFailure : $t")
+                liveDataFailureWeather.value = true
             }
         })
 
@@ -67,11 +74,13 @@ class SplashViewModel : ViewModel() {
 
                 } else {
                     Log.d(TAG, "getTide - onResponse : isFailure : ${response.message()}")
+                    liveDataFailureTide.value = true
                 }
             }
 
             override fun onFailure(call: Call<Tide>, t: Throwable) {
                 Log.d(TAG, "getTide - onFailure : $t")
+                liveDataFailureTide.value = true
             }
         })
 
@@ -89,11 +98,13 @@ class SplashViewModel : ViewModel() {
 
                 } else {
                     Log.d(TAG, "getIndex - onResponse : isFailure : ${response.message()}")
+                    liveDataFailureIndex.value = true
                 }
             }
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
                 Log.d(TAG, "getIndex - onFailure : $t")
+                liveDataFailureIndex.value = true
             }
         })
 
@@ -116,22 +127,27 @@ class SplashViewModel : ViewModel() {
                     liveDataCombineData.value = true
 
                 } else {
-
                     Log.d(TAG, "getCombine - onResponse : isFailure : ${response.message()}")
-
+                    liveDataFailureCombine.value = true
                 }
 
             }
 
             override fun onFailure(call: Call<Combine>, t: Throwable) {
-
                 Log.d(TAG, "getCombine - onFailure : $t")
-
+                liveDataFailureCombine.value = true
             }
 
         })
 
     } // getCombine()
+
+
+    fun finish() {
+
+        liveDataFinishStatus.value = true
+
+    } // finish()
 
 
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -24,12 +25,16 @@ class SplashFragment : Fragment() {
     private lateinit var viewModel : SplashViewModel
     private lateinit var progressText: TextView
     private lateinit var progressView: ProgressView
+    private lateinit var loadingFailLayout: LinearLayout
+    private lateinit var loadingFailCheckText: TextView
     private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
+    private var realLoadingValue: Int = 0
     private lateinit var userNickname: String
     private lateinit var obsCode: String
     private lateinit var lat : String
     private lateinit var lon : String
+    private var checkDataStatusNum : Int = 0
 
     val delayToStart = thread(false) {
         Thread.sleep(1000)
@@ -65,6 +70,8 @@ class SplashFragment : Fragment() {
         viewModel = SplashViewModel()
         progressText = activity?.findViewById(R.id.progressText)!!
         progressView = activity?.findViewById(R.id.progressView)!!
+        loadingFailLayout = activity?.findViewById(R.id.loadingFailLayout)!!
+        loadingFailCheckText = activity?.findViewById(R.id.loadingFailCheckText)!!
         checkSharedPreferense = checkLoginSharedPreference()
         getLocationSharedPreference()
 
@@ -92,6 +99,7 @@ class SplashFragment : Fragment() {
         // 날씨 - ArrayList 감지
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).weatherList = it
 
@@ -100,6 +108,7 @@ class SplashFragment : Fragment() {
         // 조석 - ArrayList 감지
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).tideList = it
 
@@ -108,6 +117,7 @@ class SplashFragment : Fragment() {
         // 지수 - ArrayList 감지
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).indexList = it
 
@@ -115,6 +125,7 @@ class SplashFragment : Fragment() {
 
         viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
 
         })
@@ -143,13 +154,47 @@ class SplashFragment : Fragment() {
 
         })
 
+        viewModel.liveDataFailureWeather.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureTide.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureIndex.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureCombine.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFinishStatus.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).finish()
+
+        })
+
     } // observeLiveData()
 
 
     // ProgressView 업데이트
     fun updateProgressView() {
 
-        progressValue += 25.0f
+        realLoadingValue += 25
 
         progressView.labelText = "${progressValue.toInt()} %"
         progressView.progress = progressValue
@@ -160,24 +205,34 @@ class SplashFragment : Fragment() {
             25 -> progressText.text = resources.getString(R.string.splash_loading_25)
             50 -> progressText.text = resources.getString(R.string.splash_loading_50)
             75 -> progressText.text = resources.getString(R.string.splash_loading_75)
-            100 -> {
-                progressText.text = resources.getString(R.string.splash_loading_100)
+            100 -> progressText.text = resources.getString(R.string.splash_loading_100)
 
-                if (checkSharedPreferense) {
+        }
 
-                    delayToStart.start()
+        if (realLoadingValue == 100 && checkDataStatusNum != 4) {
 
-                } else {
-
-                    delayToHome.start()
-
-                }
-
+            if (checkSharedPreferense) {
+                delayToStart.start()
+            } else {
+                delayToHome.start()
             }
 
         }
 
     } // updateProgressView()
+
+
+    fun checkDataStatus() {
+
+        checkDataStatusNum++
+
+        if (checkDataStatusNum == 4) {
+
+            loadingFailLayout.visibility = View.VISIBLE
+
+        }
+
+    } // checkDataStatus()
 
 
     // SharedPreference 체크
