@@ -149,21 +149,7 @@ class SplashFragment : Fragment() {
     // ProgressView 업데이트
     fun updateProgressView() {
 
-        if (checkSharedPreferense) {
-
-            progressValue += 33.3f
-
-            if (progressValue.toInt() == 99) {
-
-                progressValue = 100.0f
-
-            }
-
-        } else {
-
-            progressValue += 25.0f
-
-        }
+        progressValue += 25.0f
 
         progressView.labelText = "${progressValue.toInt()} %"
         progressView.progress = progressValue
@@ -174,9 +160,7 @@ class SplashFragment : Fragment() {
             25 -> progressText.text = resources.getString(R.string.splash_loading_25)
             50 -> progressText.text = resources.getString(R.string.splash_loading_50)
             75 -> progressText.text = resources.getString(R.string.splash_loading_75)
-            33 -> progressText.text = resources.getString(R.string.splash_loading_33)
-            66 -> progressText.text = resources.getString(R.string.splash_loading_66)
-            99 , 100 -> {
+            100 -> {
                 progressText.text = resources.getString(R.string.splash_loading_100)
 
                 if (checkSharedPreferense) {
