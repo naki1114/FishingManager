@@ -97,7 +97,7 @@ class CheckingFishFragment : Fragment() {
 
     fun changeLayout(layout : String) {
 
-
+        (activity as MainActivity).changeFragment(layout)
 
     } // changeLayout()
 
