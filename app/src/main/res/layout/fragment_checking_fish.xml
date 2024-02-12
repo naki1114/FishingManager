@@ -63,16 +63,41 @@
                         android:background="@color/main2"
                         >
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            />
+                        <LinearLayout
+                            android:id="@+id/checkingFishPurchaseTicketLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="end"
+                            android:gravity="center"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="5dp"
+                            android:onClick='@{() -> viewModel.changeLayout("pay")}'
+                            >
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ticket"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pay_title"
+                                android:textColor="@color/black"
+                                android:textSize="12dp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="5dp"
+                                />
+
+                        </LinearLayout>
+
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/checkingFishCameraButton"
-                            android:layout_width="160dp"
-                            android:layout_height="160dp"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
                             android:layout_gravity="center"
                             android:background="@drawable/custom_white_circle_background"
                             android:src="@drawable/btncarmera"
@@ -82,14 +107,14 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1"
                             />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
-                            android:textColor="@color/gray3"
+                            android:textColor="@color/black"
                             android:text="@string/checkingFish_limitCount"
                             android:layout_gravity="center"
                             />
