@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
@@ -35,6 +36,7 @@ class PayFragment : Fragment() {
 
         setVariable()
         observeLiveData()
+        viewModel.getTicketList()
 
     } // onViewCreated()
 
@@ -56,6 +58,12 @@ class PayFragment : Fragment() {
 
     fun observeLiveData() {
 
+        viewModel.liveDataTicketList.observe(viewLifecycleOwner, Observer {
+
+            adapter.setItem(it)
+
+        })
+
         viewModel.liveDataBackStatus.observe(viewLifecycleOwner, Observer {
 
             if (it) {
@@ -68,10 +76,38 @@ class PayFragment : Fragment() {
 
         viewModel.liveDataProduct.observe(viewLifecycleOwner, Observer {
 
-            // 티켓 종류 구분하여 결제 진행 추가
+            when (it.ticketName) {
+
+                "FM 세트 한 달 이용권" -> {
+                    showToast("FM 세트 한 달 이용권")
+                }
+                "FM 세트 일 년 이용권" -> {
+                    showToast("FM 세트 일 년 이용권")
+                }
+                "어종 확인 한 달 이용권" -> {
+                    showToast("어종 확인 한 달 이용권")
+                }
+                "어종 확인 일 년 이용권" -> {
+                    showToast("어종 확인 일 년 이용권")
+                }
+                "광고 제거 한 달 이용권" -> {
+                    showToast("광고 제거 한 달 이용권")
+                }
+                "광고 제거 일 년 이용권" -> {
+                    showToast("광고 제거 일 년 이용권")
+                }
+
+            }
 
         })
 
     } // observeLiveData()
+
+
+    fun showToast(message : String) {
+
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
+
+    } // showToast()
 
 }

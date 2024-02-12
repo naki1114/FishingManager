@@ -146,8 +146,14 @@
     <string name="pay_checkingFish_year">어종 확인 일 년 이용권</string>
     <string name="pay_removeAD_month">광고 제거 한 달 이용권</string>
     <string name="pay_removeAD_year">광고 제거 일 년 이용권</string>
-    <string name="pay_month">월</string>
-    <string name="pay_year">년</string>
+    <string name="pay_month">30일</string>
+    <string name="pay_year">365일</string>
+    <string name="pay_4900">￦ 4,900 / 월</string>
+    <string name="pay_49000">￦ 49,000 / 년</string>
+    <string name="pay_3900">￦ 3,900 / 월</string>
+    <string name="pay_39000">￦ 39,000 / 년</string>
+    <string name="pay_1900">￦ 1,900 / 월</string>
+    <string name="pay_19000">￦ 19,000 / 년</string>
     <string name="condition_calendar_info">정확도를 위해 3일간의 데이터만 제공됩니다.</string>
 
     <string-array name="custom_weekdays">
