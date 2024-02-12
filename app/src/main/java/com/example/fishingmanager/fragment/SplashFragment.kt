@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.R
+import com.example.fishingmanager.databinding.FragmentSplashBinding
 import com.example.fishingmanager.viewModel.SplashViewModel
 import com.skydoves.progressview.ProgressView
 import kotlin.concurrent.thread
@@ -21,15 +24,17 @@ class SplashFragment : Fragment() {
 
     val TAG: String = "SplashFragment"
 
+    private lateinit var binding : FragmentSplashBinding
     private lateinit var viewModel : SplashViewModel
-    private lateinit var progressText: TextView
-    private lateinit var progressView: ProgressView
+
     private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
+    private var realLoadingValue: Int = 0
     private lateinit var userNickname: String
     private lateinit var obsCode: String
     private lateinit var lat : String
     private lateinit var lon : String
+    private var checkDataStatusNum : Int = 0
 
     val delayToStart = thread(false) {
         Thread.sleep(1000)
@@ -44,7 +49,9 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_splash, container, false)
+
+        return binding.root
 
     } // onCreateView()
 
@@ -63,8 +70,9 @@ class SplashFragment : Fragment() {
     fun setVariable() {
 
         viewModel = SplashViewModel()
-        progressText = activity?.findViewById(R.id.progressText)!!
-        progressView = activity?.findViewById(R.id.progressView)!!
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
         checkSharedPreferense = checkLoginSharedPreference()
         getLocationSharedPreference()
 
@@ -92,6 +100,7 @@ class SplashFragment : Fragment() {
         // 날씨 - ArrayList 감지
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).weatherList = it
 
@@ -100,6 +109,7 @@ class SplashFragment : Fragment() {
         // 조석 - ArrayList 감지
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).tideList = it
 
@@ -108,6 +118,7 @@ class SplashFragment : Fragment() {
         // 지수 - ArrayList 감지
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
             (activity as MainActivity).indexList = it
 
@@ -115,6 +126,7 @@ class SplashFragment : Fragment() {
 
         viewModel.liveDataCombineData.observe(viewLifecycleOwner, Observer {
 
+            progressValue += 25.0f
             updateProgressView()
 
         })
@@ -143,57 +155,85 @@ class SplashFragment : Fragment() {
 
         })
 
+        viewModel.liveDataFailureWeather.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureTide.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureIndex.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFailureCombine.observe(viewLifecycleOwner, Observer {
+
+            checkDataStatus()
+            updateProgressView()
+
+        })
+
+        viewModel.liveDataFinishStatus.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).finish()
+
+        })
+
     } // observeLiveData()
 
 
     // ProgressView 업데이트
     fun updateProgressView() {
 
-        if (checkSharedPreferense) {
+        realLoadingValue += 25
 
-            progressValue += 33.3f
-
-            if (progressValue.toInt() == 99) {
-
-                progressValue = 100.0f
-
-            }
-
-        } else {
-
-            progressValue += 25.0f
-
-        }
-
-        progressView.labelText = "${progressValue.toInt()} %"
-        progressView.progress = progressValue
+        binding.progressView.labelText = "${progressValue.toInt()} %"
+        binding.progressView.progress = progressValue
 
         when (progressValue.toInt()) {
 
-            0 -> progressText.text = resources.getString(R.string.splash_loading_0)
-            25 -> progressText.text = resources.getString(R.string.splash_loading_25)
-            50 -> progressText.text = resources.getString(R.string.splash_loading_50)
-            75 -> progressText.text = resources.getString(R.string.splash_loading_75)
-            33 -> progressText.text = resources.getString(R.string.splash_loading_33)
-            66 -> progressText.text = resources.getString(R.string.splash_loading_66)
-            99 , 100 -> {
-                progressText.text = resources.getString(R.string.splash_loading_100)
+            0 -> binding.progressText.text = resources.getString(R.string.splash_loading_0)
+            25 -> binding.progressText.text = resources.getString(R.string.splash_loading_25)
+            50 -> binding.progressText.text = resources.getString(R.string.splash_loading_50)
+            75 -> binding.progressText.text = resources.getString(R.string.splash_loading_75)
+            100 -> binding.progressText.text = resources.getString(R.string.splash_loading_100)
 
-                if (checkSharedPreferense) {
+        }
 
-                    delayToStart.start()
+        if (realLoadingValue == 100 && checkDataStatusNum != 4) {
 
-                } else {
-
-                    delayToHome.start()
-
-                }
-
+            if (checkSharedPreferense) {
+                delayToStart.start()
+            } else {
+                delayToHome.start()
             }
 
         }
 
     } // updateProgressView()
+
+
+    fun checkDataStatus() {
+
+        checkDataStatusNum++
+
+        if (checkDataStatusNum == 4) {
+
+            binding.loadingFailLayout.visibility = View.VISIBLE
+
+        }
+
+    } // checkDataStatus()
 
 
     // SharedPreference 체크
