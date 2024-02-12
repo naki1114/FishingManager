@@ -102,6 +102,7 @@
                             android:background="@drawable/custom_white_circle_background"
                             android:src="@drawable/btncarmera"
                             android:padding="25dp"
+                            android:layout_marginTop="-20dp"
                             />
 
                         <View

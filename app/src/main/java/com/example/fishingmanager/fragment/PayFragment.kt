@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
+import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.PayTicketAdapter
 import com.example.fishingmanager.databinding.FragmentPayBinding
 import com.example.fishingmanager.viewModel.PayViewModel
@@ -68,7 +69,8 @@ class PayFragment : Fragment() {
 
             if (it) {
 
-                requireActivity().finish()
+                (activity as MainActivity).removeFragmentStack()
+                (activity as MainActivity).navigationVisible()
 
             }
 
