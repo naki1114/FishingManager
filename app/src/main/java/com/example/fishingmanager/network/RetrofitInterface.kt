@@ -165,6 +165,15 @@ interface RetrofitInterface {
     ): Call<String>
 
 
+    // 게시글 조회수 업데이트
+    @FormUrlEncoded
+    @POST("File/Feed/UpdateViewCount.php")
+    fun updateViewCount(
+        @Field("nickname") nickname: String,
+        @Field("date") date: String
+    ): Call<ArrayList<Feed>>
+
+
     // 댓글 요청
     @FormUrlEncoded
     @POST("File/Feed/GetComment.php")

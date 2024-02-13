@@ -28,6 +28,22 @@ class FeedViewModel : ViewModel() {
 
     fun readFeed(feed : Feed) {
 
+        model.updateViewCount(feed.nickname, feed.date).enqueue(object : Callback<ArrayList<Feed>> {
+
+            override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
+                if (response.isSuccessful) {
+                    var msg = response.body()
+
+                    feedList.value = msg
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
+
+            }
+
+        })
+
         toReadLiveData.value = feed
 
     } // readFeed

@@ -9,4 +9,6 @@ class FeedModel {
 
     fun getFeed() = responseServer.getFeed()
 
+    fun updateViewCount(nickname : String, date : String) = responseServer.updateViewCount(nickname, date)
+
 }
