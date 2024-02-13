@@ -51,12 +51,14 @@ class SplashViewModel : ViewModel() {
                 } else {
                     Log.d(TAG, "getWeather - onResponse : isFailure : ${response.message()}")
                     liveDataFailureWeather.value = true
+                    liveDataWeatherList.value = ArrayList()
                 }
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.d(TAG, "getWeather - onFailure : $t")
                 liveDataFailureWeather.value = true
+                liveDataWeatherList.value = ArrayList()
             }
         })
 
@@ -75,12 +77,14 @@ class SplashViewModel : ViewModel() {
                 } else {
                     Log.d(TAG, "getTide - onResponse : isFailure : ${response.message()}")
                     liveDataFailureTide.value = true
+                    liveDataTideList.value = ArrayList()
                 }
             }
 
             override fun onFailure(call: Call<Tide>, t: Throwable) {
                 Log.d(TAG, "getTide - onFailure : $t")
                 liveDataFailureTide.value = true
+                liveDataTideList.value = ArrayList()
             }
         })
 
@@ -99,12 +103,14 @@ class SplashViewModel : ViewModel() {
                 } else {
                     Log.d(TAG, "getIndex - onResponse : isFailure : ${response.message()}")
                     liveDataFailureIndex.value = true
+                    liveDataIndexList.value = ArrayList()
                 }
             }
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
                 Log.d(TAG, "getIndex - onFailure : $t")
                 liveDataFailureIndex.value = true
+                liveDataIndexList.value = ArrayList()
             }
         })
 
@@ -129,6 +135,10 @@ class SplashViewModel : ViewModel() {
                 } else {
                     Log.d(TAG, "getCombine - onResponse : isFailure : ${response.message()}")
                     liveDataFailureCombine.value = true
+                    liveDataCollectionList.value = ArrayList()
+                    liveDataHistoryList.value = ArrayList()
+                    liveDataFeedList.value = ArrayList()
+                    liveDataUserInfo.value = UserInfo(-1, -1, -1)
                 }
 
             }

@@ -100,27 +100,27 @@ class SplashFragment : Fragment() {
         // 날씨 - ArrayList 감지
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).weatherList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).weatherList = it
 
         })
 
         // 조석 - ArrayList 감지
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).tideList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).tideList = it
 
         })
 
         // 지수 - ArrayList 감지
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).indexList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).indexList = it
 
         })
 
