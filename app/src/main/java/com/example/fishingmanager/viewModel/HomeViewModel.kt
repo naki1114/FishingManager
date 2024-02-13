@@ -62,6 +62,10 @@ class HomeViewModel(
     val liveDataBasicFeedList = MutableLiveData<ArrayList<Feed>>()
     val liveDataBasicUserInfo = MutableLiveData<UserInfo>()
 
+    val liveDataWeatherLoadingStatus = MutableLiveData<Boolean>()
+    val liveDataIndexLoadingStatus = MutableLiveData<Boolean>()
+    val liveDataCombineLoadingStatus = MutableLiveData<Boolean>()
+
 
     fun getWeather() {
 
@@ -121,6 +125,8 @@ class HomeViewModel(
 
     fun requestWeather() {
 
+        liveDataWeatherLoadingStatus.value = true
+
         model.requestWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", location.lat, location.lon)
             .enqueue(object : Callback<Weather> {
 
@@ -132,6 +138,8 @@ class HomeViewModel(
                     basicWeatherList = liveDataBasicWeatherList.value!!
 
                     getWeather()
+
+                    liveDataWeatherLoadingStatus.value = false
 
                 } else {
                     Log.d(TAG, "requestWeather - onResponse : isFailure : ${response.message()}")
@@ -150,6 +158,8 @@ class HomeViewModel(
 
     fun requestIndex() {
 
+        liveDataIndexLoadingStatus.value = true
+
         model.requestIndex("SF", "json").enqueue(object  : Callback<Index> {
 
             override fun onResponse(call: Call<Index>, response: Response<Index>) {
@@ -160,6 +170,8 @@ class HomeViewModel(
                     basicIndexList = liveDataBasicIndexList.value!!
 
                     getRecommendList()
+
+                    liveDataIndexLoadingStatus.value = false
 
                 } else {
                     Log.d(TAG, "requestIndex - onResponse : isFailure : ${response.message()}")
@@ -179,6 +191,8 @@ class HomeViewModel(
 
     fun requestCombine() {
 
+        liveDataCombineLoadingStatus.value = true
+
         model.requestCombine(nickname).enqueue(object : Callback<Combine> {
 
             override fun onResponse(call: Call<Combine>, response: Response<Combine>) {
@@ -195,6 +209,8 @@ class HomeViewModel(
 
                     getRecentCollectionList()
                     getHotFeedList()
+
+                    liveDataCombineLoadingStatus.value = false
 
                 } else {
                     Log.d(TAG, "requestCombine - onResponse : isFailure : ${response.message()}")
