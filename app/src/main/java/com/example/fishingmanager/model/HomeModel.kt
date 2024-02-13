@@ -160,13 +160,17 @@ class HomeModel {
     } // getFishImage()
 
 
-    fun getRecentCollectionList(historyList : ArrayList<History>) : ArrayList<History>{
+    fun getRecentCollectionList(historyList : ArrayList<History>) : ArrayList<History> {
 
         val list = ArrayList<History>()
 
         for (i in 0 until historyList.size) {
 
             list.add(historyList[i])
+
+            if (list.size == 10) {
+                break
+            }
 
         }
 
@@ -178,9 +182,9 @@ class HomeModel {
     fun getHotFeedList(feedList : ArrayList<Feed>) : ArrayList<Feed> {
 
         val list = ArrayList<Feed>()
-        var parseDate = ""
-        var date = ""
-        var feed = Feed("", 0, "", "", "", "", "")
+        var parseDate : String
+        var date : String
+        var feed : Feed
 
         for(i in 0 until feedList.size) {
 
@@ -190,8 +194,12 @@ class HomeModel {
             feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date)
             list.add(feed)
 
+            if (list.size == 10) {
+                break
+            }
+
         }
-        Log.d("TAG", "getHotFeedList: ${list.size}")
+
         return list
 
     } // getHotFeedList()
