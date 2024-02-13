@@ -27,7 +27,6 @@
             >
 
             <LinearLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -52,50 +51,6 @@
                         android:textSize="18dp"
                         android:layout_marginStart="20dp"
                         android:text="@string/home_title"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/homeRecentCollectionTitleLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:paddingVertical="10dp"
-                    android:background="@drawable/custom_titlebar_background"
-                    android:visibility="gone"
-                    >
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/btnbackcream"
-                        android:onClick='@{() -> viewModel.changeLayout("main")}'
-                        />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textColor="@color/main2"
-                        android:textSize="18dp"
-                        android:layout_marginEnd="50dp"
-                        android:text="@string/home_recentCollection"
-                        />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
                         />
 
                 </LinearLayout>
@@ -237,6 +192,98 @@
                 </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/homeWeatherErrorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/custom_home_background"
+                android:layout_marginHorizontal="10dp"
+                android:onClick='@{() -> viewModel.changeFragment("conditionWeather")}'
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginHorizontal="18dp"
+                    android:text="@string/home_weather"
+                    android:gravity="center"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/homeWeatherErrorChildLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="-15dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/failure_load_data"
+                        android:textSize="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/refresh"
+                        android:layout_gravity="center"
+                        android:onClick="@{() -> viewModel.requestWeather()}"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/homeWeatherLoadingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="-30dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/homeWeatherLoadingRightImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/loading_right"
+                        android:layout_gravity="center"
+                        />
+
+                    <ImageView
+                        android:id="@+id/homeWeatherLoadingLeftImage"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/loading_left"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        android:text="@string/loading"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
                 <LinearLayout
                     android:id="@+id/homeRecommendLayout"
                     android:layout_width="match_parent"
@@ -270,7 +317,77 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginBottom="8dp"
+                        android:visibility="visible"
                         />
+
+                    <LinearLayout
+                        android:id="@+id/homeRecommendErrorLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8.5"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/failure_load_data"
+                            android:layout_marginBottom="15dp"
+                            android:layout_gravity="center"
+                            />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="30dp"
+                            android:onClick="@{() -> viewModel.requestIndex()}"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/homeRecommendLoadingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8.5"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:id="@+id/homeRecommendLoadingRightImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_right"
+                            android:layout_gravity="center"
+                            />
+
+                        <ImageView
+                            android:id="@+id/homeRecommendLoadingLeftImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_left"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:text="@string/loading"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_gravity="center"
+                            />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -330,7 +447,77 @@
                         android:orientation="horizontal"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginBottom="8dp"
+                        android:visibility="visible"
                         />
+
+                    <LinearLayout
+                        android:id="@+id/homeRecentCollectoinErrorLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8.5"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/failure_load_data"
+                            android:layout_marginBottom="15dp"
+                            android:layout_gravity="center"
+                            />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="30dp"
+                            android:onClick="@{() -> viewModel.requestCombine()}"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/homeRecentCollectionLoadingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="8.5"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:id="@+id/homeRecentCollectionLoadingRightImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_right"
+                            android:layout_gravity="center"
+                            />
+
+                        <ImageView
+                            android:id="@+id/homeRecentCollectionLoadingLeftImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_left"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:text="@string/loading"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_gravity="center"
+                            />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -365,7 +552,75 @@
                         android:orientation="vertical"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginBottom="8dp"
+                        android:visibility="visible"
                         />
+
+                    <LinearLayout
+                        android:id="@+id/homeHotFeedErrorLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/failure_load_data"
+                            android:layout_marginBottom="15dp"
+                            android:layout_gravity="center"
+                            />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/refresh"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="30dp"
+                            android:onClick="@{() -> viewModel.requestCombine()}"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/homeHotFeedLoadingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:id="@+id/homeHotFeedLoadingRightImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_right"
+                            android:layout_gravity="center"
+                            />
+
+                        <ImageView
+                            android:id="@+id/homeHotFeedLoadingLeftImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/loading_left"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14dp"
+                            android:text="@string/loading"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_gravity="center"
+                            />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -381,6 +636,48 @@
             android:orientation="vertical"
             android:visibility="gone"
             >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:paddingVertical="10dp"
+                android:background="@drawable/custom_titlebar_background"
+                >
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/btnbackcream"
+                    android:onClick='@{() -> viewModel.changeLayout("main")}'
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:textSize="18dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="@string/home_recentCollection"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/homeSeeMoreRecyclerView"

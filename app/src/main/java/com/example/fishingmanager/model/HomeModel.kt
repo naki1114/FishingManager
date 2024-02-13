@@ -12,9 +12,21 @@ import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.function.GetDate
+import com.example.fishingmanager.network.RetrofitClient
+import com.example.fishingmanager.network.RetrofitInterface
 import java.util.Random
 
 class HomeModel {
+
+    private val weatherRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getWeatherAPI().create(RetrofitInterface::class.java)
+
+    private val indexRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getIndexAPI().create(RetrofitInterface::class.java)
+
+    private val webServerRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
+
 
     fun getWeather(weatherList : ArrayList<ConditionWeather>, location : String) : HomeWeather {
 
@@ -183,6 +195,24 @@ class HomeModel {
         return list
 
     } // getHotFeedList()
-    
+
+
+    fun requestWeather(
+        pageNo: String,
+        numOfRows: String,
+        dataType: String,
+        baseDate: String,
+        baseTime: String,
+        nx: String,
+        ny: String
+    ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
+
+
+    fun requestIndex(type: String, resultType: String) =
+        indexRetrofitInterface.requestIndex(type, resultType)
+
+
+    fun requestCombine(nickname : String) =
+        webServerRetrofitInterface.requestDB(nickname)
 
 }

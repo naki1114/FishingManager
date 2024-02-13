@@ -15,6 +15,7 @@ import com.example.fishingmanager.adapter.HomeHotFeedAdapter
 import com.example.fishingmanager.adapter.HomeRecentCollectionAdapter
 import com.example.fishingmanager.adapter.HomeRecommendAdapter
 import com.example.fishingmanager.adapter.HomeSeeMoreRecentCollectionAdapter
+import com.example.fishingmanager.data.SearchLocation
 import com.example.fishingmanager.databinding.FragmentHomeBinding
 import com.example.fishingmanager.viewModel.HomeViewModel
 
@@ -24,7 +25,9 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: HomeViewModel
 
     lateinit var locationShared: SharedPreferences
-    lateinit var location: String
+    lateinit var userShared: SharedPreferences
+    lateinit var location: SearchLocation
+    lateinit var nickname: String
     lateinit var recommendAdapter: HomeRecommendAdapter
     lateinit var recentCollectionAdapter: HomeRecentCollectionAdapter
     lateinit var seeMoreAdapter: HomeSeeMoreRecentCollectionAdapter
@@ -57,6 +60,7 @@ class HomeFragment : Fragment() {
         viewModel = HomeViewModel(
             (activity as MainActivity).weatherList,
             location,
+            nickname,
             (activity as MainActivity).indexList,
             (activity as MainActivity).historyList,
             (activity as MainActivity).feedList
@@ -134,6 +138,42 @@ class HomeFragment : Fragment() {
 
         })
 
+        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).weatherList = it
+
+        })
+
+        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).indexList = it
+
+        })
+
+        viewModel.liveDataBasicCollectionList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).collectionList = it
+
+        })
+
+        viewModel.liveDataBasicHistoryList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).historyList = it
+
+        })
+
+        viewModel.liveDataBasicFeedList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).feedList = it
+
+        })
+
+        viewModel.liveDataBasicUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).userInfo = it
+
+        })
+
     } // observeLiveData()
 
 
@@ -152,11 +192,16 @@ class HomeFragment : Fragment() {
         locationShared =
             requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
 
-        location = locationShared.getString("location", "").toString()
+        val locationName = locationShared.getString("location", "").toString()
+        val obsCode = locationShared.getString("obscode", "").toString()
+        val lat = locationShared.getString("lat", "").toString()
+        val lon = locationShared.getString("lon", "").toString()
 
-        if (location == "") {
-            location = "영흥도"
-        }
+        location = SearchLocation(locationName, obsCode, lat, lon)
+
+        userShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+
+        nickname = userShared.getString("nickname", "").toString()
 
     }
 
@@ -166,23 +211,13 @@ class HomeFragment : Fragment() {
         when (layout) {
 
             "main" -> {
-
                 binding.homeSeeMoreLayout.visibility = View.GONE
-                binding.homeRecentCollectionTitleLayout.visibility = View.GONE
-
                 binding.homeMainLayout.visibility = View.VISIBLE
-                binding.homeTitleLayout.visibility = View.VISIBLE
-
             }
 
             "seeMore" -> {
-
                 binding.homeMainLayout.visibility = View.GONE
-                binding.homeTitleLayout.visibility = View.GONE
-
                 binding.homeSeeMoreLayout.visibility = View.VISIBLE
-                binding.homeRecentCollectionTitleLayout.visibility = View.VISIBLE
-
             }
 
         }
