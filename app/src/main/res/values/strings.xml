@@ -116,6 +116,7 @@
     <string name="checkingFish_result_write">내 기록에 저장 후 게시글 작성</string>
     <string name="feed_title">게시글</string>
     <string name="feed_viewCount">조회수</string>
+    <string name="feed_input_comment">댓글 입력</string>
     <string name="write_title">작성</string>
     <string name="write_limit">0 / 1000</string>
     <string name="write_cancel">현재까지 작성된 내용이 사라집니다.\n뒤로 가기를 하시겠습니까?</string>
