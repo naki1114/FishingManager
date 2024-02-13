@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
     lateinit var loadingAnimationRight: Animation
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
-    lateinit var animationThread: Thread
+    var animationThread: Thread = Thread()
 
 
     override fun onCreateView(
@@ -108,13 +108,19 @@ class HomeFragment : Fragment() {
 
             if (it.skyImage == 0) {
 
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
+
                 binding.homeWeatherLayout.visibility = View.GONE
                 binding.homeWeatherErrorLayout.visibility = View.VISIBLE
+                binding.homeWeatherErrorChildLayout.visibility = View.VISIBLE
 
             } else {
 
                 binding.homeWeatherLayout.visibility = View.VISIBLE
                 binding.homeWeatherErrorLayout.visibility = View.GONE
+                binding.homeWeatherErrorChildLayout.visibility = View.GONE
                 binding.homeWeatherSkyImage.setImageResource(it.skyImage)
 
             }
@@ -124,6 +130,10 @@ class HomeFragment : Fragment() {
         viewModel.liveDataRecommendList.observe(viewLifecycleOwner, Observer {
 
             if (it.size == 0) {
+
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
 
                 binding.homeRecommendRecyclerView.visibility = View.GONE
                 binding.homeRecommendErrorLayout.visibility = View.VISIBLE
@@ -160,6 +170,10 @@ class HomeFragment : Fragment() {
 
             if (it.size == 0) {
 
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
+
                 binding.homeRecentCollectionRecyclerView.visibility = View.GONE
                 binding.homeRecentCollectionErrorLayout.visibility = View.VISIBLE
 
@@ -177,6 +191,10 @@ class HomeFragment : Fragment() {
         viewModel.liveDataHotFeedList.observe(viewLifecycleOwner, Observer {
 
             if (it.size == 0) {
+
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
 
                 binding.homeHotFeedRecyclerView.visibility = View.GONE
                 binding.homeHotFeedErrorLayout.visibility = View.VISIBLE
@@ -237,8 +255,8 @@ class HomeFragment : Fragment() {
 
             if (it) {
 
-                binding.homeWeatherErrorLayout.visibility = View.GONE
-                binding.homeWeatherErrorChildLayout.visibility = View.VISIBLE
+                binding.homeWeatherErrorChildLayout.visibility = View.GONE
+                binding.homeWeatherLoadingLayout.visibility = View.VISIBLE
                 binding.homeWeatherLoadingRightImage.visibility = View.VISIBLE
                 binding.homeWeatherLoadingRightImage.startAnimation(loadingAnimationRight)
                 loadingAnimationStatus = true

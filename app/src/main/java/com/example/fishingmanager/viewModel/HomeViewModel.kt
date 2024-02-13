@@ -133,7 +133,7 @@ class HomeViewModel(
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
                 if (response.isSuccessful) {
-
+                    Log.d(TAG, "onResponse: 들어옴!!!")
                     liveDataBasicWeatherList.value = splashModel.getWeatherList(response)
                     basicWeatherList = liveDataBasicWeatherList.value!!
 
@@ -143,12 +143,14 @@ class HomeViewModel(
 
                 } else {
                     Log.d(TAG, "requestWeather - onResponse : isFailure : ${response.message()}")
+                    liveDataWeather.value = HomeWeather("", 0, "", "", "")
                 }
 
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.d(TAG, "requestWeather - onFailure : $t")
+                liveDataWeather.value = HomeWeather("", 0, "", "", "")
             }
 
         })
@@ -175,6 +177,7 @@ class HomeViewModel(
 
                 } else {
                     Log.d(TAG, "requestIndex - onResponse : isFailure : ${response.message()}")
+                    liveDataRecommendList.value = ArrayList()
                 }
 
 
@@ -182,6 +185,7 @@ class HomeViewModel(
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
                 Log.d(TAG, "requestIndex - onFailure : $t")
+                liveDataRecommendList.value = ArrayList()
             }
 
         })
@@ -214,12 +218,16 @@ class HomeViewModel(
 
                 } else {
                     Log.d(TAG, "requestCombine - onResponse : isFailure : ${response.message()}")
+                    liveDataRecentCollectionList.value = ArrayList()
+                    liveDataHotFeedList.value = ArrayList()
                 }
 
             }
 
             override fun onFailure(call: Call<Combine>, t: Throwable) {
                 Log.d(TAG, "requestCombine - onFailure : $t")
+                liveDataRecentCollectionList.value = ArrayList()
+                liveDataHotFeedList.value = ArrayList()
             }
 
         })
