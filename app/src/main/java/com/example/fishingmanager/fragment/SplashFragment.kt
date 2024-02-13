@@ -27,7 +27,6 @@ class SplashFragment : Fragment() {
     private lateinit var binding : FragmentSplashBinding
     private lateinit var viewModel : SplashViewModel
 
-    private var checkSharedPreferense : Boolean = false
     private var progressValue: Float = 0.0f
     private var realLoadingValue: Int = 0
     private lateinit var userNickname: String
@@ -36,10 +35,6 @@ class SplashFragment : Fragment() {
     private lateinit var lon : String
     private var checkDataStatusNum : Int = 0
 
-    val delayToStart = thread(false) {
-        Thread.sleep(1000)
-        (activity as MainActivity).changeFragment("start")
-    }
     val delayToHome = thread(false) {
         Thread.sleep(1000)
         (activity as MainActivity).changeFragment("home")
@@ -73,7 +68,6 @@ class SplashFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        checkSharedPreferense = checkLoginSharedPreference()
         getLocationSharedPreference()
 
     } // setVariable()
@@ -100,27 +94,27 @@ class SplashFragment : Fragment() {
         // 날씨 - ArrayList 감지
         viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).weatherList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).weatherList = it
 
         })
 
         // 조석 - ArrayList 감지
         viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).tideList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).tideList = it
 
         })
 
         // 지수 - ArrayList 감지
         viewModel.liveDataIndexList.observe(viewLifecycleOwner, Observer {
 
+            (activity as MainActivity).indexList = it
             progressValue += 25.0f
             updateProgressView()
-            (activity as MainActivity).indexList = it
 
         })
 
@@ -212,11 +206,7 @@ class SplashFragment : Fragment() {
 
         if (realLoadingValue == 100 && checkDataStatusNum != 4) {
 
-            if (checkSharedPreferense) {
-                delayToStart.start()
-            } else {
-                delayToHome.start()
-            }
+            delayToHome.start()
 
         }
 
@@ -234,18 +224,6 @@ class SplashFragment : Fragment() {
         }
 
     } // checkDataStatus()
-
-
-    // SharedPreference 체크
-    fun checkLoginSharedPreference() : Boolean {
-
-        val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
-        userNickname = sharedPreferences?.getString("nickname", "").toString()
-        (activity as MainActivity).nickname = userNickname
-
-        return userNickname == ""
-
-    } // checkLoginSharedPreference()
 
 
     fun getLocationSharedPreference() {

@@ -24,6 +24,7 @@ import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.databinding.ActivityMainBinding
+import com.example.fishingmanager.fragment.EnterFragment
 import com.example.fishingmanager.fragment.FeedFragment
 import com.example.fishingmanager.fragment.PayFragment
 import com.example.fishingmanager.fragment.ProfileFragment
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     var bundleString = ""
     lateinit var bundle : Bundle
 
+    val enterFragment = EnterFragment()
     val splashFragment = SplashFragment()
     val startFragment = StartFragment()
     val homeFragment = HomeFragment()
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         setVariable()
         setListener()
+        checkSharedPreference()
 
     } // onCreate()
 
@@ -143,6 +146,11 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction = fragmentManager.beginTransaction()
 
         when (fragmentName) {
+
+            "enter" -> {
+                pickOutFragment(enterFragment)
+                navigationGone()
+            }
 
             "splash" -> {
                 pickOutFragment(splashFragment)
@@ -273,5 +281,18 @@ class MainActivity : AppCompatActivity() {
 
     } // removeFragmentStack()
 
+
+    fun checkSharedPreference() {
+
+        val sharedPreferences = getSharedPreferences("loginInfo", MODE_PRIVATE)
+        val sharedNickname = sharedPreferences?.getString("nickname", "").toString()
+
+        if (sharedNickname == "") {
+            changeFragment("enter")
+        } else {
+            changeFragment("splash")
+        }
+
+    } // checkSharedPreference()
 
 }
