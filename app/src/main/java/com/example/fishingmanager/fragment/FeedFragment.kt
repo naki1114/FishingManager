@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.FeedAdapter
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.databinding.FragmentFeedBinding
+import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.FeedViewModel
+import java.text.SimpleDateFormat
 
 class FeedFragment : Fragment() {
 
@@ -49,13 +52,22 @@ class FeedFragment : Fragment() {
 
     private fun setVariable() {
 
-        feedViewModel = FeedViewModel((activity as MainActivity).feedList)
+        feedViewModel = FeedViewModel()
         binding.viewModel = feedViewModel
 
-        adapter = FeedAdapter(FeedAdapter.ItemClickListener {
-            feedViewModel.readFeed(it)
-        }, (activity as MainActivity).feedList)
-        binding.feedRecyclerView.adapter = adapter
+        feedViewModel.getFeed()
+
+        feedViewModel.feedList.observe(viewLifecycleOwner) {
+
+            feedList = feedViewModel.feedList.value!!
+            (activity as MainActivity).feedList = feedList
+
+            adapter = FeedAdapter(FeedAdapter.ItemClickListener {
+                feedViewModel.readFeed(it)
+            }, (activity as MainActivity).feedList)
+            binding.feedRecyclerView.adapter = adapter
+
+        }
 
     } // setVariable
 
@@ -78,11 +90,26 @@ class FeedFragment : Fragment() {
         feedViewModel.toReadLiveData.observe(viewLifecycleOwner) {
 
             val feed = feedViewModel.toReadLiveData.value
+            val dateFormat = SimpleDateFormat("yyyy / MM / dd")
+            val date = dateFormat.format(feed?.date!!.toLong()).toString()
+
+            binding.feedViewWriterTextView.text = feed?.nickname
+            binding.feedViewTitleTextView.text = feed?.title
+            binding.feedViewContentTextView.text = feed?.content
+            binding.feedViewWriteDateTextView.text = date
+
+            if (feed?.feedImage == null) {
+                binding.feedViewImageView.visibility = View.GONE
+            }
+            else {
+                Glide.with(requireContext()).load(RetrofitClient.BASE_URL + feed?.feedImage).into(binding.feedViewImageView)
+                binding.feedViewImageView.visibility = View.VISIBLE
+            }
 
             binding.feedLayout.visibility = View.GONE
             binding.feedViewLayout.visibility = View.VISIBLE
 
-            binding.feedViewTitleTextView.text = feed?.title
+            bottomNavigationVisibility(false)
 
         }
 
@@ -94,6 +121,7 @@ class FeedFragment : Fragment() {
 
             binding.feedLayout.visibility = View.VISIBLE
             binding.feedViewLayout.visibility = View.GONE
+            bottomNavigationVisibility(true)
 
         }
 
@@ -140,5 +168,16 @@ class FeedFragment : Fragment() {
         }
 
     } // searchKeyword
+
+    private fun bottomNavigationVisibility(visibility : Boolean) {
+
+        if (visibility) {
+            (activity as MainActivity).binding.navigation.visibility = View.VISIBLE
+        }
+        else {
+            (activity as MainActivity).binding.navigation.visibility = View.GONE
+        }
+
+    } // bottomNavigationVisibility
 
 }

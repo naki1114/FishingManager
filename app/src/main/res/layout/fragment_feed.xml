@@ -121,11 +121,13 @@
 
         </FrameLayout>
 
+        <!-- 게시글 상세보기 -->
         <LinearLayout
             android:id="@+id/feedViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/main2"
             android:visibility="gone"
             >
 
@@ -178,12 +180,180 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/feedViewTitleTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+
+                        <!-- 작성자 정보 / 작성 날짜 -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:orientation="horizontal"
+                            >
+
+                            <!-- 작성자 프로필 사진 -->
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:background="@drawable/custom_white_background"
+                                android:src="@drawable/fishing_logo"
+                                />
+
+                            <!-- 작성자 닉네임 -->
+                            <TextView
+                                android:id="@+id/feedViewWriterTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_gravity="bottom"
+                                android:text="@string/writer"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                />
+
+                            <!-- 작성 날짜 -->
+                            <TextView
+                                android:id="@+id/feedViewWriteDateTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:text="@string/date"
+                                />
+
+                        </LinearLayout>
+
+                        <!-- 게시글 제목 -->
+                        <TextView
+                            android:id="@+id/feedViewTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="제목"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            />
+
+                        <!-- 게시글 첨부 이미지 -->
+                        <ImageView
+                            android:id="@+id/feedViewImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="500dp"
+                            android:layout_margin="10dp"
+                            android:scaleType="centerCrop"
+                            />
+
+                        <!-- 게시글 내용 -->
+                        <TextView
+                            android:id="@+id/feedViewContentTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:text="@string/content"
+                            android:textColor="@color/black"
+                            />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginVertical="5dp"
+                            android:background="@color/gray2"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            >
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginHorizontal="10dp"
+                                android:src="@drawable/comment"
+                                />
+
+                            <TextView
+                                android:id="@+id/feedViewCommentCountTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_gravity="center"
+                                android:textColor="@color/black"
+                                />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginVertical="5dp"
+                            android:background="@color/gray2"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/feedViewCommentRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="제목"
-                />
+                android:layout_marginTop="5dp"
+                android:paddingHorizontal="10dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                >
+
+                <EditText
+                    android:id="@+id/feedViewCommentEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/feed_input_comment"
+                    />
+
+                <ImageButton
+                    android:id="@+id/feedViewCommentInputButton"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/btnsend"
+                    android:background="@color/white"
+                    android:scaleType="fitCenter"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 

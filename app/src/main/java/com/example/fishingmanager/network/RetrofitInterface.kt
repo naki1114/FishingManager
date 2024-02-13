@@ -113,7 +113,6 @@ interface RetrofitInterface {
 
 
     // 게시글 요청
-    @FormUrlEncoded
     @POST("File/Feed/GetFeed.php")
     fun getFeed(): Call<ArrayList<Feed>>
 
