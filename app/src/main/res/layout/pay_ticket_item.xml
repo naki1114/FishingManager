@@ -19,91 +19,127 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:paddingVertical="10dp"
-        android:background="@color/white"
+        android:layout_marginVertical="15dp"
         >
-
-        <TextView
-            android:id="@+id/payTicketNameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:text="@{payTicket.component1()}"
-            android:layout_gravity="center"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_marginVertical="10dp"
+
             >
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
             <ImageView
-                android:id="@+id/payIcon1Image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
+                android:id="@+id/payTicketHotImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top"
+                android:src="@drawable/hot"
+                android:layout_marginEnd="-30dp"
+                android:layout_marginTop="-8dp"
+                android:translationZ="1dp"
                 />
 
             <View
-                android:id="@+id/payIconSpace"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
+                android:id="@+id/payTicketSpace"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:visibility="gone"
                 />
 
-            <ImageView
-                android:id="@+id/payIcon2Image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/black"
-                android:layout_gravity="center"
-                android:text="@{payTicket.component4()}"
-                />
+                android:orientation="vertical"
+                android:paddingVertical="15dp"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/white_round_layout"
+                >
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                <TextView
+                    android:id="@+id/payTicketNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="@{payTicket.component1()}"
+                    android:layout_gravity="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="15dp"
+                    >
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <ImageView
+                        android:id="@+id/payIcon1Image"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:id="@+id/payIconSpace"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        />
+
+                    <ImageView
+                        android:id="@+id/payIcon2Image"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"
+                        android:text="@{payTicket.component4()}"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/custom_main_button_background"
+                    android:text="@{payTicket.component5()}"
+                    android:textColor="@color/main2"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> clickListener.onClick(payTicket)}"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_main_button_background"
-            android:text="@{payTicket.component5()}"
-            android:textColor="@color/main2"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:layout_gravity="center"
-            android:onClick="@{() -> clickListener.onClick(payTicket)}"
-            />
 
     </LinearLayout>
 

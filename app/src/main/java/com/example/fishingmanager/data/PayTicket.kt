@@ -5,5 +5,6 @@ data class PayTicket(
     val icon1: Int,
     val icon2: Int,
     val day: String,
-    val buttonText: String
+    val buttonText: String,
+    val hotStatus: Boolean
 )
