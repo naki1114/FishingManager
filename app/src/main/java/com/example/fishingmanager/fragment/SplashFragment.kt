@@ -29,7 +29,7 @@ class SplashFragment : Fragment() {
 
     private var progressValue: Float = 0.0f
     private var realLoadingValue: Int = 0
-    private lateinit var userNickname: String
+    private lateinit var nickname: String
     private lateinit var obsCode: String
     private lateinit var lat : String
     private lateinit var lon : String
@@ -68,6 +68,7 @@ class SplashFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        getUserInfoSharedPreference()
         getLocationSharedPreference()
 
     } // setVariable()
@@ -80,10 +81,8 @@ class SplashFragment : Fragment() {
         viewModel.getWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", lat, lon)
         viewModel.getTide(GetDate().getFormatDate2(GetDate().getTime()), obsCode, "json")
         viewModel.getIndex("SF", "json")
+        viewModel.getCombine(nickname)
 
-        if (userNickname != "") {
-            viewModel.getCombine(userNickname)
-        }
 
     } // requestData()
 
@@ -224,6 +223,14 @@ class SplashFragment : Fragment() {
         }
 
     } // checkDataStatus()
+
+
+    fun getUserInfoSharedPreference() {
+
+        val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        nickname = sharedPreferences?.getString("nickname", "").toString()
+
+    } // getUserInfoSharedPreference()
 
 
     fun getLocationSharedPreference() {
