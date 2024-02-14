@@ -21,6 +21,7 @@
         android:id="@+id/profileDrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragment.ProfileFragment"
         >
 
         <LinearLayout
@@ -28,7 +29,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/main2"
-            tools:context=".fragment.ProfileFragment">
+            >
 
 
             <LinearLayout
@@ -784,7 +785,99 @@
 
         </LinearLayout>
 
-        <include layout="@layout/profile_drawer"/>
+        <LinearLayout
+            android:id="@+id/drawerView"
+            android:orientation="vertical"
+            android:layout_width="260dp"
+            android:layout_height="match_parent"
+            android:background="@color/main2"
+            android:layout_gravity="end"
+            android:clickable="true"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerPurchaseTicketText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_purchase_ticket"
+                android:paddingVertical="10dp"
+                android:onClick="@{() -> viewModel.changeFragment()}"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerLogoutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_logout"
+                android:paddingVertical="10dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerDeleteAccountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_delete_account"
+                android:paddingVertical="10dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

@@ -1,5 +1,6 @@
 package com.example.fishingmanager.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
@@ -24,6 +25,7 @@ class ProfileViewModel(
     val liveDataChangeTab = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
     val liveDataClickedMenu = MutableLiveData<Boolean>()
+    val liveDataChangeFragment = MutableLiveData<String>()
 
     var previousLayout: String = ""
 
@@ -77,5 +79,12 @@ class ProfileViewModel(
         liveDataClickedMenu.value = true
 
     } // clickedMenu()
+
+
+    fun changeFragment() {
+
+        liveDataChangeFragment.value = "pay"
+
+    } // changeFragment()
 
 }

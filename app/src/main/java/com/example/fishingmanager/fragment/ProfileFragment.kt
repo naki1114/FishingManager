@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -18,7 +19,6 @@ import com.example.fishingmanager.adapter.ProfileCollectionAdapter
 import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
 import com.example.fishingmanager.databinding.FragmentProfileBinding
-import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
@@ -29,7 +29,6 @@ class ProfileFragment : Fragment() {
     lateinit var collectionAdapter : ProfileCollectionAdapter
     lateinit var historyAdapter : ProfileHistoryAdapter
     lateinit var selectFishAdapter : ProfileSelectFishAdapter
-    lateinit var drawerView : View
 
     lateinit var userInfoShared : SharedPreferences
     lateinit var nickname : String
@@ -74,6 +73,7 @@ class ProfileFragment : Fragment() {
         binding.profileCollectionRecyclerView.adapter =  collectionAdapter
         binding.profileHistoryRecyclerView.adapter = historyAdapter
         binding.profileSelectFishRecyclerView.adapter = selectFishAdapter
+
 
     } // setVariable()
 
@@ -120,10 +120,16 @@ class ProfileFragment : Fragment() {
         viewModel.liveDataClickedMenu.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-                Log.d("TAG", "observeLiveData: 들어옴")
-                binding.profileDrawerLayout.openDrawer(R.id.drawerView)
+
+                binding.profileDrawerLayout.openDrawer(binding.drawerView)
 
             }
+
+        })
+
+        viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).changeFragment(it)
 
         })
 
