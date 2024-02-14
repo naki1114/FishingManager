@@ -133,56 +133,6 @@ class ConditionFragment : Fragment() {
         loadingAnimationRight = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_right)
         loadingAnimationLeft = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_left)
 
-        animationThread = thread(false) {
-
-            try {
-
-                while (loadingAnimationStatus) {
-
-                    Thread.sleep(1000)
-
-                    Handler(Looper.getMainLooper()).post {
-
-                        binding.conditionLoadingRightImage.visibility = View.GONE
-                        binding.conditionLoadingLeftImage.visibility = View.VISIBLE
-                        binding.conditionLoadingLeftImage.startAnimation(
-                            loadingAnimationLeft
-                        )
-
-                    }
-
-                    Thread.sleep(1000)
-
-                    Handler(Looper.getMainLooper()).post {
-
-                        binding.conditionLoadingLeftImage.visibility = View.GONE
-                        binding.conditionLoadingRightImage.visibility = View.VISIBLE
-                        binding.conditionLoadingRightImage.startAnimation(
-                            loadingAnimationRight
-                        )
-
-                    }
-
-                }
-
-            } catch (e: InterruptedException) {
-
-                loadingAnimationStatus = false
-
-                Handler(Looper.getMainLooper()).post {
-
-                    binding.conditionLoadingRightImage.clearAnimation()
-                    binding.conditionLoadingLeftImage.clearAnimation()
-                    binding.conditionLoadingRightImage.visibility = View.GONE
-                    binding.conditionLoadingLeftImage.visibility = View.GONE
-                    binding.conditionLoadingLayout.visibility = View.GONE
-
-                }
-
-            }
-
-        }
-
     } // setVariable()
 
 
@@ -247,6 +197,9 @@ class ConditionFragment : Fragment() {
 
         viewModel.liveDataCurrentLayout.observe(viewLifecycleOwner, Observer {
 
+            changeLayout(it)
+            currentLayout = it
+
             when (it) {
 
                 "combine" -> {
@@ -254,8 +207,6 @@ class ConditionFragment : Fragment() {
                     if (viewModel.liveDataCombineList.value?.size == 0) {
                         binding.conditionCombineLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                    } else {
-                        changeLayout(it)
                     }
 
                 }
@@ -265,8 +216,6 @@ class ConditionFragment : Fragment() {
                     if(viewModel.liveDataWeatherList.value?.size == 0) {
                         binding.conditionWeatherLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                    } else {
-                        changeLayout(it)
                     }
 
                 }
@@ -276,8 +225,6 @@ class ConditionFragment : Fragment() {
                     if(viewModel.liveDataTideList.value?.size == 0) {
                         binding.conditionTideLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                    } else {
-                        changeLayout(it)
                     }
 
                 }
@@ -287,17 +234,11 @@ class ConditionFragment : Fragment() {
                     if(viewModel.liveDataBasicIndexList.value?.size == 0) {
                         binding.conditionIndexLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                    } else {
-                        changeLayout(it)
                     }
 
                 }
 
-                else -> changeLayout(it)
-
             }
-
-            currentLayout = it
 
         })
 
@@ -389,7 +330,55 @@ class ConditionFragment : Fragment() {
                 binding.conditionLoadingRightImage.startAnimation(loadingAnimationRight)
                 loadingAnimationStatus = true
 
-                animationThread.start()
+                animationThread = thread {
+
+                    try {
+
+                        while (loadingAnimationStatus) {
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.conditionLoadingRightImage.visibility = View.GONE
+                                binding.conditionLoadingLeftImage.visibility = View.VISIBLE
+                                binding.conditionLoadingLeftImage.startAnimation(
+                                    loadingAnimationLeft
+                                )
+
+                            }
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.conditionLoadingLeftImage.visibility = View.GONE
+                                binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                                binding.conditionLoadingRightImage.startAnimation(
+                                    loadingAnimationRight
+                                )
+
+                            }
+
+                        }
+
+                    } catch (e: InterruptedException) {
+
+                        loadingAnimationStatus = false
+
+                        Handler(Looper.getMainLooper()).post {
+
+                            binding.conditionLoadingRightImage.clearAnimation()
+                            binding.conditionLoadingLeftImage.clearAnimation()
+                            binding.conditionLoadingRightImage.visibility = View.GONE
+                            binding.conditionLoadingLeftImage.visibility = View.GONE
+                            binding.conditionLoadingLayout.visibility = View.GONE
+
+                        }
+
+                    }
+
+                }
 
             } else {
 
@@ -410,21 +399,27 @@ class ConditionFragment : Fragment() {
                 when (previousLayout) {
 
                     "combine" -> {
-
-                        binding.conditionCombineLayout.visibility = View.VISIBLE
-
+                        if (viewModel.liveDataCombineList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionCombineLayout.visibility = View.VISIBLE
+                        }
                     }
 
                     "weather" -> {
-
-                        binding.conditionWeatherLayout.visibility = View.VISIBLE
-
+                        if (viewModel.liveDataWeatherList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionWeatherLayout.visibility = View.VISIBLE
+                        }
                     }
 
                     "tide" -> {
-
-                        binding.conditionTideLayout.visibility = View.VISIBLE
-
+                        if (viewModel.liveDataTideList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionTideLayout.visibility = View.VISIBLE
+                        }
                     }
 
                 }
@@ -470,7 +465,55 @@ class ConditionFragment : Fragment() {
                 binding.conditionLoadingRightImage.startAnimation(loadingAnimationRight)
                 loadingAnimationStatus = true
 
-                animationThread.start()
+                animationThread = thread {
+
+                    try {
+
+                        while (loadingAnimationStatus) {
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.conditionLoadingRightImage.visibility = View.GONE
+                                binding.conditionLoadingLeftImage.visibility = View.VISIBLE
+                                binding.conditionLoadingLeftImage.startAnimation(
+                                    loadingAnimationLeft
+                                )
+
+                            }
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.conditionLoadingLeftImage.visibility = View.GONE
+                                binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                                binding.conditionLoadingRightImage.startAnimation(
+                                    loadingAnimationRight
+                                )
+
+                            }
+
+                        }
+
+                    } catch (e: InterruptedException) {
+
+                        loadingAnimationStatus = false
+
+                        Handler(Looper.getMainLooper()).post {
+
+                            binding.conditionLoadingRightImage.clearAnimation()
+                            binding.conditionLoadingLeftImage.clearAnimation()
+                            binding.conditionLoadingRightImage.visibility = View.GONE
+                            binding.conditionLoadingLeftImage.visibility = View.GONE
+                            binding.conditionLoadingLayout.visibility = View.GONE
+
+                        }
+
+                    }
+
+                }
 
             } else {
 
@@ -490,19 +533,35 @@ class ConditionFragment : Fragment() {
                 when (currentLayout) {
 
                     "combine" -> {
-                        binding.conditionCombineLayout.visibility = View.VISIBLE
+                        if (viewModel.liveDataCombineList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionCombineLayout.visibility = View.VISIBLE
+                        }
                     }
 
                     "weather" -> {
-                        binding.conditionWeatherLayout.visibility = View.VISIBLE
+                        if (viewModel.liveDataWeatherList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionWeatherLayout.visibility = View.VISIBLE
+                        }
                     }
 
                     "tide" -> {
-                        binding.conditionTideLayout.visibility = View.VISIBLE
+                        if (viewModel.liveDataTideList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionTideLayout.visibility = View.VISIBLE
+                        }
                     }
 
                     "index" -> {
-                        binding.conditionIndexLayout.visibility = View.VISIBLE
+                        if (viewModel.liveDataBasicIndexList.value?.size == 0) {
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                        } else {
+                            binding.conditionIndexLayout.visibility = View.VISIBLE
+                        }
                     }
 
                 }

@@ -340,51 +340,53 @@ class ConditionModel {
         var temp : String = ""
         var tide : String = ""
 
-        Log.d("test", "weatherList : ${weatherList.size}")
+        if (weatherList.size != 0 && tideList.size != 0 && indexTotal.size != 0) {
 
-        for (i in 0 until weatherList.size) {
+            for (i in 0 until weatherList.size) {
 
-            time = weatherList[i].time
-            temp = weatherList[i].temp
-            skyImage = weatherList[i].skyImage
+                time = weatherList[i].time
+                temp = weatherList[i].temp
+                skyImage = weatherList[i].skyImage
 
-            if (weatherList.size / 2 > i) {
+                if (weatherList.size / 2 > i) {
 
-                indexImage = indexTotal[0]
-
-            } else {
-
-                indexImage = indexTotal[1]
-
-            }
-
-            for (j in 0 until tideList.size) {
-
-                if (weatherList[i].time.substring(0,2) == tideList[j].time.substring(0,2)) {
-
-                    if (tideList[j].tide == "간조") {
-
-                        tide = "간조 " + tideList[j].time
-
-                    } else {
-
-                        tide = "만조 " + tideList[j].time
-
-                    }
-
-                    break
+                    indexImage = indexTotal[0]
 
                 } else {
 
-                    tide = ""
+                    indexImage = indexTotal[1]
 
                 }
 
+                for (j in 0 until tideList.size) {
+
+                    if (weatherList[i].time.substring(0,2) == tideList[j].time.substring(0,2)) {
+
+                        if (tideList[j].tide == "간조") {
+
+                            tide = "간조 " + tideList[j].time
+
+                        } else {
+
+                            tide = "만조 " + tideList[j].time
+
+                        }
+
+                        break
+
+                    } else {
+
+                        tide = ""
+
+                    }
+
+                }
+
+                val conditionCombine = ConditionCombine(time, indexImage, skyImage, temp, tide)
+
+                combineList.add(conditionCombine)
+
             }
-
-            val conditionCombine = ConditionCombine(time, indexImage, skyImage, temp, tide)
-
-            combineList.add(conditionCombine)
 
         }
 
@@ -483,61 +485,65 @@ class ConditionModel {
         val amTotalAvg : Int
         val pmTotalAvg : Int
 
-        for (i in 0 until responseList.size) {
+        if (responseList.size != 0) {
 
-            if (responseList[i].time_type == "오전") {
+            for (i in 0 until responseList.size) {
 
-                when (responseList[i].total_score) {
+                if (responseList[i].time_type == "오전") {
 
-                    "매우나쁨" -> amTotalSum += 1
-                    "나쁨" -> amTotalSum += 2
-                    "보통" -> amTotalSum += 3
-                    "좋음" -> amTotalSum += 4
-                    "매우좋음" -> amTotalSum += 5
+                    when (responseList[i].total_score) {
 
-                }
+                        "매우나쁨" -> amTotalSum += 1
+                        "나쁨" -> amTotalSum += 2
+                        "보통" -> amTotalSum += 3
+                        "좋음" -> amTotalSum += 4
+                        "매우좋음" -> amTotalSum += 5
 
-            } else {
+                    }
 
-                when (responseList[i].total_score) {
+                } else {
 
-                    "매우나쁨" -> pmTotalSum += 1
-                    "나쁨" -> pmTotalSum += 2
-                    "보통" -> pmTotalSum += 3
-                    "좋음" -> pmTotalSum += 4
-                    "매우좋음" -> pmTotalSum += 5
+                    when (responseList[i].total_score) {
+
+                        "매우나쁨" -> pmTotalSum += 1
+                        "나쁨" -> pmTotalSum += 2
+                        "보통" -> pmTotalSum += 3
+                        "좋음" -> pmTotalSum += 4
+                        "매우좋음" -> pmTotalSum += 5
+
+                    }
 
                 }
 
             }
 
+            amTotalAvg = (amTotalSum / (responseList.size / 2)).toDouble().roundToInt()
+            pmTotalAvg = (pmTotalSum / (responseList.size / 2)).toDouble().roundToInt()
+
+            when (amTotalAvg) {
+
+                1 -> amTotal = R.drawable.index_very_bad
+                2 -> amTotal = R.drawable.index_bad
+                3 -> amTotal = R.drawable.index_normal
+                4 -> amTotal = R.drawable.index_good
+                5 -> amTotal = R.drawable.index_very_good
+
+            }
+
+            when (pmTotalAvg) {
+
+                1 -> pmTotal = R.drawable.index_very_bad
+                2 -> pmTotal = R.drawable.index_bad
+                3 -> pmTotal = R.drawable.index_normal
+                4 -> pmTotal = R.drawable.index_good
+                5 -> pmTotal = R.drawable.index_very_good
+
+            }
+
+            list.add(amTotal)
+            list.add(pmTotal)
+
         }
-
-        amTotalAvg = (amTotalSum / (responseList.size / 2)).toDouble().roundToInt()
-        pmTotalAvg = (pmTotalSum / (responseList.size / 2)).toDouble().roundToInt()
-
-        when (amTotalAvg) {
-
-            1 -> amTotal = R.drawable.index_very_bad
-            2 -> amTotal = R.drawable.index_bad
-            3 -> amTotal = R.drawable.index_normal
-            4 -> amTotal = R.drawable.index_good
-            5 -> amTotal = R.drawable.index_very_good
-
-        }
-
-        when (pmTotalAvg) {
-
-            1 -> pmTotal = R.drawable.index_very_bad
-            2 -> pmTotal = R.drawable.index_bad
-            3 -> pmTotal = R.drawable.index_normal
-            4 -> pmTotal = R.drawable.index_good
-            5 -> pmTotal = R.drawable.index_very_good
-
-        }
-
-        list.add(amTotal)
-        list.add(pmTotal)
 
         return list
 
@@ -669,7 +675,15 @@ class ConditionModel {
 
     fun getFish(fishList : ArrayList<SelectFish>) : String {
 
-        return fishList[0].fishName
+        var fishName : String
+
+        if (fishList.size != 0) {
+            fishName = fishList[0].fishName
+        } else {
+            fishName = ""
+        }
+
+        return fishName
 
     } // getFish()
 
