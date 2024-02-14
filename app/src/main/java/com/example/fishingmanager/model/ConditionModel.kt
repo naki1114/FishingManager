@@ -26,6 +26,9 @@ class ConditionModel {
     private val tideRetrofitInterface: RetrofitInterface =
         RetrofitClient.getTideAPI().create(RetrofitInterface::class.java)
 
+    private val indexRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getIndexAPI().create(RetrofitInterface::class.java)
+
     lateinit var index: ConditionIndex
     val locationBaseList = ArrayList<SearchLocation>()
 
@@ -318,8 +321,13 @@ class ConditionModel {
         ny: String
     ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
 
+
     fun requestTide(baseDate: String, location: String, resultType: String) =
         tideRetrofitInterface.requestTide(baseDate, location, resultType)
+
+
+    fun requestIndex(type: String, resultType: String) =
+        indexRetrofitInterface.requestIndex(type, resultType)
 
 
     fun getCombineList(weatherList : ArrayList<ConditionWeather>, tideList : ArrayList<ConditionTide>, indexTotal : ArrayList<Int>): ArrayList<ConditionCombine> {

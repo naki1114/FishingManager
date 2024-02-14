@@ -144,6 +144,7 @@ class HomeViewModel(
                 } else {
                     Log.d(TAG, "requestWeather - onResponse : isFailure : ${response.message()}")
                     liveDataWeather.value = HomeWeather("", 0, "", "", "")
+                    liveDataWeatherLoadingStatus.value = false
                 }
 
             }
@@ -151,6 +152,7 @@ class HomeViewModel(
             override fun onFailure(call: Call<Weather>, t: Throwable) {
                 Log.d(TAG, "requestWeather - onFailure : $t")
                 liveDataWeather.value = HomeWeather("", 0, "", "", "")
+                liveDataWeatherLoadingStatus.value = false
             }
 
         })
@@ -178,6 +180,7 @@ class HomeViewModel(
                 } else {
                     Log.d(TAG, "requestIndex - onResponse : isFailure : ${response.message()}")
                     liveDataRecommendList.value = ArrayList()
+                    liveDataIndexLoadingStatus.value = false
                 }
 
 
@@ -186,6 +189,7 @@ class HomeViewModel(
             override fun onFailure(call: Call<Index>, t: Throwable) {
                 Log.d(TAG, "requestIndex - onFailure : $t")
                 liveDataRecommendList.value = ArrayList()
+                liveDataIndexLoadingStatus.value = false
             }
 
         })
@@ -220,6 +224,7 @@ class HomeViewModel(
                     Log.d(TAG, "requestCombine - onResponse : isFailure : ${response.message()}")
                     liveDataRecentCollectionList.value = ArrayList()
                     liveDataHotFeedList.value = ArrayList()
+                    liveDataCombineLoadingStatus.value = false
                 }
 
             }
@@ -228,6 +233,7 @@ class HomeViewModel(
                 Log.d(TAG, "requestCombine - onFailure : $t")
                 liveDataRecentCollectionList.value = ArrayList()
                 liveDataHotFeedList.value = ArrayList()
+                liveDataCombineLoadingStatus.value = false
             }
 
         })

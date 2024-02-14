@@ -65,7 +65,7 @@ class ConditionFragment : Fragment() {
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
     var previousLayout = ""
-    var getBundleString = "combine"
+    var currentLayout = "combine"
 
     lateinit var animationThread: Thread
 
@@ -95,8 +95,8 @@ class ConditionFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("layout", this) { key, bundle ->
 
-            getBundleString = bundle.getString("layout")!!
-            viewModel.changeLayout(getBundleString)
+            currentLayout = bundle.getString("layout")!!
+            viewModel.changeLayout(currentLayout)
 
         }
 
@@ -106,7 +106,8 @@ class ConditionFragment : Fragment() {
             (activity as MainActivity).weatherList,
             (activity as MainActivity).tideList,
             (activity as MainActivity).indexList,
-            searchLocation
+            searchLocation,
+            (activity as MainActivity).nickname
         )
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -129,9 +130,58 @@ class ConditionFragment : Fragment() {
         binding.conditionSelectFishRecyclerView.adapter = selectFishAdapter
         binding.conditionSearchLocationRecyclerView.adapter = searchLocationAdapter
 
-        loadingAnimationRight =
-            AnimationUtils.loadAnimation(activity, R.anim.loading_animation_right)
+        loadingAnimationRight = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_right)
         loadingAnimationLeft = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_left)
+
+        animationThread = thread(false) {
+
+            try {
+
+                while (loadingAnimationStatus) {
+
+                    Thread.sleep(1000)
+
+                    Handler(Looper.getMainLooper()).post {
+
+                        binding.conditionLoadingRightImage.visibility = View.GONE
+                        binding.conditionLoadingLeftImage.visibility = View.VISIBLE
+                        binding.conditionLoadingLeftImage.startAnimation(
+                            loadingAnimationLeft
+                        )
+
+                    }
+
+                    Thread.sleep(1000)
+
+                    Handler(Looper.getMainLooper()).post {
+
+                        binding.conditionLoadingLeftImage.visibility = View.GONE
+                        binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                        binding.conditionLoadingRightImage.startAnimation(
+                            loadingAnimationRight
+                        )
+
+                    }
+
+                }
+
+            } catch (e: InterruptedException) {
+
+                loadingAnimationStatus = false
+
+                Handler(Looper.getMainLooper()).post {
+
+                    binding.conditionLoadingRightImage.clearAnimation()
+                    binding.conditionLoadingLeftImage.clearAnimation()
+                    binding.conditionLoadingRightImage.visibility = View.GONE
+                    binding.conditionLoadingLeftImage.visibility = View.GONE
+                    binding.conditionLoadingLayout.visibility = View.GONE
+
+                }
+
+            }
+
+        }
 
     } // setVariable()
 
@@ -197,13 +247,68 @@ class ConditionFragment : Fragment() {
 
         viewModel.liveDataCurrentLayout.observe(viewLifecycleOwner, Observer {
 
-            changeLayout(it)
+            when (it) {
+
+                "combine" -> {
+
+                    if (viewModel.liveDataCombineList.value?.size == 0) {
+                        binding.conditionCombineLayout.visibility = View.GONE
+                        binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        changeLayout(it)
+                    }
+
+                }
+
+                "weather" -> {
+
+                    if(viewModel.liveDataWeatherList.value?.size == 0) {
+                        binding.conditionWeatherLayout.visibility = View.GONE
+                        binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        changeLayout(it)
+                    }
+
+                }
+
+                "tide" -> {
+
+                    if(viewModel.liveDataTideList.value?.size == 0) {
+                        binding.conditionTideLayout.visibility = View.GONE
+                        binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        changeLayout(it)
+                    }
+
+                }
+
+                "index" -> {
+
+                    if(viewModel.liveDataBasicIndexList.value?.size == 0) {
+                        binding.conditionIndexLayout.visibility = View.GONE
+                        binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        changeLayout(it)
+                    }
+
+                }
+
+                else -> changeLayout(it)
+
+            }
+
+            currentLayout = it
 
         })
 
         viewModel.liveDataCombineList.observe(viewLifecycleOwner, Observer {
 
-            combineAdapter.setItem(it)
+            if (it.size != 0) {
+                combineAdapter.setItem(it)
+            } else {
+                binding.conditionCombineLayout.visibility = View.GONE
+                binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+            }
 
         })
 
@@ -284,57 +389,7 @@ class ConditionFragment : Fragment() {
                 binding.conditionLoadingRightImage.startAnimation(loadingAnimationRight)
                 loadingAnimationStatus = true
 
-                animationThread = thread {
-
-                    try {
-
-                        while (loadingAnimationStatus) {
-
-                            Thread.sleep(1000)
-
-                            Handler(Looper.getMainLooper()).post {
-
-                                Log.d(TAG, "이동 시작 1")
-                                binding.conditionLoadingRightImage.visibility = View.GONE
-                                binding.conditionLoadingLeftImage.visibility = View.VISIBLE
-                                binding.conditionLoadingLeftImage.startAnimation(
-                                    loadingAnimationLeft
-                                )
-
-                            }
-
-                            Thread.sleep(1000)
-
-                            Handler(Looper.getMainLooper()).post {
-
-                                Log.d(TAG, "이동 시작 2")
-                                binding.conditionLoadingLeftImage.visibility = View.GONE
-                                binding.conditionLoadingRightImage.visibility = View.VISIBLE
-                                binding.conditionLoadingRightImage.startAnimation(
-                                    loadingAnimationRight
-                                )
-
-                            }
-
-                        }
-
-                    } catch (e: InterruptedException) {
-
-                        loadingAnimationStatus = false
-
-                        Handler(Looper.getMainLooper()).post {
-
-                            binding.conditionLoadingRightImage.clearAnimation()
-                            binding.conditionLoadingLeftImage.clearAnimation()
-                            binding.conditionLoadingRightImage.visibility = View.GONE
-                            binding.conditionLoadingLeftImage.visibility = View.GONE
-                            binding.conditionLoadingLayout.visibility = View.GONE
-
-                        }
-
-                    }
-
-                }
+                animationThread.start()
 
             } else {
 
@@ -383,6 +438,79 @@ class ConditionFragment : Fragment() {
             (activity as MainActivity).weatherList = it
 
         })
+
+        viewModel.liveDataBasicTideList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).tideList = it
+
+        })
+
+        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).indexList = it
+
+        })
+
+        viewModel.liveDataRefreshLoadingStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
+                binding.conditionTabCombineButton.isClickable = false
+                binding.conditionTabWeatherButton.isClickable = false
+                binding.conditionTabTideButton.isClickable = false
+                binding.conditionTabIndexButton.isClickable = false
+                binding.conditionSelectLocationButton.isClickable = false
+                binding.conditionSelectDateButton.isClickable = false
+                binding.conditionSelectFishButton.isClickable = false
+
+                binding.conditionResponseFailureLayout.visibility = View.GONE
+
+                binding.conditionLoadingLayout.visibility = View.VISIBLE
+                binding.conditionLoadingRightImage.visibility = View.VISIBLE
+                binding.conditionLoadingRightImage.startAnimation(loadingAnimationRight)
+                loadingAnimationStatus = true
+
+                animationThread.start()
+
+            } else {
+
+                binding.conditionTabCombineButton.isClickable = true
+                binding.conditionTabWeatherButton.isClickable = true
+                binding.conditionTabTideButton.isClickable = true
+                binding.conditionTabIndexButton.isClickable = true
+                binding.conditionSelectLocationButton.isClickable = true
+                binding.conditionSelectDateButton.isClickable = true
+                binding.conditionSelectFishButton.isClickable = true
+
+
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
+
+                when (currentLayout) {
+
+                    "combine" -> {
+                        binding.conditionCombineLayout.visibility = View.VISIBLE
+                    }
+
+                    "weather" -> {
+                        binding.conditionWeatherLayout.visibility = View.VISIBLE
+                    }
+
+                    "tide" -> {
+                        binding.conditionTideLayout.visibility = View.VISIBLE
+                    }
+
+                    "index" -> {
+                        binding.conditionIndexLayout.visibility = View.VISIBLE
+                    }
+
+                }
+
+            }
+
+        })
+
 
     } // observeLiveData()
 
