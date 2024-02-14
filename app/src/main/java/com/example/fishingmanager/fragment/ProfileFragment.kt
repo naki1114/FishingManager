@@ -63,7 +63,7 @@ class ProfileFragment : Fragment() {
         binding.lifecycleOwner = this
 
         collectionAdapter = ProfileCollectionAdapter(ProfileCollectionAdapter.ItemClickListener {
-            viewModel.selectedFish(it)
+            viewModel.readMoreFish(it)
         })
         historyAdapter = ProfileHistoryAdapter()
         selectFishAdapter = ProfileSelectFishAdapter(ProfileSelectFishAdapter.ItemClickListener {
@@ -98,7 +98,7 @@ class ProfileFragment : Fragment() {
 
         })
 
-        viewModel.liveDataSelectedFish.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataReadMoreFish.observe(viewLifecycleOwner, Observer {
 
             binding.collection = it
             Glide.with(requireActivity()).load(it.fishImage).into(binding.profileCollectionReadMoreImage)

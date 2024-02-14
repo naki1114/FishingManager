@@ -126,7 +126,7 @@ class SplashViewModel : ViewModel() {
                 if (response.isSuccessful) {
 
                     liveDataCollectionList.value = response.body()?.collection
-                    liveDataHistoryList.value = response.body()?.history
+                    liveDataHistoryList.value = model.getHistoryList(response.body()?.history)
                     liveDataFeedList.value = response.body()?.feed
                     liveDataUserInfo.value = response.body()?.userInfo
 

@@ -20,7 +20,7 @@ class ProfileViewModel(
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
-    val liveDataSelectedFish = MutableLiveData<Collection>()
+    val liveDataReadMoreFish = MutableLiveData<Collection>()
 
     val liveDataChangeTab = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
@@ -38,10 +38,10 @@ class ProfileViewModel(
     } // init()
 
 
-    fun selectedFish(collection: Collection) {
+    fun readMoreFish(collection: Collection) {
 
         if (collection.fishName != "") {
-            liveDataSelectedFish.value = collection
+            liveDataReadMoreFish.value = collection
             changeLayout("readMore")
         }
 
@@ -86,5 +86,19 @@ class ProfileViewModel(
         liveDataChangeFragment.value = "pay"
 
     } // changeFragment()
+
+
+    fun changeFish(fishName: String) {
+
+
+
+    } // changeFish()
+
+
+    fun changeDate(date: String) {
+
+
+
+    } // changeDate()
 
 }
