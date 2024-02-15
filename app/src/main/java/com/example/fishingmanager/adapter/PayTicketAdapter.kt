@@ -55,6 +55,18 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
             binding.payIcon1Image.setImageResource(payTicket.icon1)
             binding.payIcon2Image.setImageResource(payTicket.icon2)
 
+            if (payTicket.hotStatus) {
+
+                binding.payTicketSpace.visibility = View.GONE
+                binding.payTicketHotImage.visibility = View.VISIBLE
+
+            } else {
+
+                binding.payTicketHotImage.visibility = View.GONE
+                binding.payTicketSpace.visibility = View.VISIBLE
+
+            }
+
             if (payTicket.icon2 == 0) {
 
                 binding.payIcon2Image.visibility = View.GONE

@@ -6,6 +6,7 @@
 
     <style name="Theme.FishingManager" parent="Base.Theme.FishingManager" >
         <item name="android:statusBarColor">@color/main1</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="S">@android:color/transparent</item>
     </style>
 
     <style name="CustomTextAppearance" parent="TextAppearance.AppCompat.Medium">

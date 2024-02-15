@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
+import com.example.fishingmanager.data.History
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.Tide
@@ -35,7 +36,15 @@ class SplashModel {
         baseTime: String,
         nx: String,
         ny: String
-    ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
+    ) = weatherRetrofitInterface.requestWeather(
+        pageNo,
+        numOfRows,
+        dataType,
+        baseDate,
+        baseTime,
+        nx,
+        ny
+    )
 
     // 조석 API 요청
     fun requestTide(baseDate: String, location: String, resultType: String) =
@@ -46,7 +55,7 @@ class SplashModel {
         indexRetrofitInterface.requestIndex(type, resultType)
 
     // Web Server DB 요청
-    fun requestCombine(nickname : String) =
+    fun requestCombine(nickname: String) =
         webServerRetrofitInterface.requestDB(nickname)
 
 
@@ -118,7 +127,8 @@ class SplashModel {
 
                 humidity = list[i].fcstValue + "%"
 
-                val conditionWeather = ConditionWeather(time, skyImage, temp, humidity, windSpeed, date)
+                val conditionWeather =
+                    ConditionWeather(time, skyImage, temp, humidity, windSpeed, date)
                 weatherList.add(conditionWeather)
 
             }
@@ -196,21 +206,87 @@ class SplashModel {
 
 
     // 응답 받은 지수 데이터 중, 필요한 부분만 가공하여 리턴
-    fun getIndexList(response : retrofit2.Response<Index>) : ArrayList<Index.Item> {
+    fun getIndexList(response: retrofit2.Response<Index>): ArrayList<Index.Item> {
 
         val list = ArrayList<Index.Item>()
-        val responseList : ArrayList<Index.Item> = response.body()!!.result.data
+        val responseList: ArrayList<Index.Item> = response.body()!!.result.data
         val listSize = responseList.size
 
         for (i in 0 until listSize) {
 
-                list.add(responseList[i])
+            list.add(responseList[i])
 
         }
 
         return list
 
     } // getIndexList()
+
+
+    fun getHistoryList(responseList: ArrayList<History>?): ArrayList<History> {
+
+        val list = ArrayList<History>()
+        var date = ""
+        var fishIcon = 0
+
+        if (responseList != null) {
+            for (i in 0 until responseList.size) {
+
+                date = GetDate().getFormatDate5(responseList[i].date.toLong())
+
+                when (responseList[i].fishName) {
+
+                    "가자미" -> fishIcon = 0
+                    "갈치" -> fishIcon = 0
+                    "감성돔" -> fishIcon = R.drawable.gamsungdom
+                    "갑오징어" -> fishIcon = 0
+                    "고등어" -> fishIcon = 0
+                    "광어" -> fishIcon = R.drawable.gawnga
+                    "노래미" -> fishIcon = 0
+                    "농어" -> fishIcon = R.drawable.nonga
+                    "대구" -> fishIcon = 0
+                    "돌돔" -> fishIcon = R.drawable.doldom
+                    "문어" -> fishIcon = 0
+                    "방어" -> fishIcon = 0
+                    "배도라치" -> fishIcon = 0
+                    "벵에돔" -> fishIcon = R.drawable.bengedom
+                    "병어" -> fishIcon = 0
+                    "볼락" -> fishIcon = R.drawable.bollock
+                    "붕장어" -> fishIcon = 0
+                    "삼치" -> fishIcon = 0
+                    "성대" -> fishIcon = 0
+                    "숭어" -> fishIcon = 0
+                    "쏨뱅이" -> fishIcon = 0
+                    "양태" -> fishIcon = 0
+                    "열기" -> fishIcon = R.drawable.yulgi
+                    "용치놀래기" -> fishIcon = 0
+                    "우럭" -> fishIcon = R.drawable.uruck
+                    "전어" -> fishIcon = 0
+                    "주꾸미" -> fishIcon = 0
+                    "쥐치" -> fishIcon = 0
+                    "참돔" -> fishIcon = R.drawable.chamdom
+                    "홍어" -> fishIcon = 0
+
+                }
+
+                list.add(
+                    History(
+                        responseList[i].nickname,
+                        "",
+                        responseList[i].fishName,
+                        responseList[i].fishImage,
+                        responseList[i].fishLength,
+                        date,
+                        fishIcon
+                    )
+                )
+
+            }
+        }
+
+        return list
+
+    } // getHistoryList()
 
 
 }

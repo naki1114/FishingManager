@@ -1,5 +1,6 @@
 package com.example.fishingmanager.viewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
@@ -19,11 +20,15 @@ class ProfileViewModel(
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
-    val liveDataSelectedFish = MutableLiveData<Collection>()
+    val liveDataReadMoreFish = MutableLiveData<Collection>()
 
     val liveDataChangeTab = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
     val liveDataClickedMenu = MutableLiveData<Boolean>()
+    val liveDataChangeFragment = MutableLiveData<String>()
+
+    val liveDataCurrentFish = MutableLiveData<String>()
+    val liveDataCurrentDate = MutableLiveData<String>()
 
     var previousLayout: String = ""
 
@@ -31,15 +36,17 @@ class ProfileViewModel(
 
         liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
-        liveDataFishList.value = model.getFishList()
+        liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
+        liveDataCurrentFish.value = "전 체"
+        liveDataCurrentDate.value = "전 체"
 
     } // init()
 
 
-    fun selectedFish(collection: Collection) {
+    fun readMoreFish(collection: Collection) {
 
         if (collection.fishName != "") {
-            liveDataSelectedFish.value = collection
+            liveDataReadMoreFish.value = collection
             changeLayout("readMore")
         }
 
@@ -77,5 +84,28 @@ class ProfileViewModel(
         liveDataClickedMenu.value = true
 
     } // clickedMenu()
+
+
+    fun changeFragment() {
+
+        liveDataChangeFragment.value = "pay"
+
+    } // changeFragment()
+
+
+    fun changeFish(fishName: String) {
+
+        liveDataCurrentFish.value = fishName
+        liveDataHistoryList.value = model.changeFish(basicHistoryList, nickname, fishName)
+        liveDataChangeLayout.value = previousLayout
+
+    } // changeFish()
+
+
+    fun changeDate(date: String) {
+
+        liveDataCurrentDate.value = date
+
+    } // changeDate()
 
 }

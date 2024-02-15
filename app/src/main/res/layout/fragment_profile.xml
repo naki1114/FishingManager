@@ -21,6 +21,7 @@
         android:id="@+id/profileDrawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".fragment.ProfileFragment"
         >
 
         <LinearLayout
@@ -28,7 +29,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/main2"
-            tools:context=".fragment.ProfileFragment">
+            >
 
 
             <LinearLayout
@@ -216,19 +217,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="13"
+                        android:weightSum="10"
                         >
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.4"
+                            android:layout_weight="1"
                             />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3.2"
+                            android:layout_weight="3"
                             android:orientation="vertical"
                             >
 
@@ -252,55 +253,18 @@
                                 android:textStyle="bold"
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
-                                android:text="전체"
+                                android:text="@{viewModel.liveDataCurrentFish}"
                                 android:textSize="12dp"
+                                android:onClick='@{() -> viewModel.changeLayout("selectFish")}'
                                 />
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.4"
-                            />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4.2"
-                            android:orientation="vertical"
-                            >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:textColor="@color/black"
-                                android:textSize="16dp"
-                                android:text="@string/profile_length"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                />
-
-                            <Button
-                                android:id="@+id/profileHistoryLengthButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="35dp"
-                                android:background="@drawable/custom_main_button_background"
-                                android:textColor="@color/main2"
-                                android:textStyle="bold"
-                                android:layout_gravity="center"
-                                android:layout_marginVertical="10dp"
-                                android:text="전체"
-                                android:textSize="12dp"
-                                />
-
-                        </LinearLayout>
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.4"
+                            android:layout_weight="1"
                             />
 
                         <LinearLayout
@@ -330,8 +294,9 @@
                                 android:textStyle="bold"
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
-                                android:text="전체"
+                                android:text="@{viewModel.liveDataCurrentDate}"
                                 android:textSize="12dp"
+                                android:onClick='@{() -> viewModel.changeLayout("selectDate")}'
                                 />
 
                         </LinearLayout>
@@ -339,7 +304,7 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="0.4"
+                            android:layout_weight="1"
                             />
 
                     </LinearLayout>
@@ -479,6 +444,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick='@{() -> viewModel.changeLayout(viewModel.previousLayout)}'
                         />
 
                     <View
@@ -706,6 +672,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick='@{() -> viewModel.changeLayout(viewModel.previousLayout)}'
                         />
 
                     <View
@@ -784,7 +751,99 @@
 
         </LinearLayout>
 
-        <include layout="@layout/profile_drawer"/>
+        <LinearLayout
+            android:id="@+id/drawerView"
+            android:orientation="vertical"
+            android:layout_width="260dp"
+            android:layout_height="match_parent"
+            android:background="@color/main2"
+            android:layout_gravity="end"
+            android:clickable="true"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerPurchaseTicketText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_purchase_ticket"
+                android:paddingVertical="10dp"
+                android:onClick="@{() -> viewModel.changeFragment()}"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerLogoutText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_logout"
+                android:paddingVertical="10dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <TextView
+                android:id="@+id/profileDrawerDeleteAccountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="@string/profile_delete_account"
+                android:paddingVertical="10dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray2"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

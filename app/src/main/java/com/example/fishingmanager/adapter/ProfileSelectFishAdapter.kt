@@ -2,6 +2,7 @@ package com.example.fishingmanager.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishingmanager.data.History
@@ -10,12 +11,11 @@ import com.example.fishingmanager.databinding.ProfileSelectFishItemBinding
 
 class ProfileSelectFishAdapter(val itemClickListener : ItemClickListener) : RecyclerView.Adapter<ProfileSelectFishAdapter.ViewHolder>() {
 
-    lateinit var binding : ProfileSelectFishItemBinding
     lateinit var fishList : ArrayList<SelectFish>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        binding = ProfileSelectFishItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ProfileSelectFishItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding, itemClickListener)
 
@@ -49,7 +49,18 @@ class ProfileSelectFishAdapter(val itemClickListener : ItemClickListener) : Recy
         fun onBind(selectFish : SelectFish) {
 
             binding.selectFish = selectFish
-            binding.profileSelectFishItemFishImage.setImageResource(selectFish.fishImage)
+            binding.clickListener = itemClickListener
+
+            if (selectFish.fishImage == 0) {
+
+                binding.profileSelectFishItemFishImage.visibility == View.GONE
+
+            } else {
+
+                binding.profileSelectFishItemFishImage.visibility == View.VISIBLE
+                binding.profileSelectFishItemFishImage.setImageResource(selectFish.fishImage)
+
+            }
 
         } // onBind()
 
