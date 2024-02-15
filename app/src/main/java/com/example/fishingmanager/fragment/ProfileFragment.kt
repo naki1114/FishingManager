@@ -67,7 +67,7 @@ class ProfileFragment : Fragment() {
         })
         historyAdapter = ProfileHistoryAdapter()
         selectFishAdapter = ProfileSelectFishAdapter(ProfileSelectFishAdapter.ItemClickListener {
-
+            viewModel.changeFish(it.fishName)
         })
 
         binding.profileCollectionRecyclerView.adapter =  collectionAdapter
@@ -132,6 +132,7 @@ class ProfileFragment : Fragment() {
             (activity as MainActivity).changeFragment(it)
 
         })
+
 
     } // observeLiveData()
 

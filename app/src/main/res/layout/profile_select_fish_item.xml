@@ -24,6 +24,7 @@
         android:paddingHorizontal="20dp"
         android:background="@drawable/custom_white_button"
         android:onClick="@{() -> clickListener.onClick(selectFish)}"
+        android:gravity="center"
         >
 
         <ImageView

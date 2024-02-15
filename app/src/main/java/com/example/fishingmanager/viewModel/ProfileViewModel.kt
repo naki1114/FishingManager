@@ -27,13 +27,18 @@ class ProfileViewModel(
     val liveDataClickedMenu = MutableLiveData<Boolean>()
     val liveDataChangeFragment = MutableLiveData<String>()
 
+    val liveDataCurrentFish = MutableLiveData<String>()
+    val liveDataCurrentDate = MutableLiveData<String>()
+
     var previousLayout: String = ""
 
     fun init() {
 
         liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
-        liveDataFishList.value = model.getFishList()
+        liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
+        liveDataCurrentFish.value = "전 체"
+        liveDataCurrentDate.value = "전 체"
 
     } // init()
 
@@ -90,14 +95,16 @@ class ProfileViewModel(
 
     fun changeFish(fishName: String) {
 
-
+        liveDataCurrentFish.value = fishName
+        liveDataHistoryList.value = model.changeFish(basicHistoryList, nickname, fishName)
+        liveDataChangeLayout.value = previousLayout
 
     } // changeFish()
 
 
     fun changeDate(date: String) {
 
-
+        liveDataCurrentDate.value = date
 
     } // changeDate()
 

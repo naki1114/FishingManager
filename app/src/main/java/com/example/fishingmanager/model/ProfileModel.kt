@@ -5,6 +5,7 @@ import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.function.GetDate
+import java.util.TreeSet
 
 class ProfileModel {
 
@@ -52,13 +53,84 @@ class ProfileModel {
     } // getHistoryList()
 
 
-    fun getFishList(): ArrayList<SelectFish> {
+    fun getFishList(historyList: ArrayList<History>, nickname: String): ArrayList<SelectFish> {
 
         val list = ArrayList<SelectFish>()
+        var fishIcon = 0
 
+        for (i in 0 until historyList.size) {
 
+            if (historyList[i].nickname == nickname) {
 
-        return list
+                when (historyList[i].fishName) {
+
+                    "가자미" -> fishIcon = 0
+                    "갈치" -> fishIcon = 0
+                    "감성돔" -> fishIcon = R.drawable.gamsungdom
+                    "갑오징어" -> fishIcon = 0
+                    "고등어" -> fishIcon = 0
+                    "광어" -> fishIcon = R.drawable.gawnga
+                    "노래미" -> fishIcon = 0
+                    "농어" -> fishIcon = R.drawable.nonga
+                    "대구" -> fishIcon = 0
+                    "돌돔" -> fishIcon = R.drawable.doldom
+                    "문어" -> fishIcon = 0
+                    "방어" -> fishIcon = 0
+                    "배도라치" -> fishIcon = 0
+                    "벵에돔" -> fishIcon = R.drawable.bengedom
+                    "병어" -> fishIcon = 0
+                    "볼락" -> fishIcon = R.drawable.bollock
+                    "붕장어" -> fishIcon = 0
+                    "삼치" -> fishIcon = 0
+                    "성대" -> fishIcon = 0
+                    "숭어" -> fishIcon = 0
+                    "쏨뱅이" -> fishIcon = 0
+                    "양태" -> fishIcon = 0
+                    "열기" -> fishIcon = R.drawable.yulgi
+                    "용치놀래기" -> fishIcon = 0
+                    "우럭" -> fishIcon = R.drawable.uruck
+                    "전어" -> fishIcon = 0
+                    "주꾸미" -> fishIcon = 0
+                    "쥐치" -> fishIcon = 0
+                    "참돔" -> fishIcon = R.drawable.chamdom
+                    "홍어" -> fishIcon = 0
+
+                }
+
+                list.add(SelectFish(fishIcon, historyList[i].fishName))
+
+            }
+
+        }
+
+        val selectFishList = ArrayList<SelectFish>()
+        var duplicateStatus = false
+
+        for (i in 0 until list.size) {
+
+            duplicateStatus = false
+
+            for (j in 0 until selectFishList.size) {
+
+                if (list[i].fishName == selectFishList[j].fishName) {
+
+                    duplicateStatus = true
+
+                }
+
+            }
+
+            if (!duplicateStatus) {
+
+                selectFishList.add(list[i])
+
+            }
+
+        }
+
+        selectFishList.add(0, SelectFish(0, "전 체"))
+
+        return selectFishList
 
     } // getFishList()
 
@@ -135,6 +207,43 @@ class ProfileModel {
         }
 
     } // addCollection()
+
+
+    fun changeFish(historyList: ArrayList<History>, nickname: String, fishName: String) : ArrayList<History> {
+
+        val list = ArrayList<History>()
+
+        if (fishName != "전 체") {
+
+            for (i in 0 until historyList.size) {
+
+                if (historyList[i].nickname == nickname && historyList[i].fishName == fishName) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
+        } else {
+
+            for (i in 0 until historyList.size) {
+
+                if (historyList[i].nickname == nickname) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
+        }
+
+
+
+        return list
+
+    } // changeFish()
 
 
 }

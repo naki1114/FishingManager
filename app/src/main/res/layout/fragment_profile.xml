@@ -192,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -210,7 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -253,8 +253,9 @@
                                 android:textStyle="bold"
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
-                                android:text="전체"
+                                android:text="@{viewModel.liveDataCurrentFish}"
                                 android:textSize="12dp"
+                                android:onClick='@{() -> viewModel.changeLayout("selectFish")}'
                                 />
 
                         </LinearLayout>
@@ -293,8 +294,9 @@
                                 android:textStyle="bold"
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
-                                android:text="전체"
+                                android:text="@{viewModel.liveDataCurrentDate}"
                                 android:textSize="12dp"
+                                android:onClick='@{() -> viewModel.changeLayout("selectDate")}'
                                 />
 
                         </LinearLayout>
@@ -442,6 +444,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick='@{() -> viewModel.changeLayout(viewModel.previousLayout)}'
                         />
 
                     <View
@@ -669,6 +672,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="20dp"
                         android:src="@drawable/btnbackcream"
+                        android:onClick='@{() -> viewModel.changeLayout(viewModel.previousLayout)}'
                         />
 
                     <View
