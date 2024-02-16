@@ -1,10 +1,19 @@
 package com.example.fishingmanager.adapter
 
 import android.content.Context
+import android.graphics.Paint
+import android.text.Html
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
+import android.text.style.StrikethroughSpan
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.set
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fishingmanager.R
 import com.example.fishingmanager.data.PayTicket
 import com.example.fishingmanager.databinding.PayTicketItemBinding
 
@@ -77,6 +86,21 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
                 binding.payIcon2Image.visibility = View.VISIBLE
                 binding.payIconSpace.visibility = View.VISIBLE
 
+            }
+
+            val spanString = SpannableString(payTicket.buttonText)
+
+            when (adapterPosition) {
+                0 -> {
+                    spanString.setSpan(StrikethroughSpan(), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spanString.setSpan(RelativeSizeSpan(0.85f), 0, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.payTicketButton.text = spanString
+                }
+                1, 3, 5 -> {
+                    spanString.setSpan(StrikethroughSpan(), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    spanString.setSpan(RelativeSizeSpan(0.85f), 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    binding.payTicketButton.text = spanString
+                }
             }
 
         }
