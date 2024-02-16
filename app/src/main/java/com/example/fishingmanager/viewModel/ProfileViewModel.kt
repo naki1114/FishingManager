@@ -6,19 +6,27 @@ import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
+import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.model.ProfileModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class ProfileViewModel(
-    collectionList: ArrayList<Collection>, historyList: ArrayList<History>,
-    val nickname: String
+class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: ArrayList<History>,
+                       var userInfo: UserInfo
 ) : ViewModel() {
 
+    val TAG = "ProfileViewModel"
+
     val model = ProfileModel()
+    val liveDataUserInfo = MutableLiveData<UserInfo>()
+    lateinit var nickname : String
+    var profileImageStatus : Boolean = false
     val basicCollectionList = collectionList
     val basicHistoryList = historyList
     var userBasicHistoryList = ArrayList<History>()
-    val calendarList = MutableLiveData<ArrayList<CalendarDay>>()
+    val liveDataCalendarList = MutableLiveData<ArrayList<CalendarDay>>()
 
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
@@ -32,13 +40,22 @@ class ProfileViewModel(
 
     val liveDataCurrentFish = MutableLiveData<String>()
     val liveDataCurrentDate = MutableLiveData<String>()
+    val liveDataShowDialog = MutableLiveData<String>()
+    val liveDataLogoutStatus = MutableLiveData<Boolean>()
+    val liveDataDeleteAccountStatus = MutableLiveData<Boolean>()
+
+    val liveDataClickedFishImage = MutableLiveData<UserInfo>()
+    val liveDataGoToGallery = MutableLiveData<Boolean>()
 
     var previousLayout: String = ""
 
     fun init() {
 
+        profileImageStatus = liveDataUserInfo.value?.profileImage != null
+        liveDataUserInfo.value = checkProfileImage()
+        nickname = liveDataUserInfo.value?.nickname.toString()
         userBasicHistoryList = model.getHistoryList(basicHistoryList, nickname)
-        calendarList.value = model.getCalendarList(userBasicHistoryList)
+        liveDataCalendarList.value = model.getCalendarList(userBasicHistoryList)
         liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
         liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
@@ -91,9 +108,9 @@ class ProfileViewModel(
     } // clickedMenu()
 
 
-    fun changeFragment() {
+    fun changeFragment(fragment : String) {
 
-        liveDataChangeFragment.value = "pay"
+        liveDataChangeFragment.value = fragment
 
     } // changeFragment()
 
@@ -124,7 +141,80 @@ class ProfileViewModel(
 
         liveDataChangeLayout.value = previousLayout
 
-
     } // changeDate()
+
+
+    fun showDialog(dialogName : String) {
+
+        liveDataShowDialog.value = dialogName
+
+    } // showDialog()
+
+
+    fun changeLogoutStatus(status : Boolean) {
+
+        liveDataLogoutStatus.value = status
+
+    } // changeLogoutStatus()
+
+
+    fun changeDeleteAccountStatus(status : Boolean) {
+
+        liveDataDeleteAccountStatus.value = status
+
+    } // changeDeleteAccountStatus()
+
+
+    fun deleteAccount(nickname: String) {
+
+        model.requestDeleteAccount(nickname).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                if (response.isSuccessful && response.body() == "success") {
+
+                    changeFragment("start")
+
+                } else {
+                    Log.d(TAG, "deleteAccount - onResponse : isFailure : ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d(TAG, "deleteAccount - onFailure : $t")
+            }
+
+        })
+
+    } // deleteAccount()
+
+
+    fun goPhotoView(userInfo: UserInfo) {
+
+        if (profileImageStatus) {
+            liveDataClickedFishImage.value = userInfo
+        } else {
+            liveDataClickedFishImage.value = UserInfo(userInfo.nickname, "", userInfo.checkingFishCount, userInfo.checkingFishTicket, userInfo.removeAdTicket, userInfo.type)
+        }
+
+
+    } // goPhotoView()
+
+
+    fun goToGallery() {
+
+        liveDataGoToGallery.value = true
+
+    } // goToGallery()
+
+
+    fun checkProfileImage() : UserInfo {
+
+        if (profileImageStatus) {
+            return userInfo
+        } else {
+            return UserInfo(userInfo.nickname, "", userInfo.checkingFishCount, userInfo.checkingFishTicket, userInfo.removeAdTicket, userInfo.type)
+        }
+
+    }
 
 }

@@ -6,6 +6,8 @@ import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.function.GetDate
+import com.example.fishingmanager.network.RetrofitClient
+import com.example.fishingmanager.network.RetrofitInterface
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -15,6 +17,8 @@ class ProfileModel {
 
     lateinit var collection: Collection
 
+    private val webServerRetrofitInterface: RetrofitInterface =
+        RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
     fun getCollectionList(
         collectionList: ArrayList<Collection>,
@@ -300,6 +304,9 @@ class ProfileModel {
         return list
 
     } // getCalendarList()
+
+
+    fun requestDeleteAccount(nickname : String) = webServerRetrofitInterface.deleteUserInfo(nickname)
 
 
 }

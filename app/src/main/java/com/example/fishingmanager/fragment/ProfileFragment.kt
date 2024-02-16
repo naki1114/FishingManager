@@ -2,6 +2,7 @@ package com.example.fishingmanager.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -12,6 +13,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
@@ -23,7 +28,9 @@ import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.ProfileCollectionAdapter
 import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
+import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.databinding.FragmentProfileBinding
+import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -41,9 +48,8 @@ class ProfileFragment : Fragment() {
     lateinit var collectionAdapter : ProfileCollectionAdapter
     lateinit var historyAdapter : ProfileHistoryAdapter
     lateinit var selectFishAdapter : ProfileSelectFishAdapter
+    lateinit var launcher : ActivityResultLauncher<Intent>
 
-    lateinit var userInfoShared : SharedPreferences
-    lateinit var nickname : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +66,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkUserShared()
         setVariable()
         observeLiveData()
         getData()
@@ -70,8 +75,10 @@ class ProfileFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = ProfileViewModel((activity as MainActivity).collectionList, (activity as MainActivity).historyList, nickname)
+        val userInfo = (activity as MainActivity).userInfo
+        viewModel = ProfileViewModel((activity as MainActivity).collectionList, (activity as MainActivity).historyList, userInfo)
         binding.viewModel = viewModel
+        binding.userInfo = userInfo
         binding.lifecycleOwner = this
 
         collectionAdapter = ProfileCollectionAdapter(ProfileCollectionAdapter.ItemClickListener {
@@ -86,6 +93,18 @@ class ProfileFragment : Fragment() {
         binding.profileHistoryRecyclerView.adapter = historyAdapter
         binding.profileSelectFishRecyclerView.adapter = selectFishAdapter
 
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback<ActivityResult> {
+
+            if (it.resultCode == -1) {
+
+                val intent = it.data
+                val uri = intent!!.data
+
+                Glide.with(requireActivity()).load(uri).into(binding.profileProfileImage)
+
+            }
+
+        })
 
     } // setVariable()
 
@@ -150,6 +169,16 @@ class ProfileFragment : Fragment() {
 
     fun observeLiveData() {
 
+        viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
+
+            if (it.profileImage == "") {
+                binding.profileProfileImage.setImageResource(R.drawable.fishing_logo)
+            } else {
+                Glide.with(requireActivity()).load(RetrofitClient.BASE_URL + it.profileImage).into(binding.profileProfileImage)
+            }
+
+        })
+
         viewModel.liveDataCollectionList.observe(viewLifecycleOwner, Observer {
 
             collectionAdapter.setItem(it)
@@ -199,12 +228,74 @@ class ProfileFragment : Fragment() {
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
+            when (it) {
+
+                "start" -> removeUserShared()
+
+            }
+
             (activity as MainActivity).changeFragment(it)
 
         })
 
-        viewModel.calendarList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataCalendarList.observe(viewLifecycleOwner, Observer {
+
             setCalendarView(it)
+
+        })
+
+        viewModel.liveDataShowDialog.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+
+                "logout" -> {
+                    binding.profileLogoutLayout.visibility = View.VISIBLE
+                }
+                "deleteAccount" -> {
+                    binding.profileDeleteAccountLayout.visibility = View.VISIBLE
+                }
+
+            }
+
+        })
+
+        viewModel.liveDataLogoutStatus.observe(viewLifecycleOwner, Observer {
+
+            binding.profileLogoutLayout.visibility = View.GONE
+
+            if (it) {
+                viewModel.changeFragment("start")
+            }
+
+        })
+
+        viewModel.liveDataDeleteAccountStatus.observe(viewLifecycleOwner, Observer {
+
+            binding.profileDeleteAccountLayout.visibility = View.GONE
+
+            if (it) {
+//                viewModel.deleteAccount(nickname)
+            }
+
+        })
+
+        viewModel.liveDataClickedFishImage.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).goPhotoView(it.profileImage)
+
+        })
+
+        viewModel.liveDataGoToGallery.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_PICK
+                launcher.launch(intent)
+
+            }
+
         })
 
 
@@ -218,12 +309,14 @@ class ProfileFragment : Fragment() {
     } // getData()
 
 
-    fun checkUserShared() {
+    fun removeUserShared() {
 
-        userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
-        nickname = userInfoShared.getString("nickname", "").toString()
+        val userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        val editor = userInfoShared.edit()
+        editor.clear()
+        editor.commit()
 
-    } // checkUserShared()
+    } // removeUserShared()
 
 
     fun changeTab(tab : String) {
