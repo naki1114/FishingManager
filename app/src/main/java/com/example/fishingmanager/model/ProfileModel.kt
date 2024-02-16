@@ -213,11 +213,12 @@ class ProfileModel {
     } // addCollection()
 
 
-    fun changeFish(historyList: ArrayList<History>, nickname: String, fishName: String) : ArrayList<History> {
+    fun refreshHistoryList(historyList: ArrayList<History>, nickname: String, fishName: String, date : String) : ArrayList<History> {
 
         val list = ArrayList<History>()
+        var formatDate = ""
 
-        if (fishName != "전 체") {
+        if (fishName != "전 체" && date == "전 체") {
 
             for (i in 0 until historyList.size) {
 
@@ -229,7 +230,21 @@ class ProfileModel {
 
             }
 
-        } else {
+        } else if (fishName != "전 체" && date != "전 체") {
+
+            for (i in 0 until historyList.size) {
+
+                formatDate = historyList[i].date.substring(2,4) + "." + historyList[i].date.substring(5,7) + "." + historyList[i].date.substring(8,10)
+
+                if (historyList[i].nickname == nickname && historyList[i].fishName == fishName && formatDate == date) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
+        } else if (fishName == "전 체" && date == "전 체") {
 
             for (i in 0 until historyList.size) {
 
@@ -241,9 +256,21 @@ class ProfileModel {
 
             }
 
+        } else if (fishName == "전 체" && date != "전 체"){
+
+            for (i in 0 until historyList.size) {
+
+                formatDate = historyList[i].date.substring(2,4) + "." + historyList[i].date.substring(5,7) + "." + historyList[i].date.substring(8,10)
+
+                if (historyList[i].nickname == nickname && formatDate == date) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
         }
-
-
 
         return list
 

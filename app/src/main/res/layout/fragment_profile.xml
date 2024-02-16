@@ -217,7 +217,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="10"
                         >
 
                         <View
@@ -254,7 +253,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
                                 android:text="@{viewModel.liveDataCurrentFish}"
-                                android:textSize="12dp"
+                                android:textSize="14dp"
                                 android:onClick='@{() -> viewModel.changeLayout("selectFish")}'
                                 />
 
@@ -270,7 +269,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="4"
+                            android:layout_weight="3"
                             android:orientation="vertical"
                             >
 
@@ -295,7 +294,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginVertical="10dp"
                                 android:text="@{viewModel.liveDataCurrentDate}"
-                                android:textSize="12dp"
+                                android:textSize="14dp"
                                 android:onClick='@{() -> viewModel.changeLayout("selectDate")}'
                                 />
 
@@ -728,15 +727,53 @@
                         android:layout_weight="0.2"
                         />
 
-                    <Button
-                        android:id="@+id/conditionSelectDateChoiceButton"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/custom_main_button_background"
-                        android:textColor="@color/main2"
-                        android:textStyle="bold"
-                        android:text="@string/choice"
-                        />
+                        android:orientation="horizontal"
+                        >
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                        <Button
+                            android:id="@+id/profileSelectDateAllButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/custom_main_button_background"
+                            android:textColor="@color/main2"
+                            android:textStyle="bold"
+                            android:text="@string/choice_all"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+
+                        <Button
+                            android:id="@+id/profileSelectDateChoiceButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/custom_main_button_background"
+                            android:textColor="@color/main2"
+                            android:textStyle="bold"
+                            android:text="@string/choice"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
+                            />
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="0dp"

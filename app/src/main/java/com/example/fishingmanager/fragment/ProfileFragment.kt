@@ -131,6 +131,20 @@ class ProfileFragment : Fragment() {
 
         })
 
+        binding.profileSelectDateChoiceButton.setOnClickListener {
+
+            if (binding.profileCalendarView.selectedDate != null) {
+                viewModel.changeDate(binding.profileCalendarView.selectedDate!!.date.toString())
+            }
+
+        }
+
+        binding.profileSelectDateAllButton.setOnClickListener {
+
+            viewModel.changeDate("전 체")
+
+        }
+
     } // setView()
 
 

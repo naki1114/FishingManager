@@ -101,7 +101,7 @@ class ProfileViewModel(
     fun changeFish(fishName: String) {
 
         liveDataCurrentFish.value = fishName
-        liveDataHistoryList.value = model.changeFish(basicHistoryList, nickname, fishName)
+        liveDataHistoryList.value = model.refreshHistoryList(basicHistoryList, nickname, fishName, liveDataCurrentDate.value!!)
         liveDataChangeLayout.value = previousLayout
 
     } // changeFish()
@@ -109,7 +109,21 @@ class ProfileViewModel(
 
     fun changeDate(date: String) {
 
-        liveDataCurrentDate.value = date
+        if (date != "전 체") {
+
+            val formatDate = date.substring(2,4) + "." + date.substring(5,7) + "." + date.substring(8,10)
+            liveDataCurrentDate.value = formatDate
+            liveDataHistoryList.value = model.refreshHistoryList(basicHistoryList, nickname, liveDataCurrentFish.value!!, formatDate)
+
+        } else {
+
+            liveDataCurrentDate.value = date
+            liveDataHistoryList.value = model.refreshHistoryList(basicHistoryList, nickname, liveDataCurrentFish.value!!, date)
+
+        }
+
+        liveDataChangeLayout.value = previousLayout
+
 
     } // changeDate()
 
