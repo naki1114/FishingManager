@@ -129,7 +129,6 @@ class SplashViewModel : ViewModel() {
                     liveDataHistoryList.value = model.getHistoryList(response.body()?.history)
                     liveDataFeedList.value = response.body()?.feed
                     liveDataUserInfo.value = response.body()?.userInfo
-
                     liveDataCombineData.value = true
 
                 } else {
@@ -146,6 +145,10 @@ class SplashViewModel : ViewModel() {
             override fun onFailure(call: Call<Combine>, t: Throwable) {
                 Log.d(TAG, "getCombine - onFailure : $t")
                 liveDataFailureCombine.value = true
+                liveDataCollectionList.value = ArrayList()
+                liveDataHistoryList.value = ArrayList()
+                liveDataFeedList.value = ArrayList()
+                liveDataUserInfo.value = UserInfo(-1, -1, -1)
             }
 
         })
