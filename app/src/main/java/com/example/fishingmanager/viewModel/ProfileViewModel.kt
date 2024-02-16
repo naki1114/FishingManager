@@ -7,6 +7,7 @@ import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.model.ProfileModel
+import com.prolificinteractive.materialcalendarview.CalendarDay
 
 class ProfileViewModel(
     collectionList: ArrayList<Collection>, historyList: ArrayList<History>,
@@ -16,6 +17,8 @@ class ProfileViewModel(
     val model = ProfileModel()
     val basicCollectionList = collectionList
     val basicHistoryList = historyList
+    var userBasicHistoryList = ArrayList<History>()
+    val calendarList = MutableLiveData<ArrayList<CalendarDay>>()
 
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
@@ -34,6 +37,8 @@ class ProfileViewModel(
 
     fun init() {
 
+        userBasicHistoryList = model.getHistoryList(basicHistoryList, nickname)
+        calendarList.value = model.getCalendarList(userBasicHistoryList)
         liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
         liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
