@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray3"
             android:textSize="20dp"
-            android:text="@{history.component6()}"
+            android:text="@{history.component6().substring(2,10)}"
             android:layout_gravity="center"
             />
 

@@ -1,14 +1,19 @@
 package com.example.fishingmanager.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +25,13 @@ import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
 import com.example.fishingmanager.databinding.FragmentProfileBinding
 import com.example.fishingmanager.viewModel.ProfileViewModel
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
+import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter
+import java.lang.StringBuilder
 
 class ProfileFragment : Fragment() {
 
@@ -78,6 +90,64 @@ class ProfileFragment : Fragment() {
     } // setVariable()
 
 
+    fun setCalendarView(list : ArrayList<CalendarDay>) {
+
+        binding.profileCalendarView.setTitleFormatter(
+            MonthArrayTitleFormatter(
+                resources.getTextArray(
+                    R.array.custom_months
+                )
+            )
+        )
+        binding.profileCalendarView.setWeekDayFormatter(
+            ArrayWeekDayFormatter(
+                resources.getTextArray(
+                    R.array.custom_weekdays
+                )
+            )
+        )
+
+        binding.profileCalendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader)
+        binding.profileCalendarView.addDecorators(
+            TodayDecorator(requireActivity()),
+            SundayDecorator(),
+            SaturdayDecorator(),
+            SelectableDecorator(list)
+        )
+
+        binding.profileCalendarView.setTitleFormatter(object : TitleFormatter {
+            override fun format(day: CalendarDay?): CharSequence {
+
+                val inputText: org.threeten.bp.LocalDate = day!!.date
+                val calendarHeaderElements = inputText.toString().split("-")
+                val calendarHeaderBuilder = StringBuilder()
+                calendarHeaderBuilder.append(calendarHeaderElements[0])
+                    .append("   ")
+                    .append(calendarHeaderElements[1])
+
+                return calendarHeaderBuilder.toString()
+
+            }
+
+        })
+
+        binding.profileSelectDateChoiceButton.setOnClickListener {
+
+            if (binding.profileCalendarView.selectedDate != null) {
+                viewModel.changeDate(binding.profileCalendarView.selectedDate!!.date.toString())
+            }
+
+        }
+
+        binding.profileSelectDateAllButton.setOnClickListener {
+
+            viewModel.changeDate("전 체")
+
+        }
+
+    } // setView()
+
+
     fun observeLiveData() {
 
         viewModel.liveDataCollectionList.observe(viewLifecycleOwner, Observer {
@@ -131,6 +201,10 @@ class ProfileFragment : Fragment() {
 
             (activity as MainActivity).changeFragment(it)
 
+        })
+
+        viewModel.calendarList.observe(viewLifecycleOwner, Observer {
+            setCalendarView(it)
         })
 
 
@@ -231,5 +305,69 @@ class ProfileFragment : Fragment() {
         }
 
     } // changeLayout()
+
+
+    class TodayDecorator(context: Context) : DayViewDecorator {
+
+        val drawable: Drawable =
+            ContextCompat.getDrawable(context, R.drawable.calendar_selector_color)!!
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return true
+        }
+
+
+        override fun decorate(view: DayViewFacade?) {
+            view!!.setSelectionDrawable(drawable)
+        }
+
+    } // DayDecorator
+
+
+    class SundayDecorator : DayViewDecorator {
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            val sunday = day?.date?.with(org.threeten.bp.DayOfWeek.SUNDAY)?.dayOfMonth
+            return sunday == day?.day
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.RED) {})
+        }
+
+    } // SundayDecorator
+
+
+    class SaturdayDecorator : DayViewDecorator {
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            val saturday = day?.date?.with(org.threeten.bp.DayOfWeek.SATURDAY)?.dayOfMonth
+            return saturday == day?.day
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.BLUE) {})
+        }
+
+    } // SaturdayDecorator
+
+
+    class SelectableDecorator(selectableDay : ArrayList<CalendarDay>) : DayViewDecorator {
+
+        val list = selectableDay
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+
+            return !list.contains(day)
+
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(object : ForegroundColorSpan(Color.parseColor("#D9D9D9")) {})
+            view?.setDaysDisabled(true)
+        }
+
+    } // MinMaxDecorator
+
 
 }
