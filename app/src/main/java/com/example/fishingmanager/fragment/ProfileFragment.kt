@@ -199,12 +199,55 @@ class ProfileFragment : Fragment() {
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
+            when (it) {
+
+                "start" -> removeUserShared()
+
+            }
+
             (activity as MainActivity).changeFragment(it)
 
         })
 
-        viewModel.calendarList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataCalendarList.observe(viewLifecycleOwner, Observer {
+
             setCalendarView(it)
+
+        })
+
+        viewModel.liveDataShowDialog.observe(viewLifecycleOwner, Observer {
+
+            when (it) {
+
+                "logout" -> {
+                    binding.profileLogoutLayout.visibility = View.VISIBLE
+                }
+                "deleteAccount" -> {
+                    binding.profileDeleteAccountLayout.visibility = View.VISIBLE
+                }
+
+            }
+
+        })
+
+        viewModel.liveDataLogoutStatus.observe(viewLifecycleOwner, Observer {
+
+            binding.profileLogoutLayout.visibility = View.GONE
+
+            if (it) {
+                viewModel.changeFragment("start")
+            }
+
+        })
+
+        viewModel.liveDataDeleteAccountStatus.observe(viewLifecycleOwner, Observer {
+
+            binding.profileDeleteAccountLayout.visibility = View.GONE
+
+            if (it) {
+//                viewModel.deleteAccount(nickname)
+            }
+
         })
 
 
@@ -224,6 +267,15 @@ class ProfileFragment : Fragment() {
         nickname = userInfoShared.getString("nickname", "").toString()
 
     } // checkUserShared()
+
+
+    fun removeUserShared() {
+
+        val editor = userInfoShared.edit()
+        editor.clear()
+        editor.commit()
+
+    } // removeUserShared()
 
 
     fun changeTab(tab : String) {
