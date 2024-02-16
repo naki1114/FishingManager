@@ -60,11 +60,10 @@ class FeedFragment : Fragment() {
         feedViewModel.feedList.observe(viewLifecycleOwner) {
 
             feedList = feedViewModel.feedList.value!!
-            (activity as MainActivity).feedList = feedList
 
             adapter = FeedAdapter(FeedAdapter.ItemClickListener {
                 feedViewModel.readFeed(it)
-            }, (activity as MainActivity).feedList)
+            }, feedList)
             binding.feedRecyclerView.adapter = adapter
 
         }
