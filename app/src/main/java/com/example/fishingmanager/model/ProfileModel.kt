@@ -1,10 +1,14 @@
 package com.example.fishingmanager.model
 
+import android.annotation.SuppressLint
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.function.GetDate
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.TreeSet
 
 class ProfileModel {
@@ -209,11 +213,12 @@ class ProfileModel {
     } // addCollection()
 
 
-    fun changeFish(historyList: ArrayList<History>, nickname: String, fishName: String) : ArrayList<History> {
+    fun refreshHistoryList(historyList: ArrayList<History>, nickname: String, fishName: String, date : String) : ArrayList<History> {
 
         val list = ArrayList<History>()
+        var formatDate = ""
 
-        if (fishName != "전 체") {
+        if (fishName != "전 체" && date == "전 체") {
 
             for (i in 0 until historyList.size) {
 
@@ -225,7 +230,21 @@ class ProfileModel {
 
             }
 
-        } else {
+        } else if (fishName != "전 체" && date != "전 체") {
+
+            for (i in 0 until historyList.size) {
+
+                formatDate = historyList[i].date.substring(2,4) + "." + historyList[i].date.substring(5,7) + "." + historyList[i].date.substring(8,10)
+
+                if (historyList[i].nickname == nickname && historyList[i].fishName == fishName && formatDate == date) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
+        } else if (fishName == "전 체" && date == "전 체") {
 
             for (i in 0 until historyList.size) {
 
@@ -237,13 +256,50 @@ class ProfileModel {
 
             }
 
+        } else if (fishName == "전 체" && date != "전 체"){
+
+            for (i in 0 until historyList.size) {
+
+                formatDate = historyList[i].date.substring(2,4) + "." + historyList[i].date.substring(5,7) + "." + historyList[i].date.substring(8,10)
+
+                if (historyList[i].nickname == nickname && formatDate == date) {
+
+                    list.add(historyList[i])
+
+                }
+
+            }
+
         }
-
-
 
         return list
 
     } // changeFish()
+
+
+    @SuppressLint("SimpleDateFormat")
+    fun getCalendarList(historyList : ArrayList<History>) : ArrayList<CalendarDay> {
+
+        val list = ArrayList<CalendarDay>()
+        val format = SimpleDateFormat("yyyy.MM.dd")
+
+        for (i in 0 until historyList.size) {
+
+            var date = format.parse(historyList[i].date)
+            var calendar = Calendar.getInstance()
+
+            calendar.time = date
+            calendar.add(Calendar.MONTH, 1)
+
+            val calendarDay = CalendarDay.from(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE))
+
+            list.add(calendarDay)
+
+        }
+
+        return list
+
+    } // getCalendarList()
 
 
 }

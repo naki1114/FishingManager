@@ -797,17 +797,13 @@ class ConditionFragment : Fragment() {
             ContextCompat.getDrawable(context, R.drawable.calendar_selector_color)!!
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
-
             return true
-
-        } // shouldDevorate()
+        }
 
 
         override fun decorate(view: DayViewFacade?) {
-
             view!!.setSelectionDrawable(drawable)
-
-        } // decorate()
+        }
 
     } // DayDecorator
 
@@ -823,7 +819,7 @@ class ConditionFragment : Fragment() {
             view?.addSpan(object : ForegroundColorSpan(Color.RED) {})
         }
 
-    }
+    } // SundayDecorator
 
 
     class SaturdayDecorator : DayViewDecorator {
@@ -837,7 +833,7 @@ class ConditionFragment : Fragment() {
             view?.addSpan(object : ForegroundColorSpan(Color.BLUE) {})
         }
 
-    }
+    } // SaturdayDecorator
 
 
     class MinMaxDecorator(max: CalendarDay, min: CalendarDay) : DayViewDecorator {
@@ -846,7 +842,7 @@ class ConditionFragment : Fragment() {
         val minDay = min
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
-            return return  (day!!.month != minDay.month) || (day.day > maxDay.day) || (day.day < minDay.day)
+            return  (day!!.month != minDay.month) || (day.day > maxDay.day) || (day.day < minDay.day)
         }
 
         override fun decorate(view: DayViewFacade?) {
@@ -854,7 +850,7 @@ class ConditionFragment : Fragment() {
             view?.setDaysDisabled(true)
         }
 
-    }
+    } // MinMaxDecorator
 
 
 }
