@@ -357,8 +357,7 @@ class ProfileFragment : Fragment() {
                 binding.profileHistoryButton.isClickable = false
                 binding.profileMenuButton.isClickable = false
 
-                binding.profileCollectionLayout.visibility = View.GONE
-                binding.profileHistoryLayout.visibility = View.GONE
+                binding.profileResponseFailureLayout.visibility = View.GONE
                 binding.profileLoadingLayout.visibility = View.VISIBLE
 
                 binding.profileLoadingRightImage.visibility = View.VISIBLE
