@@ -7,12 +7,16 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -39,6 +43,7 @@ import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter
 import java.lang.StringBuilder
+import kotlin.concurrent.thread
 
 class ProfileFragment : Fragment() {
 
@@ -49,7 +54,13 @@ class ProfileFragment : Fragment() {
     lateinit var historyAdapter : ProfileHistoryAdapter
     lateinit var selectFishAdapter : ProfileSelectFishAdapter
     lateinit var launcher : ActivityResultLauncher<Intent>
+    lateinit var userInfo : UserInfo
+    lateinit var nickname : String
 
+    lateinit var loadingAnimationRight: Animation
+    lateinit var loadingAnimationLeft: Animation
+    var loadingAnimationStatus = false
+    lateinit var animationThread: Thread
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +77,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkUserShared()
         setVariable()
         observeLiveData()
         getData()
@@ -75,8 +87,8 @@ class ProfileFragment : Fragment() {
 
     fun setVariable() {
 
-        val userInfo = (activity as MainActivity).userInfo
-        viewModel = ProfileViewModel((activity as MainActivity).collectionList, (activity as MainActivity).historyList, userInfo)
+        userInfo = (activity as MainActivity).userInfo
+        viewModel = ProfileViewModel((activity as MainActivity).collectionList, (activity as MainActivity).historyList, userInfo, nickname)
         binding.viewModel = viewModel
         binding.userInfo = userInfo
         binding.lifecycleOwner = this
@@ -105,6 +117,9 @@ class ProfileFragment : Fragment() {
             }
 
         })
+
+        loadingAnimationRight = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_right)
+        loadingAnimationLeft = AnimationUtils.loadAnimation(activity, R.anim.loading_animation_left)
 
     } // setVariable()
 
@@ -171,7 +186,7 @@ class ProfileFragment : Fragment() {
 
         viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
 
-            if (it.profileImage == "") {
+            if (it.profileImage == "FM") {
                 binding.profileProfileImage.setImageResource(R.drawable.fishing_logo)
             } else {
                 Glide.with(requireActivity()).load(RetrofitClient.BASE_URL + it.profileImage).into(binding.profileProfileImage)
@@ -181,13 +196,27 @@ class ProfileFragment : Fragment() {
 
         viewModel.liveDataCollectionList.observe(viewLifecycleOwner, Observer {
 
-            collectionAdapter.setItem(it)
+            if (viewModel.liveDataBasicCollectionList.value?.size == 0) {
+                binding.profileCollectionLayout.visibility = View.GONE
+                binding.profileResponseFailureLayout.visibility = View.VISIBLE
+                Log.d("API테스트", "Collection 데이터 없음")
+            } else {
+                collectionAdapter.setItem(it)
+                Log.d("API테스트", "Collection 데이터 있음")
+            }
 
         })
 
         viewModel.liveDataHistoryList.observe(viewLifecycleOwner, Observer {
 
-            historyAdapter.setItem(it)
+            if (viewModel.liveDataBasicHistoryList.value?.size == 0) {
+                binding.profileHistoryLayout.visibility = View.GONE
+                binding.profileResponseFailureLayout.visibility = View.VISIBLE
+                Log.d("API테스트", "History 데이터 없음")
+            } else {
+                historyAdapter.setItem(it)
+                Log.d("API테스트", "History 데이터 있음")
+            }
 
         })
 
@@ -219,9 +248,7 @@ class ProfileFragment : Fragment() {
         viewModel.liveDataClickedMenu.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-
                 binding.profileDrawerLayout.openDrawer(binding.drawerView)
-
             }
 
         })
@@ -229,9 +256,7 @@ class ProfileFragment : Fragment() {
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
             when (it) {
-
                 "start" -> removeUserShared()
-
             }
 
             (activity as MainActivity).changeFragment(it)
@@ -298,6 +323,131 @@ class ProfileFragment : Fragment() {
 
         })
 
+        viewModel.liveDataBasicCollectionList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).collectionList = it
+
+        })
+
+        viewModel.liveDataBasicHistoryList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).historyList = it
+
+        })
+
+        viewModel.liveDataBasicFeedList.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).feedList = it
+
+        })
+
+        viewModel.liveDataBasicUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).userInfo = it
+
+        })
+
+        viewModel.liveDataLoadingStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
+                binding.profileProfileImage.isClickable = false
+                binding.profileEditProfileImage.isClickable = false
+                binding.profileCollectionButton.isClickable = false
+                binding.profileHistoryButton.isClickable = false
+                binding.profileMenuButton.isClickable = false
+
+                binding.profileResponseFailureLayout.visibility = View.GONE
+                binding.profileLoadingLayout.visibility = View.VISIBLE
+
+                binding.profileLoadingRightImage.visibility = View.VISIBLE
+                binding.profileLoadingRightImage.startAnimation(loadingAnimationRight)
+                loadingAnimationStatus = true
+
+                animationThread = thread {
+
+                    try {
+
+                        while (loadingAnimationStatus) {
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.profileLoadingRightImage.visibility = View.GONE
+                                binding.profileLoadingLeftImage.visibility = View.VISIBLE
+                                binding.profileLoadingLeftImage.startAnimation(
+                                    loadingAnimationLeft
+                                )
+
+                            }
+
+                            Thread.sleep(1000)
+
+                            Handler(Looper.getMainLooper()).post {
+
+                                binding.profileLoadingLeftImage.visibility = View.GONE
+                                binding.profileLoadingRightImage.visibility = View.VISIBLE
+                                binding.profileLoadingRightImage.startAnimation(
+                                    loadingAnimationRight
+                                )
+
+                            }
+
+                        }
+
+                    } catch (e: InterruptedException) {
+
+                        loadingAnimationStatus = false
+
+                        Handler(Looper.getMainLooper()).post {
+
+                            binding.profileLoadingRightImage.clearAnimation()
+                            binding.profileLoadingLeftImage.clearAnimation()
+                            binding.profileLoadingRightImage.visibility = View.GONE
+                            binding.profileLoadingLeftImage.visibility = View.GONE
+                            binding.profileLoadingLayout.visibility = View.GONE
+
+                        }
+                    }
+                }
+
+            } else {
+
+                binding.profileProfileImage.isClickable = true
+                binding.profileEditProfileImage.isClickable = true
+                binding.profileCollectionButton.isClickable = true
+                binding.profileHistoryButton.isClickable = true
+                binding.profileMenuButton.isClickable = true
+
+                if (animationThread.isAlive) {
+                    animationThread.interrupt()
+                }
+
+                if (binding.profileCollectionBlock.visibility == View.VISIBLE) {
+
+                    if (viewModel.liveDataBasicCollectionList.value?.size == 0) {
+                        binding.profileCollectionLayout.visibility = View.GONE
+                        binding.profileResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        binding.profileCollectionLayout.visibility = View.VISIBLE
+                    }
+
+                } else if (binding.profileHistoryBlock.visibility == View.VISIBLE) {
+
+                    if (viewModel.liveDataBasicHistoryList.value?.size == 0) {
+                        binding.profileHistoryLayout.visibility = View.GONE
+                        binding.profileResponseFailureLayout.visibility = View.VISIBLE
+                    } else {
+                        binding.profileHistoryLayout.visibility = View.VISIBLE
+                    }
+
+                }
+
+            }
+
+        })
+
 
     } // observeLiveData()
 
@@ -318,14 +468,30 @@ class ProfileFragment : Fragment() {
 
     } // removeUserShared()
 
+    fun checkUserShared() {
+
+        val userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        nickname = userInfoShared.getString("nickname", "").toString()
+
+    } // checkUserShared()
+
 
     fun changeTab(tab : String) {
 
         when(tab) {
 
             "collection" -> {
+
+                if (viewModel.liveDataBasicCollectionList.value?.size == 0) {
+
+                    binding.profileCollectionLayout.visibility = View.GONE
+                    binding.profileResponseFailureLayout.visibility = View.VISIBLE
+
+                } else {
+                    binding.profileCollectionLayout.visibility = View.VISIBLE
+                }
+
                 binding.profileHistoryLayout.visibility = View.GONE
-                binding.profileCollectionLayout.visibility = View.VISIBLE
                 binding.profileCollectionButton.visibility = View.GONE
                 binding.profileCollectionBlock.visibility = View.VISIBLE
                 binding.profileHistoryButton.visibility = View.VISIBLE
@@ -333,7 +499,16 @@ class ProfileFragment : Fragment() {
             }
 
             "history" -> {
-                binding.profileHistoryLayout.visibility = View.VISIBLE
+
+                if (viewModel.liveDataBasicHistoryList.value?.size == 0) {
+
+                    binding.profileHistoryLayout.visibility = View.GONE
+                    binding.profileResponseFailureLayout.visibility = View.VISIBLE
+
+                } else {
+                    binding.profileHistoryLayout.visibility = View.VISIBLE
+                }
+
                 binding.profileCollectionLayout.visibility = View.GONE
                 binding.profileCollectionButton.visibility = View.VISIBLE
                 binding.profileCollectionBlock.visibility = View.GONE

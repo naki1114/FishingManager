@@ -79,7 +79,7 @@ class PhotoViewFragment : Fragment() {
 
         viewModel.liveDataImage.observe(viewLifecycleOwner, Observer {
 
-            if (it == "") {
+            if (it == "FM") {
                 Glide.with((activity as MainActivity)).load(R.drawable.fishing_logo).into(binding.photoViewImage)
             } else {
                 Glide.with((activity as MainActivity)).load(RetrofitClient.BASE_URL + it).into(binding.photoViewImage)

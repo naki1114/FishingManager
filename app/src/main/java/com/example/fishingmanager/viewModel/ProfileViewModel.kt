@@ -4,30 +4,35 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
+import com.example.fishingmanager.data.Combine
+import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.model.ProfileModel
+import com.example.fishingmanager.model.SplashModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: ArrayList<History>,
-                       var userInfo: UserInfo
+                       var userInfo: UserInfo, val nickname: String
 ) : ViewModel() {
 
     val TAG = "ProfileViewModel"
 
     val model = ProfileModel()
     val liveDataUserInfo = MutableLiveData<UserInfo>()
-    lateinit var nickname : String
-    var profileImageStatus : Boolean = false
-    val basicCollectionList = collectionList
-    val basicHistoryList = historyList
+    var basicCollectionList = collectionList
+    var basicHistoryList = historyList
     var userBasicHistoryList = ArrayList<History>()
-    val liveDataCalendarList = MutableLiveData<ArrayList<CalendarDay>>()
+    var liveDataCalendarList = MutableLiveData<ArrayList<CalendarDay>>()
 
+    val liveDataBasicCollectionList = MutableLiveData<ArrayList<Collection>>()
+    val liveDataBasicHistoryList = MutableLiveData<ArrayList<History>>()
+    val liveDataBasicFeedList = MutableLiveData<ArrayList<Feed>>()
+    val liveDataBasicUserInfo = MutableLiveData<UserInfo>()
     val liveDataCollectionList = MutableLiveData<ArrayList<Collection>>()
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataFishList = MutableLiveData<ArrayList<SelectFish>>()
@@ -49,11 +54,13 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
 
     var previousLayout: String = ""
 
+    val liveDataLoadingStatus = MutableLiveData<Boolean>()
+
     fun init() {
 
-        profileImageStatus = liveDataUserInfo.value?.profileImage != null
-        liveDataUserInfo.value = checkProfileImage()
-        nickname = liveDataUserInfo.value?.nickname.toString()
+        liveDataUserInfo.value = userInfo
+        liveDataBasicHistoryList.value = basicHistoryList
+        liveDataBasicCollectionList.value = basicCollectionList
         userBasicHistoryList = model.getHistoryList(basicHistoryList, nickname)
         liveDataCalendarList.value = model.getCalendarList(userBasicHistoryList)
         liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
@@ -170,7 +177,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         model.requestDeleteAccount(nickname).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
 
-                if (response.isSuccessful && response.body() == "success") {
+                if (response.isSuccessful && response.body() == "successDelete") {
 
                     changeFragment("start")
 
@@ -190,12 +197,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
 
     fun goPhotoView(userInfo: UserInfo) {
 
-        if (profileImageStatus) {
-            liveDataClickedFishImage.value = userInfo
-        } else {
-            liveDataClickedFishImage.value = UserInfo(userInfo.nickname, "", userInfo.checkingFishCount, userInfo.checkingFishTicket, userInfo.removeAdTicket, userInfo.type)
-        }
-
+        liveDataClickedFishImage.value = userInfo
 
     } // goPhotoView()
 
@@ -207,14 +209,55 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // goToGallery()
 
 
-    fun checkProfileImage() : UserInfo {
+    fun refresh() {
 
-        if (profileImageStatus) {
-            return userInfo
-        } else {
-            return UserInfo(userInfo.nickname, "", userInfo.checkingFishCount, userInfo.checkingFishTicket, userInfo.removeAdTicket, userInfo.type)
-        }
+        liveDataLoadingStatus.value = true
 
-    }
+        model.requestCombine(nickname).enqueue(object : Callback<Combine> {
+            override fun onResponse(call: Call<Combine>, response: Response<Combine>) {
+
+                if (response.isSuccessful) {
+
+                    liveDataBasicCollectionList.value = response.body()?.collection
+                    liveDataBasicHistoryList.value = SplashModel().getHistoryList(response.body()?.history)
+                    liveDataBasicFeedList.value = response.body()?.feed
+                    liveDataBasicUserInfo.value = response.body()?.userInfo
+
+                    basicCollectionList = liveDataBasicCollectionList.value!!
+                    basicHistoryList = liveDataBasicHistoryList.value!!
+                    userBasicHistoryList = model.getHistoryList(basicHistoryList, nickname)
+
+                    liveDataCalendarList.value = model.getCalendarList(userBasicHistoryList)
+                    liveDataCollectionList.value = model.getCollectionList(basicCollectionList, nickname)
+                    liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
+                    liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
+
+                    liveDataLoadingStatus.value = false
+
+                } else {
+                    Log.d(TAG, "requestCombine - onResponse : isFailure : ${response.message()}")
+
+                    liveDataBasicCollectionList.value = ArrayList()
+                    liveDataBasicHistoryList.value = ArrayList()
+                    liveDataBasicFeedList.value = ArrayList()
+                    liveDataBasicUserInfo.value = UserInfo("","", -1, -1, -1, "")
+                    liveDataLoadingStatus.value = false
+                }
+
+            }
+
+            override fun onFailure(call: Call<Combine>, t: Throwable) {
+                Log.d(TAG, "requestCombine - onFailure : $t")
+
+                liveDataBasicCollectionList.value = ArrayList()
+                liveDataBasicHistoryList.value = ArrayList()
+                liveDataBasicFeedList.value = ArrayList()
+                liveDataBasicUserInfo.value = UserInfo("","", -1, -1, -1, "")
+                liveDataLoadingStatus.value = false
+            }
+
+        })
+
+    } // refresh()
 
 }

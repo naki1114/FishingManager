@@ -137,7 +137,7 @@ class SplashViewModel : ViewModel() {
                     liveDataCollectionList.value = ArrayList()
                     liveDataHistoryList.value = ArrayList()
                     liveDataFeedList.value = ArrayList()
-                    liveDataUserInfo.value = UserInfo("","", -1, -1, -1, "")
+                    liveDataUserInfo.value = UserInfo("","FM", -1, -1, -1, "")
                 }
 
             }
@@ -148,7 +148,7 @@ class SplashViewModel : ViewModel() {
                 liveDataCollectionList.value = ArrayList()
                 liveDataHistoryList.value = ArrayList()
                 liveDataFeedList.value = ArrayList()
-                liveDataUserInfo.value = UserInfo("","", -1, -1, -1, "")
+                liveDataUserInfo.value = UserInfo("","FM", -1, -1, -1, "")
             }
 
         })
