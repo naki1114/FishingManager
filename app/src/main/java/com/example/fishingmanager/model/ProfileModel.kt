@@ -308,7 +308,7 @@ class ProfileModel {
 
     fun requestDeleteAccount(nickname : String) = webServerRetrofitInterface.deleteUserInfo(nickname)
 
-    fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB2(nickname)
+    fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
 
 
 }
