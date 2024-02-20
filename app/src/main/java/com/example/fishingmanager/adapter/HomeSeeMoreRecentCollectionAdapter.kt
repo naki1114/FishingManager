@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.fishingmanager.R
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.databinding.HomeSeemoreItemBinding
+import com.example.fishingmanager.network.RetrofitClient
 
 class HomeSeeMoreRecentCollectionAdapter : RecyclerView.Adapter<HomeSeeMoreRecentCollectionAdapter.ViewHolder>(){
 
@@ -52,8 +54,17 @@ class HomeSeeMoreRecentCollectionAdapter : RecyclerView.Adapter<HomeSeeMoreRecen
 
             binding.historyItem = history
 
-            Glide.with(context).load(history.fishImage).into(binding.homeSeeMoreItemFishImage)
-//            Glide.with(context).load(history.profileImage).into(binding.homeSeeMoreItemProfileImage)
+            if (history.profileImage == "") {
+
+                Glide.with(context).load(R.drawable.fishing_logo).into(binding.homeSeeMoreItemProfileImage)
+
+            } else {
+
+                Glide.with(context).load(RetrofitClient.BASE_URL + history.profileImage).into(binding.homeSeeMoreItemProfileImage)
+
+            }
+
+            Glide.with(context).load(RetrofitClient.BASE_URL + history.fishImage).into(binding.homeSeeMoreItemFishImage)
 
         } // onBind()
 
