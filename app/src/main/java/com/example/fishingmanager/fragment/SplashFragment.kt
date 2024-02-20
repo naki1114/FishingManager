@@ -71,6 +71,9 @@ class SplashFragment : Fragment() {
         getUserInfoSharedPreference()
         getLocationSharedPreference()
 
+        progressValue = 0.0f
+        realLoadingValue = 0
+
     } // setVariable()
 
 
