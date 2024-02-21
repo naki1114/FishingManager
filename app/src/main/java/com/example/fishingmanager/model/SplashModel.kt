@@ -275,7 +275,6 @@ class SplashModel {
                         "",
                         responseList[i].fishName,
                         responseList[i].fishImage,
-                        responseList[i].fishLength,
                         date,
                         fishIcon
                     )

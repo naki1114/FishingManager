@@ -52,6 +52,7 @@ class CheckingFishFragment : Fragment() {
     lateinit var file : File
     lateinit var camera : DocumentScanner
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,17 +70,10 @@ class CheckingFishFragment : Fragment() {
 
         checkUserShared()
         setVariable()
+        observeLiveData()
 
 
     } // onViewCreated()
-
-
-    override fun onStart() {
-        super.onStart()
-
-        observeLiveData()
-
-    } // onStart()
 
 
     fun setVariable() {

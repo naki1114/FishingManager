@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="@{history.component3()}"
+            android:text="@{history.fishName}"
             android:layout_gravity="center"
             />
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/gray3"
             android:textSize="20dp"
-            android:text="@{history.component6().substring(2,10)}"
+            android:text="@{history.date.substring(2,10)}"
             android:layout_gravity="center"
             />
 

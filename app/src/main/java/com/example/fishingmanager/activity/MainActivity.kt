@@ -54,10 +54,8 @@ class MainActivity : AppCompatActivity() {
     val startFragment = StartFragment()
     val homeFragment = HomeFragment()
     val conditionFragment = ConditionFragment()
-    val checkingFishFragment = CheckingFishFragment()
     val feedFragment = FeedFragment()
     val writeFragment = WriteFragment()
-    val profileFragment = ProfileFragment()
     val payFragment = PayFragment()
     val photoViewFragment = PhotoViewFragment()
 
@@ -69,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         setVariable()
         setListener()
         checkSharedPreference()
+
 
     } // onCreate()
 
@@ -180,7 +179,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "checkingFish" -> {
-                pickOutFragment(checkingFishFragment)
+                pickOutFragment(CheckingFishFragment())
                 navigationVisible()
             }
 

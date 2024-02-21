@@ -5,7 +5,6 @@ data class History(
     val profileImage: String,
     val fishName: String,
     val fishImage: String,
-    val fishLength: String,
     val date: String,
     val fishIconImage: Int
 )
