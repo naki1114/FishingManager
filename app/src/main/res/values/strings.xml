@@ -3,11 +3,13 @@
     <string name="cancel">취소</string>
     <string name="check">확인</string>
     <string name="choice">선택</string>
+    <string name="choice2">선 택</string>
     <string name="choice_all">전체 선택</string>
     <string name="search">검색</string>
     <string name="previous">이전</string>
     <string name="next">다음</string>
     <string name="complete">완료</string>
+    <string name="complete2">완 료</string>
     <string name="input">입력</string>
     <string name="title">제목</string>
     <string name="content">내용</string>
@@ -115,6 +117,8 @@
     <string name="checkingFish_history">기록</string>
     <string name="checkingFish_result_save">내 기록에 저장</string>
     <string name="checkingFish_result_write">내 기록에 저장 후 게시글 작성</string>
+    <string name="checkingFish_take_picture_again">다시 촬영</string>
+    <string name="checkingFish_classify">검출</string>
     <string name="feed_title">게시글</string>
     <string name="feed_viewCount">조회수</string>
     <string name="feed_input_comment">댓글 입력</string>

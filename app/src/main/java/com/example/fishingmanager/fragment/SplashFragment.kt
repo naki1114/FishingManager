@@ -35,10 +35,6 @@ class SplashFragment : Fragment() {
     private lateinit var lon : String
     private var checkDataStatusNum : Int = 0
 
-    val delayToHome = thread(false) {
-        Thread.sleep(1000)
-        (activity as MainActivity).changeFragment("home")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +66,9 @@ class SplashFragment : Fragment() {
 
         getUserInfoSharedPreference()
         getLocationSharedPreference()
+
+        progressValue = 0.0f
+        realLoadingValue = 0
 
     } // setVariable()
 
@@ -214,7 +213,11 @@ class SplashFragment : Fragment() {
 
         if (realLoadingValue == 100 && checkDataStatusNum != 4) {
 
-            delayToHome.start()
+            thread {
+                Thread.sleep(1000)
+//                (activity as MainActivity).changeFragment("home")
+                (activity as MainActivity).selectHomeMenu()
+            }
 
         }
 
