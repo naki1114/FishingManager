@@ -68,10 +68,8 @@ dependencies {
     implementation("com.github.skydoves:progressview:1.1.3")
 
     // Tensorflow
-//    implementation("org.tensorflow:tensorflow-lite:2.13.0")
-//    implementation("org.tensorflow:tensorflow-lite-support:0.0.0-nightly-SNAPSHOT")
-//    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
-//    implementation("org.tensorflow:tensorflow-lite:0.0.0-nightly-SNAPSHOT")
+    implementation("org.tensorflow:tensorflow-lite:2.13.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
 
     // Camera2
 //    implementation("androidx.camera:camera-core:1.3.1")
