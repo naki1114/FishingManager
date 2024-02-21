@@ -140,6 +140,13 @@ class MainActivity : AppCompatActivity() {
     } // setListener()
 
 
+    fun selectHomeMenu() {
+
+        binding.navigation.selectedItemId = R.id.home_fragment
+
+    }
+
+
     // Fragment 전환
     fun changeFragment(fragmentName: String) {
 
@@ -188,7 +195,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "profile" -> {
-                pickOutFragment(profileFragment)
+                pickOutFragment(ProfileFragment())
                 navigationVisible()
             }
 

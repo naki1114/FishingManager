@@ -215,7 +215,8 @@ class SplashFragment : Fragment() {
 
             thread {
                 Thread.sleep(1000)
-                (activity as MainActivity).changeFragment("home")
+//                (activity as MainActivity).changeFragment("home")
+                (activity as MainActivity).selectHomeMenu()
             }
 
         }
