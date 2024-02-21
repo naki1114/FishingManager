@@ -71,6 +71,9 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite:2.13.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
 
+    // Document Scanner
+    implementation("com.websitebeaver:documentscanner:1.0.0")
+
     // Camera2
 //    implementation("androidx.camera:camera-core:1.3.1")
 //    implementation("androidx.camera:camera-camera2:1.3.1")

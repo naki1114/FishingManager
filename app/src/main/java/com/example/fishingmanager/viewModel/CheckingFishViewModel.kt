@@ -3,6 +3,7 @@ package com.example.fishingmanager.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fishingmanager.data.CheckingFish
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Combine
 import com.example.fishingmanager.data.Feed
@@ -10,6 +11,7 @@ import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.model.CheckingFishModel
 import com.example.fishingmanager.model.SplashModel
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,9 +30,14 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val nickname : Str
     val liveDataHistoryList = MutableLiveData<ArrayList<History>>()
     val liveDataClickedFishImage = MutableLiveData<String>()
     val liveDataChangeLayout = MutableLiveData<String>()
-
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
-
+    val liveDataCameraStatus = MutableLiveData<Boolean>()
+    val liveDataClassifyStatus = MutableLiveData<Boolean>()
+    val liveDataClassifyCompleteStatus = MutableLiveData<Boolean>()
+    val liveDataCheckingFish = MutableLiveData<CheckingFish>()
+    val liveDataSaveStatus = MutableLiveData<Boolean>()
+    val liveDataSaveAndWriteStatus = MutableLiveData<Boolean>()
+    val liveDataChangeFragment = MutableLiveData<String>()
 
     fun init() {
 
@@ -38,6 +45,27 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val nickname : Str
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
 
     } // init()
+
+
+    fun startCamera() {
+
+        liveDataCameraStatus.value = true
+
+    } // startCamera()
+
+
+    fun classify() {
+
+        liveDataClassifyStatus.value = true
+
+    } // classify()
+
+
+    fun classifyComplete() {
+
+        liveDataClassifyCompleteStatus.value = true
+
+    } // classifyComplete()
 
 
     fun goPhotoView(image : String) {
@@ -98,5 +126,80 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val nickname : Str
         })
 
     } // refresh()
+
+
+    fun getDescription(fishName : String, arg : Float) {
+
+        liveDataCheckingFish.value = model.getDescription(fishName, arg)
+
+    } // getDescription()
+
+
+    fun saveHistory() {
+
+        liveDataSaveStatus.value = true
+
+    } // saveHistory()
+
+
+    fun saveAndWrite() {
+
+        liveDataSaveAndWriteStatus.value = true
+
+    } // saveAndWrite()
+
+
+    fun saveHistoryServer(file : MultipartBody.Part, nickname : String, fishName : String, date : String) {
+
+        model.requestSaveHistory(file, nickname, fishName, date).enqueue(object : Callback<ArrayList<History>> {
+            override fun onResponse(call: Call<ArrayList<History>>, response: Response<ArrayList<History>>) {
+
+                if (response.isSuccessful) {
+
+                    liveDataBasicHistoryList.value = SplashModel().getHistoryList(response.body())
+                    basicHistoryList = liveDataBasicHistoryList.value!!
+                    liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
+
+                    changeLayout("main")
+
+                } else {
+                    Log.d(TAG, "saveHistoryServer - onResponse : isFailure : ${response.message()}")
+                }
+
+            }
+            override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
+                Log.d(TAG, "saveHistoryServer - onFailure : $t")
+            }
+
+        })
+
+    } // saveHistoryServer()
+
+
+    fun saveHistoryServerAndChangeFragment(file : MultipartBody.Part, nickname : String, fishName : String, date : String) {
+
+        model.requestSaveHistory(file, nickname, fishName, date).enqueue(object : Callback<ArrayList<History>> {
+            override fun onResponse(call: Call<ArrayList<History>>, response: Response<ArrayList<History>>) {
+
+                if (response.isSuccessful) {
+
+                    liveDataBasicHistoryList.value = SplashModel().getHistoryList(response.body())
+                    basicHistoryList = liveDataBasicHistoryList.value!!
+                    liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
+
+                    liveDataChangeFragment.value = "write"
+
+                } else {
+                    Log.d(TAG, "saveHistoryServer - onResponse : isFailure : ${response.message()}")
+                }
+
+            }
+            override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
+                Log.d(TAG, "saveHistoryServer - onFailure : $t")
+            }
+
+        })
+
+    } // saveHistoryServer()
 
 }

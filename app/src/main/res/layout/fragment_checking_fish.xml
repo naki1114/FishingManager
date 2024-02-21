@@ -8,45 +8,48 @@
             name="viewModel"
             type="com.example.fishingmanager.viewModel.CheckingFishViewModel" />
 
+        <variable
+            name="checkingFish"
+            type="com.example.fishingmanager.data.CheckingFish" />
+
     </data>
 
-    <LinearLayout
+    <FrameLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".fragment.CheckingFishFragment">
-
-        <LinearLayout
-            android:id="@+id/checkingFishTitleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="5dp"
-            android:paddingVertical="13dp"
-            android:background="@drawable/custom_titlebar_background"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginStart="20dp"
-                android:text="@string/checkingFish_title"
-                />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/checkingFishMainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:visibility="visible"
             >
+
+            <LinearLayout
+                android:id="@+id/checkingFishTitleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="13dp"
+                android:background="@drawable/custom_titlebar_background"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:textSize="18dp"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/checkingFish_title"
+                    />
+
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -103,6 +106,7 @@
                             android:src="@drawable/btncarmera"
                             android:padding="25dp"
                             android:layout_marginTop="-20dp"
+                            android:onClick="@{() -> viewModel.startCamera()}"
                             />
 
                         <View
@@ -163,25 +167,67 @@
 
 
         <LinearLayout
-            android:id="@+id/checkingFishCameraLayout"
+            android:id="@+id/checkingFishCheckImageLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/black"
             android:visibility="gone"
             >
 
-            <TextView
-                android:id="@+id/checkingFishCameraTitleText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkingFish_take_picture_again"
+                    android:textSize="17dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:padding="15dp"
+                    android:onClick="@{() -> viewModel.startCamera()}"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkingFish_classify"
+                    android:textSize="17dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:padding="15dp"
+                    android:onClick="@{() -> viewModel.classify()}"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
 
-            <Button
-                android:id="@+id/checkingFishCameraCaptureButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/checkingFishCheckImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:src="@drawable/chamdom"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
 
         </LinearLayout>
@@ -200,7 +246,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="5dp"
                 android:paddingVertical="10dp"
                 android:background="@drawable/custom_titlebar_background"
                 >
@@ -211,6 +256,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
                     android:src="@drawable/btnbackcream"
+                    android:onClick='@{() -> viewModel.changeLayout("main")}'
                     />
 
                 <View
@@ -225,6 +271,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/main2"
                     android:textSize="18dp"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="50dp"
                     android:text="@string/checkingFish_result_title"
                     />
@@ -240,36 +287,22 @@
             <ImageView
                 android:id="@+id/checkingFishResultImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/custom_white_button"
                 />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/checkingFishResultFishNameText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/checkingFishResultFishNameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    />
-
-                <TextView
-                    android:id="@+id/checkingFishResultFishLengthText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    />
-
-            </LinearLayout>
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:text="@{checkingFish.fishName}"
+                />
 
             <TextView
                 android:id="@+id/checkingFishResultFishText"
@@ -277,13 +310,129 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="16dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_gravity="center"
+                android:text="@{checkingFish.fishDescription}"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
 
             <Button
                 android:id="@+id/checkingFishResultCompleteButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/complete"
+                android:text="@string/complete2"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/custom_main_button_background"
+                android:textColor="@color/main2"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:onClick='@{() -> viewModel.changeLayout("complete")}'
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checkingFishDialogLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/gray4"
+            android:clickable="true"
+            android:visibility="gone"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/custom_dialog_background"
+                android:layout_marginHorizontal="50dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main1"
+                    android:text="@string/choice2"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/main1"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:text="@string/checkingFish_result_save"
+                    android:layout_marginHorizontal="15dp"
+                    android:paddingVertical="15dp"
+                    android:onClick="@{() -> viewModel.saveHistory()}"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray4"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:text="@string/checkingFish_result_write"
+                    android:layout_marginHorizontal="15dp"
+                    android:paddingVertical="15dp"
+                    android:onClick="@{() -> viewModel.saveAndWrite()}"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray4"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:textColor="@color/red"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="end"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:onClick='@{() -> viewModel.changeLayout("result")}'
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
 
         </LinearLayout>
@@ -388,7 +537,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </layout>
 

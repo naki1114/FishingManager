@@ -14,8 +14,8 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 class TensorflowModel(val context: Context) {
 
     val TAG = "TensorflowModel"
-    val MODEL_NAME = ""
-    val LABEL_FILE = ""
+    val MODEL_NAME = "fish_model.tflite"
+    val LABEL_FILE = "labels.txt"
 
     lateinit var inputImage: TensorImage
     lateinit var outputBuffer: TensorBuffer

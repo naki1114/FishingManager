@@ -1,6 +1,8 @@
 package com.example.fishingmanager.fragment
 
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,13 +20,23 @@ import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.CheckingFishHistoryAdapter
 import com.example.fishingmanager.databinding.FragmentCheckingFishBinding
+import com.example.fishingmanager.function.GetDate
+import com.example.fishingmanager.tensorflowModel.TensorflowModel
 import com.example.fishingmanager.viewModel.CheckingFishViewModel
+import com.websitebeaver.documentscanner.DocumentScanner
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import kotlin.concurrent.thread
 
 class CheckingFishFragment : Fragment() {
 
+    val TAG = "CheckingFishFragment"
     lateinit var binding : FragmentCheckingFishBinding
 
+    lateinit var tensorflowModel : TensorflowModel
     lateinit var viewModel : CheckingFishViewModel
     lateinit var adapter : CheckingFishHistoryAdapter
 
@@ -35,6 +47,10 @@ class CheckingFishFragment : Fragment() {
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
     lateinit var animationThread: Thread
+    lateinit var resultBitmap : Bitmap
+    lateinit var result: Pair<String, Float>
+    lateinit var file : File
+    lateinit var camera : DocumentScanner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,15 +69,41 @@ class CheckingFishFragment : Fragment() {
 
         checkUserShared()
         setVariable()
-        observeLiveData()
-        getData()
+
 
     } // onViewCreated()
 
 
+    override fun onStart() {
+        super.onStart()
+
+        observeLiveData()
+
+    } // onStart()
+
+
     fun setVariable() {
 
+        camera = DocumentScanner(
+            requireActivity(),
+            {
+                    croppedImageResults ->
+                resultBitmap = BitmapFactory.decodeFile(croppedImageResults.first())
+                changeLayout("checkImage")
+                binding.checkingFishCheckImage.setImageBitmap(resultBitmap)
+            },
+            {
+                    errorMessage ->
+                Log.d(TAG, "cameraError : $errorMessage")
+            },
+            {
+                // 사용자가 카메라 취소했을 때
+            }
+        )
+
+        tensorflowModel = TensorflowModel(requireActivity())
         viewModel = CheckingFishViewModel((activity as MainActivity).historyList, nickname)
+        viewModel.init()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -208,19 +250,112 @@ class CheckingFishFragment : Fragment() {
 
         })
 
+        viewModel.liveDataCameraStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                startCamera()
+            }
+
+        })
+
+        viewModel.liveDataClassifyStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                classify()
+            }
+
+        })
+
+        viewModel.liveDataClassifyCompleteStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                binding.checkingFishDialogLayout.visibility = View.VISIBLE
+            }
+
+        })
+
+        viewModel.liveDataCheckingFish.observe(viewLifecycleOwner, Observer {
+
+            binding.checkingFish = it
+
+        })
+
+        viewModel.liveDataSaveStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                viewModel.saveHistoryServer(getFile(), nickname, result.first, GetDate().getTime().toString())
+            }
+
+        })
+
+        viewModel.liveDataSaveAndWriteStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+                viewModel.saveHistoryServerAndChangeFragment(getFile(), nickname, result.first, GetDate().getTime().toString())
+            }
+
+        })
+
+        viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).changeFragment(it)
+
+        })
+
+
     } // observeLiveData()
 
 
-    fun getData() {
+    fun getFile() : MultipartBody.Part {
 
-        viewModel.init()
+        val storage = requireActivity().cacheDir
+        val fileName = nickname + GetDate().getTime() + "jpg"
+        file = File(storage, fileName)
 
-    } // getData()
+        file.createNewFile()
+        val output = FileOutputStream(file)
+        resultBitmap.compress(Bitmap.CompressFormat.JPEG, 100, output)
+
+        output.close()
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
+
+        return body
+
+    } // getFile()
 
 
     fun changeLayout(layout : String) {
 
-        (activity as MainActivity).changeFragment(layout)
+        when(layout) {
+
+            "main" -> {
+                binding.checkingFishMainLayout.visibility = View.VISIBLE
+                binding.checkingFishResultLayout.visibility = View.GONE
+                binding.checkingFishDialogLayout.visibility = View.GONE
+                binding.checkingFishCheckImageLayout.visibility = View.GONE
+            }
+            "checkImage" -> {
+                binding.checkingFishMainLayout.visibility = View.GONE
+                binding.checkingFishResultLayout.visibility = View.GONE
+                binding.checkingFishDialogLayout.visibility = View.GONE
+                binding.checkingFishCheckImageLayout.visibility = View.VISIBLE
+            }
+            "result" -> {
+                binding.checkingFishMainLayout.visibility = View.GONE
+                binding.checkingFishResultLayout.visibility = View.VISIBLE
+                binding.checkingFishDialogLayout.visibility = View.GONE
+                binding.checkingFishCheckImageLayout.visibility = View.GONE
+            }
+            "complete" -> {
+                binding.checkingFishMainLayout.visibility = View.GONE
+                binding.checkingFishResultLayout.visibility = View.GONE
+                binding.checkingFishDialogLayout.visibility = View.VISIBLE
+                binding.checkingFishCheckImageLayout.visibility = View.GONE
+            }
+
+        }
 
     } // changeLayout()
 
@@ -231,5 +366,26 @@ class CheckingFishFragment : Fragment() {
         nickname = userInfoShared.getString("nickname", "").toString()
 
     } // checkUserShared()
+
+
+    fun startCamera() {
+
+        camera.startScan()
+
+    } // startCamera()
+
+
+    fun classify() {
+
+        tensorflowModel.init()
+        result = tensorflowModel.classify(resultBitmap)
+
+        binding.checkingFishCheckLayout.visibility = View.GONE
+        binding.checkingFishResultLayout.visibility = View.VISIBLE
+        binding.checkingFishResultImage.setImageBitmap(resultBitmap)
+        viewModel.getDescription(result.first, result.second)
+
+
+    } // classify()
 
 }
