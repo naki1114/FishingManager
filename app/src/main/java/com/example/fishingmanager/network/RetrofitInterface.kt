@@ -177,7 +177,9 @@ interface RetrofitInterface {
     // 댓글 요청
     @FormUrlEncoded
     @POST("File/Feed/GetComment.php")
-    fun getComment(): Call<ArrayList<Comment>>
+    fun getComment(
+        @Field("feedNum") feedNum : Int
+    ): Call<ArrayList<Comment>>
 
 
     // 댓글 추가
@@ -185,7 +187,7 @@ interface RetrofitInterface {
     @POST("File/Feed/InsertComment.php")
     fun insertComment(
         @Field("nickname") nickname: String,
-        @Field("feedNum") feedNum: Int,
+        @Field("feedNum") feedNum: String,
         @Field("content") content: String,
         @Field("date") date: String
     ): Call<ArrayList<Comment>>

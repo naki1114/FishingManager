@@ -11,4 +11,8 @@ class FeedModel {
 
     fun updateViewCount(nickname : String, date : String) = responseServer.updateViewCount(nickname, date)
 
+    fun getComment(feedNum : Int) = responseServer.getComment(feedNum)
+
+    fun insertComment(nickname : String, feedNum : String, content : String, date : String) = responseServer.insertComment(nickname, feedNum, content, date)
+
 }
