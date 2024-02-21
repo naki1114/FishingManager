@@ -222,7 +222,6 @@ interface RetrofitInterface {
         @Part uploadFile: MultipartBody.Part,
         @Field("nickname") nickname: String,
         @Field("fish") fish: String,
-        @Field("fishLength") fishLength: String,
         @Field("date") date: String
     ): Call<ArrayList<History>>
 
