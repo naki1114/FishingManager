@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.FeedAdapter
+import com.example.fishingmanager.adapter.FeedCommentAdapter
+import com.example.fishingmanager.data.Comment
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.databinding.FragmentFeedBinding
 import com.example.fishingmanager.network.RetrofitClient
@@ -20,9 +22,12 @@ class FeedFragment : Fragment() {
 
     private lateinit var feedViewModel : FeedViewModel
     private lateinit var binding : FragmentFeedBinding
-    private lateinit var adapter : FeedAdapter
+
+    private lateinit var feedAdapter : FeedAdapter
+    private lateinit var feedCommentAdapter : FeedCommentAdapter
 
     private lateinit var feedList : ArrayList<Feed>
+    private lateinit var feedCommentList : ArrayList<Comment>
 
     // Lifecycle
 
@@ -52,7 +57,9 @@ class FeedFragment : Fragment() {
 
     private fun setVariable() {
 
-        feedViewModel = FeedViewModel()
+        val nickname = (activity as MainActivity).nickname
+
+        feedViewModel = FeedViewModel(nickname)
         binding.viewModel = feedViewModel
 
         feedViewModel.getFeed()
@@ -61,10 +68,21 @@ class FeedFragment : Fragment() {
 
             feedList = feedViewModel.feedList.value!!
 
-            adapter = FeedAdapter(FeedAdapter.ItemClickListener {
+            feedAdapter = FeedAdapter(FeedAdapter.ItemClickListener {
                 feedViewModel.readFeed(it)
             }, feedList)
-            binding.feedRecyclerView.adapter = adapter
+            binding.feedRecyclerView.adapter = feedAdapter
+
+        }
+
+        feedViewModel.feedCommentList.observe(viewLifecycleOwner) {
+
+            feedCommentList = feedViewModel.feedCommentList.value!!
+
+            feedCommentAdapter = FeedCommentAdapter(feedCommentList)
+            binding.feedViewCommentRecyclerView.adapter = feedCommentAdapter
+            binding.feedViewCommentEditText.text = null
+            binding.feedViewCommentCountTextView.text = feedCommentList.size.toString()
 
         }
 
@@ -159,10 +177,10 @@ class FeedFragment : Fragment() {
 
             }
 
-            adapter = FeedAdapter(FeedAdapter.ItemClickListener {
+            feedAdapter = FeedAdapter(FeedAdapter.ItemClickListener {
                 feedViewModel.readFeed(it)
             }, feedList)
-            binding.feedRecyclerView.adapter = adapter
+            binding.feedRecyclerView.adapter = feedAdapter
 
         }
 

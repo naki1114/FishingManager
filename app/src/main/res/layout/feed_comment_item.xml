@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="com.example.fishingmanager.data.Comment" />
+
+        <variable
+            name="clickListener"
+            type="com.example.fishingmanager.adapter.FeedCommentAdapter.ItemClickListener" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="2dp"
+        android:orientation="horizontal"
+        android:onClick="@{()->clickListener.onClick(comment)}"
+        >
+        
+        <TextView
+            android:id="@+id/feedViewItemWriterTextView"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/feedViewItemCommentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:textColor="@color/black"
+            />
+
+    </LinearLayout>
+
+</layout>
