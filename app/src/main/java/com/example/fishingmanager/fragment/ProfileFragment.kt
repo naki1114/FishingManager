@@ -299,7 +299,7 @@ class ProfileFragment : Fragment() {
             binding.profileDeleteAccountLayout.visibility = View.GONE
 
             if (it) {
-//                viewModel.deleteAccount(nickname)
+                viewModel.deleteAccount(nickname)
             }
 
         })
