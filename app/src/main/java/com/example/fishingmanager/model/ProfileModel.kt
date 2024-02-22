@@ -149,7 +149,7 @@ class ProfileModel {
 
         for (i in 0 until 30) {
 
-            collection = Collection("", "", R.drawable.imgcollection, "", "", "")
+            collection = Collection("", "", R.drawable.imgcollection, "", "")
 
             when (i) {
 
@@ -206,7 +206,6 @@ class ProfileModel {
                     list[j].nickname,
                     list[j].fishName,
                     image,
-                    list[j].fishLength,
                     GetDate().getFormatDate5(date),
                     explane
                 )
