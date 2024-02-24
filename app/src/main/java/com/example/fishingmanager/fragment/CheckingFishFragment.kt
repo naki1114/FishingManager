@@ -72,25 +72,21 @@ class CheckingFishFragment : Fragment() {
     lateinit var resultBitmap: Bitmap
     lateinit var result: Pair<String, Float>
     lateinit var file: File
+    var modelStatus : Boolean = false
 
     val launcher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult(), ActivityResultCallback<ActivityResult>() {
 
         if (it.resultCode == 819) {
 
             val intent = it.data
-            Log.d(TAG, "${it.resultCode}")
-            Log.d(TAG, "${intent!!.getStringExtra("image")}")
-//            binding.checkingFishCameraButton.setImageBitmap(BitmapFactory.decodeFile(intent!!.getStringExtra("image")))
-            binding.checkingFishCheckImageLayout.visibility = View.VISIBLE
-            binding.checkingFishMainLayout.visibility = View.GONE
+
+            changeLayout("checkImage")
             resultBitmap = BitmapFactory.decodeFile(intent!!.getStringExtra("image"))
             binding.checkingFishCheckImage.setImageBitmap(resultBitmap)
 
         }
 
     })
-
-    lateinit var captureUri : Uri
 
 
     override fun onCreateView(
@@ -290,7 +286,7 @@ class CheckingFishFragment : Fragment() {
         viewModel.liveDataClassifyCompleteStatus.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-                binding.checkingFishDialogLayout.visibility = View.VISIBLE
+                changeLayout("complete")
             }
 
         })
@@ -366,6 +362,7 @@ class CheckingFishFragment : Fragment() {
                 binding.checkingFishResultLayout.visibility = View.GONE
                 binding.checkingFishDialogLayout.visibility = View.GONE
                 binding.checkingFishCheckImageLayout.visibility = View.GONE
+                (activity as MainActivity).navigationVisible()
             }
 
             "checkImage" -> {
@@ -373,6 +370,7 @@ class CheckingFishFragment : Fragment() {
                 binding.checkingFishResultLayout.visibility = View.GONE
                 binding.checkingFishDialogLayout.visibility = View.GONE
                 binding.checkingFishCheckImageLayout.visibility = View.VISIBLE
+                (activity as MainActivity).navigationGone()
             }
 
             "result" -> {
@@ -380,6 +378,7 @@ class CheckingFishFragment : Fragment() {
                 binding.checkingFishResultLayout.visibility = View.VISIBLE
                 binding.checkingFishDialogLayout.visibility = View.GONE
                 binding.checkingFishCheckImageLayout.visibility = View.GONE
+                (activity as MainActivity).navigationGone()
             }
 
             "complete" -> {
@@ -408,15 +407,6 @@ class CheckingFishFragment : Fragment() {
         TedPermission.create().setPermissionListener(object : PermissionListener {
             override fun onPermissionGranted() {
 
-//                val fileName = nickname + System.currentTimeMillis()
-//                val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//                val file = File.createTempFile(fileName, ".jpg", storageDir)
-//
-//                captureUri = FileProvider.getUriForFile(requireActivity(), requireActivity().packageName+".fileprovider", file)
-//
-//                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                launcher.launch(intent)
-
                 val intent = Intent(requireActivity(), CameraActivity::class.java)
                 launcher.launch(intent)
 
@@ -440,11 +430,10 @@ class CheckingFishFragment : Fragment() {
         tensorflowModel.init()
         result = tensorflowModel.classify(resultBitmap)
 
-        binding.checkingFishCheckImageLayout.visibility = View.GONE
-        binding.checkingFishResultLayout.visibility = View.VISIBLE
+        changeLayout("result")
         binding.checkingFishResultImage.setImageBitmap(resultBitmap)
         viewModel.getDescription(result.first, result.second)
-
+        modelStatus = true
 
     } // classify()
 
@@ -452,8 +441,10 @@ class CheckingFishFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
 
-        tensorflowModel.closeModel()
-
+        if (modelStatus) {
+            tensorflowModel.closeModel()
+        }
+        
     }
 
 }
