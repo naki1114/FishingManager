@@ -74,6 +74,8 @@ dependencies {
     // Document Scanner
     implementation("com.websitebeaver:documentscanner:1.0.0")
 
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
+
     // Camera2
 //    implementation("androidx.camera:camera-core:1.3.1")
 //    implementation("androidx.camera:camera-camera2:1.3.1")

@@ -31,6 +31,7 @@ class TensorflowModel(val context: Context) {
 
         model = Model.createModel(context, MODEL_NAME)
         labels = FileUtil.loadLabels(context, LABEL_FILE)
+        initModelShape()
 
     } // init()
 
