@@ -124,21 +124,19 @@ interface RetrofitInterface {
         @Field("nickname") nickname: String,
         @Field("title") title: String,
         @Field("content") content: String,
-        @Field("date") date: Int
-    ): Call<String>
-
-
-    // 게시글 추가
-    @Multipart
-    @FormUrlEncoded
-    @POST("File/Feed/InsertFeed.php")
-    fun insertFeed(
-        @Part uploadFile: MultipartBody.Part,
-        @Field("nickname") nickname: String,
-        @Field("writeImage") writeImage: String,
-        @Field("title") title: String,
-        @Field("content") content: String,
         @Field("date") date: String
+    ): Call<ArrayList<Feed>>
+
+
+    // 게시글 추가 (이미지 포함)
+    @Multipart
+    @POST("File/Feed/InsertFeed.php")
+    fun insertImageFeed(
+        @Part uploadFile: MultipartBody.Part,
+        @Part("nickname") nickname: String,
+        @Part("title") title: String,
+        @Part("content") content: String,
+        @Part("date") date: String
     ): Call<ArrayList<Feed>>
 
 

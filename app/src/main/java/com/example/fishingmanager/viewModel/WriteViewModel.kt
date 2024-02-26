@@ -3,160 +3,148 @@ package com.example.fishingmanager.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.model.WriteModel
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WriteViewModel : ViewModel() {
+class WriteViewModel(val nickname : String) : ViewModel() {
 
     val TAG = "WriteViewModel"
 
-    val isBackLayoutLiveData = MutableLiveData<String>()
-    val isCheck = MutableLiveData<Boolean>()
+    val doBackLayout = MutableLiveData<Boolean>()
+    val doSaveLayout = MutableLiveData<Boolean>()
 
-    val titleStatus = MutableLiveData<String>()
-    val contentStatus = MutableLiveData<String>()
+    val isBack = MutableLiveData<Boolean>()
+    val isSave = MutableLiveData<Boolean>()
+
+    val feedStatus = MutableLiveData<String>()
+    val titleLiveData = MutableLiveData<String>()
+    val contentLiveData = MutableLiveData<String>()
 
     val toGalleryLiveData = MutableLiveData<Boolean>()
 
     private var model = WriteModel()
 
-    lateinit var title : String
-    lateinit var content : String
-    lateinit var nickname : String
+    fun writeBackLayout() {
 
-    fun writeBackLayout(type : String) {
-
-        isBackLayoutLiveData.value = type
+        doBackLayout.value = true
 
     } // writeBackLayout
 
-    fun writeBackLayout(type : String, title : String, content : String) {
+    fun clickBackCancel() {
+
+        doBackLayout.value = false
+
+    } // clickBackCancel
+
+    fun clickBackCheck() {
+
+        doBackLayout.value = false
+        isBack.value = true
+
+    } // clickBackCheck
+
+    fun writeSaveLayout(title : String, content : String) {
 
         if (title.isEmpty()) {
-            titleStatus.value = "empty"
-            isBackLayoutLiveData.value = "empty"
+            feedStatus.value = "titleEmpty"
         }
         else if (title.length > 20) {
-            titleStatus.value = "over"
+            feedStatus.value = "titleOver"
         }
         else if (content.isEmpty()) {
-            Log.d(TAG, "writeBackLayout : 눌렀잖아")
-            contentStatus.value = "empty"
-            isBackLayoutLiveData.value = "empty"
+            feedStatus.value = "contentEmpty"
         }
         else if (content.length > 1000) {
-            contentStatus.value = "over"
+            feedStatus.value = "contentEmpty"
         }
         else {
-            titleStatus.value = title
-            contentStatus.value = content
-            isBackLayoutLiveData.value = type
+            feedStatus.value = "notEmpty"
+            titleLiveData.value = title
+            contentLiveData.value = content
+            doSaveLayout.value = true
         }
 
-    }
+    } // writeSaveLayout
 
-    fun clickCheck() {
+    fun clickSaveCancel() {
 
-        when(isBackLayoutLiveData.value) {
+        doSaveLayout.value = false
 
-            "back" -> {
-                isCheck.value = true
-            }
-            "complete" -> {
-                insertFeed()
-                isCheck.value = true
-            }
+    } // clickSaveCancel
 
-        }
+    fun clickSaveCheck() {
 
-    } // clickCheck
+        doSaveLayout.value = false
+        isSave.value = true
 
-    fun clickCancel() {
-
-        isCheck.value = false
-
-    } // clickCancel
+    } // clickSaveCheck
 
     fun titleChanged(title : String) {
 
-        this.title = title
+        titleLiveData.value = title
 
-        if (title.isEmpty()) {
-            titleStatus.value = "empty"
-            isBackLayoutLiveData.value = "empty"
-        }
-        else if (title.length > 20) {
-            titleStatus.value = "over"
-            isBackLayoutLiveData.value = null
-        }
-        else {
-            titleStatus.value = title
-            isBackLayoutLiveData.value = null
-        }
-
-    } // titleChanged
+    }  // titleChanged
 
     fun contentChanged(content : String) {
 
-        this.content = content
+        contentLiveData.value = content
 
-        if (content.isEmpty()) {
-            contentStatus.value = "empty"
-            isBackLayoutLiveData.value = "empty"
-        }
-        else if (content.length > 1000) {
-            contentStatus.value = "over"
-            isBackLayoutLiveData.value = null
-        }
-        else {
-            contentStatus.value = content
-            isBackLayoutLiveData.value = null
-        }
+    }  // contentChanged
 
-    } // contentChanged
+    fun insertFeed() {
 
-    private fun insertFeed() {
+        val date = System.currentTimeMillis().toString()
+        val title = titleLiveData.value
+        val content = contentLiveData.value
 
-        val date = (System.currentTimeMillis() / 1000).toInt()
+        model.insertFeed(nickname, title!!, content!!, date).enqueue(object : Callback<ArrayList<Feed>> {
 
-//        model.insertFeed(nickname, title, content, date).enqueue(object : Callback<ArrayList<Feed>> {
-//
-//            override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
-//                if (response.isSuccessful) {
-//                    var msg : ArrayList<Feed>? = response.body()
-//                    Log.d(TAG, "onResponse : $msg")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
-//                Log.d(TAG, "onFailure : ${t.message}")
-//            }
-//
-//        })
-
-        model.insertFeed(nickname, title, content, date).enqueue(object : Callback<String> {
-
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+            override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
                 if (response.isSuccessful) {
-                    var msg : String? = response.body()
-                    Log.d(TAG, "onResponse : $msg")
+                    var msg = response.body()
+                    isSave.value = false
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
                 Log.d(TAG, "onFailure : ${t.message}")
             }
 
         })
 
-    }
+    } // insertFeed
+
+    fun insertImageFeed(body : MultipartBody.Part) {
+
+        val date = System.currentTimeMillis().toString()
+        val title = titleLiveData.value
+        val content = contentLiveData.value
+
+        model.insertImageFeed(body, nickname, title!!, content!!, date).enqueue(object : Callback<ArrayList<Feed>> {
+
+            override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
+                if (response.isSuccessful) {
+                    var msg = response.body()
+                    isSave.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
+                Log.d(TAG, "onFailure : ${t.message}")
+            }
+
+        })
+
+    } // insertImageFeed
 
     fun toGallery() {
 
         toGalleryLiveData.value = true
 
-    }
+    } // toGallery
 
 }
