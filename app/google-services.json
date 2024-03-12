@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "589780146408",
+    "project_id": "fishingmanager-417008",
+    "storage_bucket": "fishingmanager-417008.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589780146408:android:64379276166cac922f915d",
+        "android_client_info": {
+          "package_name": "com.example.fishingmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589780146408-vpqrd8mum7jvbk7d08i763b14i8epko5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fishingmanager",
+            "certificate_hash": "043623f94314e7cfe0e2f321a857d31299c0a49e"
+          }
+        },
+        {
+          "client_id": "589780146408-oc90aq3fghp5rq8tulgd54479ufq0je9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqpIKD-2Sb50pJ87FwBJMvydOUl7dpXX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589780146408-oc90aq3fghp5rq8tulgd54479ufq0je9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
