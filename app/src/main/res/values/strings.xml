@@ -65,6 +65,8 @@
     <string name="start_signup_4page">4/6</string>
     <string name="start_signup_5page">5/6</string>
     <string name="start_signup_6page">6/6</string>
+    <string name="start_signup_google_1page">1/2</string>
+    <string name="start_signup_google_2page">2/2</string>
     <string name="start_findPassword_1page_main">비밀번호를 찾고자하는\n이메일을 입력해 주세요.</string>
     <string name="start_findPassword_2page_main">입력하신 이메일로\n인증 번호가 발송되었어요.</string>
     <string name="start_findPassword_3page_main">사용하실 비밀번호를\n입력해 주세요.</string>
