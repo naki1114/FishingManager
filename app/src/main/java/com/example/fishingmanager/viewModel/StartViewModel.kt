@@ -12,7 +12,7 @@ import kotlin.concurrent.timer
 class StartViewModel : ViewModel() {
 
     companion object {
-        private const val AUTH_TIME = 15
+        private const val AUTH_TIME = 180
     }
 
     val layoutLiveData = MutableLiveData<String>()
@@ -22,11 +22,15 @@ class StartViewModel : ViewModel() {
     val isUsablePassword = MutableLiveData<Boolean>()
     val isUsableRePassword = MutableLiveData<Boolean>()
     val isUsableNickname = MutableLiveData<Int>()
+    val isUsableSocialNickname = MutableLiveData<Int>()
     val isClickedBackButton = MutableLiveData<Boolean>()
     val isCancelSignup = MutableLiveData<Boolean>()
     val isSavedUserInfo = MutableLiveData<Boolean>()
     val isTimeOutAuth = MutableLiveData<Boolean>()
     val authTime = MutableLiveData<Int>()
+    val socialType = MutableLiveData<String>()
+    val socialLoginCheck = MutableLiveData<Boolean>()
+    val isSignedUpUser = MutableLiveData<Boolean>()
 
     val passwordValid = MutableLiveData<Boolean>()
 
@@ -35,12 +39,15 @@ class StartViewModel : ViewModel() {
     val isPossibleLogin = MutableLiveData<Boolean>()
 
     private var model = StartModel()
-    var pageNumber = 1
+    var signUpPageNumber = 1
+    var signUpSocialPageNumber = 1
 
     var userID : String = ""
     var userPassword : String = ""
     var userNickname : String = ""
+    var profileImage : String = ""
     var authNumber : String = ""
+    var type : String = ""
 
     private var time  = AUTH_TIME
     private var timerTask : Timer? = null
@@ -53,7 +60,7 @@ class StartViewModel : ViewModel() {
 
     fun clickPrevButton() {
 
-        when (pageNumber) {
+        when (signUpPageNumber) {
 
             2 -> {
                 isUsableEmail.value = null
@@ -76,14 +83,14 @@ class StartViewModel : ViewModel() {
 
         }
 
-        pageNumber--
-        pageNumberLiveData.value = pageNumber
+        signUpPageNumber--
+        pageNumberLiveData.value = signUpPageNumber
 
     } // clickPrevButton
 
     fun clickNextButton(getText : String) {
 
-        when (pageNumber) {
+        when (signUpPageNumber) {
 
             1 -> {
                 checkUserEmail(getText)
@@ -110,9 +117,56 @@ class StartViewModel : ViewModel() {
 
     } // clickNextButton
 
+    fun clickSocialPrevButton() {
+
+        if (signUpSocialPageNumber == 2)  {
+            signUpSocialPageNumber--
+        }
+
+    } // clickSocialPrevButton
+
+    fun clickSocialNextButton(nickname : String) {
+
+        if (signUpSocialPageNumber == 1)  {
+
+            if (model.checkValidNickname(nickname)) {
+
+                checkUserNickname(nickname)
+
+            }
+
+        }
+        else {
+
+            model.socialLoginCheck(userID, nickname, profileImage, type).enqueue(object : Callback<String> {
+
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful) {
+                        var msg = response.body()?.split(" ")
+
+                        if (msg?.size == 2) {
+                            userNickname = msg?.get(1).toString()
+                        }
+
+                        if (msg?.get(0) == "successLogin") {
+                            socialLoginCheck.value = true
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+
+                }
+
+            })
+
+        }
+
+    } // clickSocialNextButton
+
     fun passwordValidCheck(password : String) {
 
-        if (pageNumber == 3) {
+        if (signUpPageNumber == 3) {
 
             passwordValid.value = model.checkPassword(password)
 
@@ -131,7 +185,7 @@ class StartViewModel : ViewModel() {
                     if (msg == "usableID") {
                         userID = id
                         isUsableEmail.value = true
-                        pageNumber++
+                        signUpPageNumber++
                     }
                     else {
                         isUsableEmail.value = false
@@ -154,7 +208,7 @@ class StartViewModel : ViewModel() {
 
         if (isCorrectAuthNumber.value == true) {
 
-            pageNumber++
+            signUpPageNumber++
             stopTimer(1)
 
         }
@@ -174,7 +228,7 @@ class StartViewModel : ViewModel() {
         if (isUsablePassword.value == true) {
 
             userPassword = password
-            pageNumber++
+            signUpPageNumber++
 
         }
 
@@ -186,7 +240,7 @@ class StartViewModel : ViewModel() {
 
         if (isUsableRePassword.value == true) {
 
-            pageNumber++
+            signUpPageNumber++
 
         }
 
@@ -205,10 +259,13 @@ class StartViewModel : ViewModel() {
                         if (msg == "usableNickname") {
                             userNickname = nickname
                             isUsableNickname.value = 0
-                            pageNumber++
+                            isUsableSocialNickname.value = 0
+                            signUpPageNumber++
+                            signUpSocialPageNumber++
                         }
                         else {
                             isUsableNickname.value = 1
+                            isUsableSocialNickname.value = 1
                         }
 
                     }
@@ -216,6 +273,7 @@ class StartViewModel : ViewModel() {
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     isUsableNickname.value = 3
+                    isUsableSocialNickname.value = 3
                 }
 
             })
@@ -224,6 +282,7 @@ class StartViewModel : ViewModel() {
         else {
 
             isUsableNickname.value = 2
+            isUsableSocialNickname.value = 2
 
         }
 
@@ -318,5 +377,43 @@ class StartViewModel : ViewModel() {
         startTimer()
 
     } // reSendMail
+
+    fun socialLogin(type : String) {
+
+        this.type = type
+        socialType.value = type
+
+    } // socialLogin
+
+    fun isSignedUpUserCheck(id : String, type : String) {
+
+        model.isSignedUpUserCheck(id, type).enqueue(object : Callback<String> {
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    var msg = response.body()?.split(" ")
+
+                    if (msg?.size == 2) {
+
+                        userNickname = msg?.get(1).toString()
+                        isSignedUpUser.value = true
+
+                    }
+                    else {
+
+                        isSignedUpUser.value = false
+
+                    }
+
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+            }
+
+        })
+
+    }
 
 }
