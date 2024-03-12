@@ -22,6 +22,7 @@ import com.example.fishingmanager.databinding.FragmentWriteBinding
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.viewModel.WriteViewModel
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -42,7 +43,7 @@ class WriteFragment : Fragment() {
             val imagePath = result.data!!.data
             val fileName = GetDate().getTime().toString() + ".jpg"
             val file = File(absolutelyPath(imagePath, requireContext()))
-            val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+            val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
             body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
             galleryCheck = true
