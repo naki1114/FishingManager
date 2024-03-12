@@ -81,4 +81,8 @@ class StartModel {
 
     fun checkUserInfo(id : String, password : String) = responseServer.checkUserInfo(id, password)
 
+    fun isSignedUpUserCheck(id : String, type : String) = responseServer.isSignedUpUserCheck(id, type)
+
+    fun socialLoginCheck(id : String, nickname : String, profileImage : String, type : String) = responseServer.socialLoginCheck(id, nickname, profileImage, type)
+
 }

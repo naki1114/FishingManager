@@ -11,7 +11,6 @@ import com.example.fishingmanager.network.RetrofitInterface
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.TreeSet
 
 class ProfileModel {
 
@@ -305,7 +304,7 @@ class ProfileModel {
     } // getCalendarList()
 
 
-    fun requestDeleteAccount(nickname : String) = webServerRetrofitInterface.deleteUserInfo(nickname)
+    fun requestDeleteAccount(nickname : String, type : String) = webServerRetrofitInterface.deleteUserInfo(nickname, type)
 
     fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
 

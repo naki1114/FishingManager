@@ -78,6 +78,26 @@ interface RetrofitInterface {
     ): Call<String>
 
 
+    // 소셜 로그인
+    @FormUrlEncoded
+    @POST("File/UserInfo/SocialLogin.php")
+    fun socialLoginCheck(
+        @Field("id") id: String,
+        @Field("nickname") nickname: String,
+        @Field("profileImage") profileImage: String,
+        @Field("type") type: String
+    ): Call<String>
+
+
+    // 소셜 로그인 가입 여부 체크
+    @FormUrlEncoded
+    @POST("File/UserInfo/SocialCheckUserInfo.php")
+    fun isSignedUpUserCheck(
+        @Field("id") id: String,
+        @Field("type") type: String
+    ): Call<String>
+
+
     // 비밀번호 찾기
     @FormUrlEncoded
     @POST("File/UserInfo/FindPassword.php")
@@ -99,7 +119,10 @@ interface RetrofitInterface {
     // 회원탈퇴
     @FormUrlEncoded
     @POST("File/UserInfo/DeleteAccount.php")
-    fun deleteUserInfo(@Field("nickname") nickname: String): Call<String>
+    fun deleteUserInfo(
+        @Field("nickname") nickname: String,
+        @Field("type") type: String
+    ): Call<String>
 
 
     // 프로필 사진 수정

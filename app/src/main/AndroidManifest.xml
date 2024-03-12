@@ -47,6 +47,18 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROUSABLE" />
+                <data android:host="oauth"
+                    android:scheme="kakao{43102e8574f7aa40c4ff102119c9acf1}" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
