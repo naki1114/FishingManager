@@ -172,9 +172,9 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeDeleteAccountStatus()
 
 
-    fun deleteAccount(nickname: String) {
+    fun deleteAccount(nickname: String, type: String) {
 
-        model.requestDeleteAccount(nickname).enqueue(object : Callback<String> {
+        model.requestDeleteAccount(nickname, type).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
 
                 if (response.isSuccessful && response.body() == "successDelete") {

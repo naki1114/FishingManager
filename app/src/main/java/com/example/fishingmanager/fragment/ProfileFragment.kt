@@ -1,9 +1,7 @@
 package com.example.fishingmanager.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -23,7 +21,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -36,6 +33,13 @@ import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.databinding.FragmentProfileBinding
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
@@ -46,6 +50,8 @@ import java.lang.StringBuilder
 import kotlin.concurrent.thread
 
 class ProfileFragment : Fragment() {
+
+    val TAG = "ProfileFragment"
 
     lateinit var binding : FragmentProfileBinding
 
@@ -289,6 +295,39 @@ class ProfileFragment : Fragment() {
             binding.profileLogoutLayout.visibility = View.GONE
 
             if (it) {
+                when (getUserType()) {
+
+                    "google" -> {
+
+                        FirebaseAuth.getInstance().signOut()
+                        val opt = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                        val client = GoogleSignIn.getClient(requireActivity(), opt)
+                        client.signOut()
+
+                    }
+
+                    "kakao" -> {
+
+                        UserApiClient.instance.logout { error ->
+
+                            if (error != null) {
+                                Log.d(TAG, "Failed Logout")
+                            }else {
+                                Log.d(TAG, "Success Logout")
+                            }
+
+                        }
+
+                    }
+
+                    "naver" -> {
+
+                        NaverIdLoginSDK.logout()
+
+                    }
+
+                }
+
                 viewModel.changeFragment("start")
             }
 
@@ -299,7 +338,59 @@ class ProfileFragment : Fragment() {
             binding.profileDeleteAccountLayout.visibility = View.GONE
 
             if (it) {
-                viewModel.deleteAccount(nickname)
+                when (getUserType()) {
+
+                    "google" -> {
+
+                        FirebaseAuth.getInstance().signOut()
+                        val opt = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                        val client = GoogleSignIn.getClient(requireActivity(), opt)
+                        client.signOut()
+                        client.revokeAccess()
+
+                    }
+
+                    "kakao" -> {
+
+                        UserApiClient.instance.unlink { error ->
+
+                            if (error != null) {
+                                Log.d(TAG, "Failed DeleteAccount")
+                            }else {
+                                Log.d(TAG, "Success DeleteAccount")
+                            }
+
+                        }
+
+                    }
+
+                    "naver" -> {
+
+                        NidOAuthLogin().callDeleteTokenApi(requireContext(), object :
+                            OAuthLoginCallback {
+
+                            override fun onSuccess() {
+                                Log.d(TAG, "토큰 삭제 성공")
+                            }
+
+                            override fun onFailure(httpStatus: Int, message: String) {
+                                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+                                Log.d(TAG, "errorCode : $errorCode")
+                                Log.d(TAG, "errorDesc : $errorDescription")
+                            }
+
+                            override fun onError(errorCode: Int, message: String) {
+                                onFailure(errorCode, message)
+                            }
+
+                        })
+
+                    }
+
+                }
+
+                viewModel.deleteAccount(nickname, getUserType())
             }
 
         })
@@ -573,6 +664,15 @@ class ProfileFragment : Fragment() {
         }
 
     } // changeLayout()
+
+    private fun getUserType() : String {
+
+        val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
+        var type = sharedPreferences?.getString("type", "")
+
+        return type!!
+
+    } // getUserType
 
 
     class TodayDecorator(context: Context) : DayViewDecorator {
