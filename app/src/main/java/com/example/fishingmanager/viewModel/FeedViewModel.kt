@@ -129,4 +129,11 @@ class FeedViewModel(val nickname : String) : ViewModel() {
 
     } // insertComment
 
+
+    fun goFeedView (feed : Feed) {
+
+        toReadLiveData.value = feed
+
+    }
+
 }

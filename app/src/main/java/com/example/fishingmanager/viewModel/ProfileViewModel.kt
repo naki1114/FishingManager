@@ -56,7 +56,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     var previousLayout: String = ""
 
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
-    val liveDataUpdateUserInfo = MutableLiveData<UserInfo>()
+    val liveDataUpdateProfileImage = MutableLiveData<Combine>()
 
     fun init() {
 
@@ -265,19 +265,19 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
 
     fun updateProfileImage(file : MultipartBody.Part, nickname : String) {
 
-        model.requestUpdateProfileImage(file, nickname).enqueue(object : Callback<UserInfo> {
-            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+        model.requestUpdateProfileImage(file, nickname).enqueue(object : Callback<Combine> {
+            override fun onResponse(call: Call<Combine>, response: Response<Combine>) {
 
                 if (response.isSuccessful) {
 
-                    liveDataUpdateUserInfo.value = response.body()
+                    liveDataUpdateProfileImage.value = response.body()
 
                 } else {
                     Log.d(TAG, "updateProfileImage - onResponse isFailure : ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+            override fun onFailure(call: Call<Combine>, t: Throwable) {
                 Log.d(TAG, "updateProfileImage - onFailure : $t")
             }
 

@@ -88,7 +88,7 @@ class HomeFragment : Fragment() {
             })
         seeMoreAdapter = HomeSeeMoreRecentCollectionAdapter()
         hotFeedAdapter = HomeHotFeedAdapter(HomeHotFeedAdapter.ItemClickListener {
-            viewModel.goHotFeed(it.feedNum)
+            viewModel.goHotFeed(it)
         })
 
         binding.homeRecommendRecyclerView.adapter = recommendAdapter
@@ -209,9 +209,9 @@ class HomeFragment : Fragment() {
 
         })
 
-        viewModel.liveDataHotFeedNum.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataHotFeedValue.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).changeFragment("feed")
+            (activity as MainActivity).changeFragmentFeed(it)
 
         })
 
