@@ -126,7 +126,21 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.checkingFish_fragment -> changeFragment("checkingFish")
-                R.id.feed_fragment -> changeFragment("feed")
+                R.id.feed_fragment -> {
+
+                    if (bundleString == "") {
+
+                        changeFragment("feed")
+
+                    } else {
+
+                        fragmentTransaction = fragmentManager.beginTransaction()
+                        fragmentManager.setFragmentResult("feed", bundle)
+                        fragmentTransaction.replace(R.id.mainFragment, FeedFragment()).commit()
+
+                    }
+
+                }
                 R.id.profile_fragment -> changeFragment("profile")
 
             }
@@ -235,6 +249,18 @@ class MainActivity : AppCompatActivity() {
 
 
     } // changeFragmentWithData()
+
+
+    fun changeFragmentFeed(feed : Feed) {
+
+        bundle = Bundle()
+
+        bundle.putSerializable("feed", feed)
+        bundleString = "feedView"
+        binding.navigation.selectedItemId = R.id.feed_fragment
+        bundleString = ""
+
+    } // changeFragmentFeed()
 
 
     fun goPhotoView(image : String) {

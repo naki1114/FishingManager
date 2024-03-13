@@ -128,7 +128,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/main2"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <LinearLayout

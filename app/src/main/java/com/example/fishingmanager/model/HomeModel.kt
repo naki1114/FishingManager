@@ -185,13 +185,20 @@ class HomeModel {
         var parseDate : String
         var date : String
         var feed : Feed
+        var feedImage : String
 
         for(i in 0 until feedList.size) {
 
             parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
-            feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date, feedList[i].profileImage)
+            if (feedList[i].feedImage == null) {
+                feedImage = ""
+            } else {
+                feedImage = feedList[i].feedImage
+            }
+
+            feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, feedImage, feedList[i].viewCount, date, feedList[i].profileImage)
             list.add(feed)
 
             if (list.size == 10) {

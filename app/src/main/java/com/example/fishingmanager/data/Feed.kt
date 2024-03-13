@@ -1,5 +1,7 @@
 package com.example.fishingmanager.data
 
+import java.io.Serializable
+
 data class Feed(
     val nickname: String,
     val feedNum: Int,
@@ -9,4 +11,4 @@ data class Feed(
     val viewCount: String,
     val date: String,
     val profileImage : String
-)
+) : Serializable

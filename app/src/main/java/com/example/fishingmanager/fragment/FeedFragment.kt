@@ -1,6 +1,8 @@
 package com.example.fishingmanager.fragment
 
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -86,6 +88,21 @@ class FeedFragment : Fragment() {
 
         }
 
+        parentFragmentManager.setFragmentResultListener("feed", this) { key, bundle ->
+
+            val feed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle.getSerializable("feed", Feed::class.java)
+
+            } else {
+                bundle.getSerializable("feed") as Feed
+            }
+
+            if (feed != null) {
+                feedViewModel.goFeedView(feed)
+            }
+
+        }
+
     } // setVariable
 
     private fun clickAddFeedButton() {
@@ -107,8 +124,12 @@ class FeedFragment : Fragment() {
         feedViewModel.toReadLiveData.observe(viewLifecycleOwner) {
 
             val feed = feedViewModel.toReadLiveData.value
-            val dateFormat = SimpleDateFormat("yyyy / MM / dd")
-            val date = dateFormat.format(feed?.date!!.toLong()).toString()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            var date = feed?.date
+
+            if (feed?.date?.length != 10) {
+                date = dateFormat.format(feed?.date!!.toLong()).toString()
+            }
 
             binding.feedViewWriterTextView.text = feed?.nickname
             binding.feedViewTitleTextView.text = feed?.title

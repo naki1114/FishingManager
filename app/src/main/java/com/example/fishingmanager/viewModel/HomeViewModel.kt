@@ -53,7 +53,7 @@ class HomeViewModel(
     val liveDataClickedFishImage = MutableLiveData<String>()
     val liveDataRecentCollectionList = MutableLiveData<ArrayList<History>>()
     val liveDataHotFeedList = MutableLiveData<ArrayList<Feed>>()
-    val liveDataHotFeedNum = MutableLiveData<Int>()
+    val liveDataHotFeedValue = MutableLiveData<Feed>()
 
     val liveDataBasicWeatherList = MutableLiveData<ArrayList<ConditionWeather>>()
     val liveDataBasicIndexList = MutableLiveData<ArrayList<Index.Item>>()
@@ -116,9 +116,9 @@ class HomeViewModel(
     }
 
 
-    fun goHotFeed(feedNum: Int) {
+    fun goHotFeed(feed : Feed) {
 
-        liveDataHotFeedNum.value = feedNum
+        liveDataHotFeedValue.value = feed
 
     } // goHotFeed()
 
