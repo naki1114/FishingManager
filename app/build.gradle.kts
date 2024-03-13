@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -96,14 +97,20 @@ dependencies {
     // CircleImage
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    // KakaoLogin
-//    implementation("com.kakao.sdk:v2-user:2.10.0")
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.5.1")
 
     // GoogleLogin
-//    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // KakaoLogin
+    implementation("com.kakao.sdk:v2-user:2.10.0")
 
     // NaverLogin
-//    implementation("com.navercorp.nid:oauth:5.5.0")
+    implementation("com.navercorp.nid:oauth-jdk8:5.1.0")
 
     // CalendarView
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")

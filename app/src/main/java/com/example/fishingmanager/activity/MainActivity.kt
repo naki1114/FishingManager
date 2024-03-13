@@ -51,10 +51,8 @@ class MainActivity : AppCompatActivity() {
 
     val enterFragment = EnterFragment()
     val splashFragment = SplashFragment()
-    val startFragment = StartFragment()
     val homeFragment = HomeFragment()
     val conditionFragment = ConditionFragment()
-    val feedFragment = FeedFragment()
     val writeFragment = WriteFragment()
     val payFragment = PayFragment()
     val photoViewFragment = PhotoViewFragment()
@@ -164,7 +162,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "start" -> {
-                pickOutFragment(startFragment)
+                pickOutFragment(StartFragment())
                 navigationGone()
             }
 
@@ -184,7 +182,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "feed" -> {
-                pickOutFragment(feedFragment)
+                pickOutFragment(FeedFragment())
                 navigationVisible()
             }
 

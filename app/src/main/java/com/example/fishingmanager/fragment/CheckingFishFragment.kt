@@ -34,6 +34,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.websitebeaver.documentscanner.DocumentScanner
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -332,7 +333,9 @@ class CheckingFishFragment : Fragment() {
 
         output.close()
 
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+        val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+        val body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
         return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
