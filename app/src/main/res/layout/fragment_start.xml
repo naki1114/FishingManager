@@ -308,6 +308,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/start_signup"
                     android:textColor="@color/black"
+                    android:onClick='@{() -> viewModel.changeLayout("signup")}'
                     />
 
                 <View
