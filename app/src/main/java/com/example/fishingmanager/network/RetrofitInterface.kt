@@ -132,7 +132,7 @@ interface RetrofitInterface {
     fun updateProfileImage(
         @Part uploadFile: MultipartBody.Part,
         @Part("nickname") nickname: String
-    ): Call<UserInfo>
+    ): Call<Combine>
 
 
     // 게시글 요청

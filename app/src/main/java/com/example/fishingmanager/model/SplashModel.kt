@@ -272,7 +272,7 @@ class SplashModel {
                 list.add(
                     History(
                         responseList[i].nickname,
-                        "",
+                        responseList[i].profileImage,
                         responseList[i].fishName,
                         responseList[i].fishImage,
                         date,

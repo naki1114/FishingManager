@@ -128,7 +128,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/main2"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <LinearLayout
@@ -208,11 +208,14 @@
                             >
 
                             <!-- 작성자 프로필 사진 -->
-                            <ImageView
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/feedViewWriterProfileImageView"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:background="@drawable/custom_white_background"
                                 android:src="@drawable/fishing_logo"
+                                app:civ_border_color="@color/main1"
+                                app:civ_border_width="1dp"
+                                app:civ_border_overlay="false"
                                 />
 
                             <!-- 작성자 닉네임 -->

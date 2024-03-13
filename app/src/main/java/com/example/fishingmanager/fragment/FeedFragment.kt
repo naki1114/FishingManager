@@ -115,6 +115,22 @@ class FeedFragment : Fragment() {
             binding.feedViewContentTextView.text = feed?.content
             binding.feedViewWriteDateTextView.text = date
 
+            if (it.profileImage.length < 3) {
+
+                if (it.profileImage == "FM") {
+                    binding.feedViewWriterProfileImageView.setImageResource(R.drawable.fishing_logo)
+                }
+
+            } else {
+
+                if (it.profileImage.substring(0,5) == "https") {
+                    Glide.with(requireActivity()).load(it.profileImage).into(binding.feedViewWriterProfileImageView)
+                } else {
+                    Glide.with(requireActivity()).load(RetrofitClient.BASE_URL + it.profileImage).into(binding.feedViewWriterProfileImageView)
+                }
+
+            }
+
             if (feed?.feedImage == null) {
                 binding.feedViewImageView.visibility = View.GONE
             }

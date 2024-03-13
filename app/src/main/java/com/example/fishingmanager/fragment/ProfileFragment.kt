@@ -36,6 +36,7 @@ import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
 import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.databinding.FragmentProfileBinding
 import com.example.fishingmanager.function.GetDate
+import com.example.fishingmanager.model.SplashModel
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -208,7 +209,7 @@ class ProfileFragment : Fragment() {
     fun observeLiveData() {
 
         viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
-            
+
             if (it.profileImage == "FM") {
                 binding.profileProfileImage.setImageResource(R.drawable.fishing_logo)
             } else if (it.profileImage.substring(0,5) == "https") {
@@ -558,9 +559,12 @@ class ProfileFragment : Fragment() {
 
         })
 
-        viewModel.liveDataUpdateUserInfo.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataUpdateProfileImage.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).userInfo = it
+            (activity as MainActivity).collectionList = it.collection
+            (activity as MainActivity).historyList = SplashModel().getHistoryList(it.history)
+            (activity as MainActivity).feedList = it.feed
+            (activity as MainActivity).userInfo = it.userInfo
 
         })
 

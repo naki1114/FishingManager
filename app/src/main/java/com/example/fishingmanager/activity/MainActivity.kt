@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "home" -> {
-                pickOutFragment(homeFragment)
+                pickOutFragment(HomeFragment())
                 navigationVisible()
             }
 
