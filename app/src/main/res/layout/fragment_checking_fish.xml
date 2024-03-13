@@ -120,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
                             android:textColor="@color/black"
-                            android:text="@string/checkingFish_limitCount"
+                            android:text="@{viewModel.liveDataCheckingFishCountText}"
                             android:layout_gravity="center"
                             />
 
