@@ -237,14 +237,13 @@ interface RetrofitInterface {
 
     // 기록 추가
     @Multipart
-    @FormUrlEncoded
     @POST("File/CheckingFish/InsertHistory.php")
     fun saveHistory(
         @Part uploadFile: MultipartBody.Part,
-        @Field("nickname") nickname: String,
-        @Field("fish") fish: String,
-        @Field("date") date: String
-    ): Call<ArrayList<History>>
+        @Part("nickname") nickname: String,
+        @Part("fish") fish: String,
+        @Part("date") date: String
+    ): Call<Combine>
 
 
     // 이용권 구매

@@ -32,8 +32,7 @@ import com.example.fishingmanager.tensorflowModel.TensorflowModel
 import com.example.fishingmanager.viewModel.CheckingFishViewModel
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import com.websitebeaver.documentscanner.DocumentScanner
-import okhttp3.MediaType
+
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -324,7 +323,7 @@ class CheckingFishFragment : Fragment() {
     fun getFile(): MultipartBody.Part {
 
         val storage = requireActivity().cacheDir
-        val fileName = nickname + GetDate().getTime() + "jpg"
+        val fileName = "${GetDate().getTime()}.jpg"
         file = File(storage, fileName)
 
         file.createNewFile()
@@ -333,9 +332,7 @@ class CheckingFishFragment : Fragment() {
 
         output.close()
 
-
         val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-        val body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
         return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
