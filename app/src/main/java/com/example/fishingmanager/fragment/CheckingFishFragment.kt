@@ -4,12 +4,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,18 +20,8 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Guideline
-import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.canhub.cropper.CropImage
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageContractOptions
-import com.canhub.cropper.CropImageOptions
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.CropImageView.Guidelines
-import com.canhub.cropper.CropImageView.Guidelines.*
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.CameraActivity
 import com.example.fishingmanager.activity.MainActivity
@@ -116,7 +103,7 @@ class CheckingFishFragment : Fragment() {
     fun setVariable() {
 
         tensorflowModel = TensorflowModel(requireActivity())
-        viewModel = CheckingFishViewModel((activity as MainActivity).historyList, nickname)
+        viewModel = CheckingFishViewModel((activity as MainActivity).historyList, (activity as MainActivity).userInfo)
         viewModel.init()
 
         binding.viewModel = viewModel
@@ -313,7 +300,7 @@ class CheckingFishFragment : Fragment() {
         viewModel.liveDataSaveAndWriteStatus.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-                viewModel.saveHistoryServerAndChangeFragment(
+                viewModel.saveHistoryServer(
                     getFile(),
                     nickname,
                     result.first,
@@ -346,9 +333,8 @@ class CheckingFishFragment : Fragment() {
         output.close()
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        val body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
-        return body
+        return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
     } // getFile()
 

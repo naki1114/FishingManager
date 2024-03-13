@@ -238,6 +238,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@color/main2"
             android:visibility="gone"
             >
 
@@ -289,18 +290,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/custom_white_button"
+                android:background="@drawable/custom_feed_background"
                 />
 
             <TextView
                 android:id="@+id/checkingFishResultFishNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="24dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="20dp"
                 android:text="@{checkingFish.fishName}"
                 />
 
@@ -309,7 +311,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16dp"
+                android:textSize="18dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_gravity="center"
                 android:text="@{checkingFish.fishDescription}"
@@ -333,7 +335,7 @@
                 android:textColor="@color/main2"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:onClick='@{() -> viewModel.changeLayout("complete")}'
+                android:onClick="@{() -> viewModel.classifyComplete()}"
                 />
 
         </LinearLayout>
