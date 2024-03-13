@@ -264,7 +264,7 @@ class MainActivity : AppCompatActivity() {
     // 백스택 쌓을 Fragment 구분
     fun pickOutFragment(fragmentName: Fragment) {
 
-        if (fragmentName == writeFragment || fragmentName == photoViewFragment || fragmentName == payFragment) {
+        if (fragmentName == photoViewFragment || fragmentName == payFragment) {
 
             fragmentTransaction.replace(R.id.mainFragment, fragmentName).addToBackStack(null)
                 .commit()
