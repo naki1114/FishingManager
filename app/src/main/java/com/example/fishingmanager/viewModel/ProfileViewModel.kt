@@ -12,6 +12,7 @@ import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.model.ProfileModel
 import com.example.fishingmanager.model.SplashModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +56,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     var previousLayout: String = ""
 
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
+    val liveDataUpdateUserInfo = MutableLiveData<UserInfo>()
 
     fun init() {
 
@@ -259,5 +261,28 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         })
 
     } // refresh()
+
+
+    fun updateProfileImage(file : MultipartBody.Part, nickname : String) {
+
+        model.requestUpdateProfileImage(file, nickname).enqueue(object : Callback<UserInfo> {
+            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+
+                if (response.isSuccessful) {
+
+                    liveDataUpdateUserInfo.value = response.body()
+
+                } else {
+                    Log.d(TAG, "updateProfileImage - onResponse isFailure : ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                Log.d(TAG, "updateProfileImage - onFailure : $t")
+            }
+
+        })
+
+    } // updateProfileImage()
 
 }

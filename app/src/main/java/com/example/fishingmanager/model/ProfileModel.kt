@@ -9,6 +9,7 @@ import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.network.RetrofitInterface
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import okhttp3.MultipartBody
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -307,6 +308,8 @@ class ProfileModel {
     fun requestDeleteAccount(nickname : String, type : String) = webServerRetrofitInterface.deleteUserInfo(nickname, type)
 
     fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
+
+    fun requestUpdateProfileImage(file : MultipartBody.Part, nickname : String) = webServerRetrofitInterface.updateProfileImage(file, nickname)
 
 
 }
