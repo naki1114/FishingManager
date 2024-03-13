@@ -255,9 +255,9 @@ class CheckingFishFragment : Fragment() {
         viewModel.liveDataCameraStatus.observe(viewLifecycleOwner, Observer {
 
             if (it) {
-
                 startCamera()
-
+            } else {
+                Toast.makeText(requireActivity(), "금일 이용 횟수를 모두 소진하였습니다.", Toast.LENGTH_SHORT).show()
             }
 
         })

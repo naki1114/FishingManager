@@ -7,5 +7,6 @@ data class Feed(
     val content: String,
     val feedImage: String,
     val viewCount: String,
-    val date: String
+    val date: String,
+    val profileImage : String
 )

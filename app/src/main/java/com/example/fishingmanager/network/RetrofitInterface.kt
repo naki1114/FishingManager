@@ -7,6 +7,7 @@ import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.Tide
+import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.data.Weather
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -127,12 +128,11 @@ interface RetrofitInterface {
 
     // 프로필 사진 수정
     @Multipart
-    @FormUrlEncoded
     @POST("File/UserInfo/UpdateProfileImage.php")
     fun updateProfileImage(
         @Part uploadFile: MultipartBody.Part,
-        @Field("profileImage") profileImage: String
-    ): Call<String>
+        @Part("nickname") nickname: String
+    ): Call<UserInfo>
 
 
     // 게시글 요청

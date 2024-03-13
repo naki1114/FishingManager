@@ -2,6 +2,7 @@ package com.example.fishingmanager.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -31,6 +32,7 @@ import com.example.fishingmanager.adapter.ProfileHistoryAdapter
 import com.example.fishingmanager.adapter.ProfileSelectFishAdapter
 import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.databinding.FragmentProfileBinding
+import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.ProfileViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -46,6 +48,11 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.StringBuilder
 import kotlin.concurrent.thread
 
@@ -67,6 +74,8 @@ class ProfileFragment : Fragment() {
     lateinit var loadingAnimationLeft: Animation
     var loadingAnimationStatus = false
     lateinit var animationThread: Thread
+
+    lateinit var file: File
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -119,6 +128,7 @@ class ProfileFragment : Fragment() {
                 val uri = intent!!.data
 
                 Glide.with(requireActivity()).load(uri).into(binding.profileProfileImage)
+                viewModel.updateProfileImage(getFile(), nickname)
 
             }
 
@@ -194,6 +204,8 @@ class ProfileFragment : Fragment() {
 
             if (it.profileImage == "FM") {
                 binding.profileProfileImage.setImageResource(R.drawable.fishing_logo)
+            } else if (it.profileImage.substring(0,5) == "https") {
+                Glide.with(requireActivity()).load(it.profileImage).into(binding.profileProfileImage)
             } else {
                 Glide.with(requireActivity()).load(RetrofitClient.BASE_URL + it.profileImage).into(binding.profileProfileImage)
             }
@@ -539,6 +551,11 @@ class ProfileFragment : Fragment() {
 
         })
 
+        viewModel.liveDataUpdateUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).userInfo = it
+
+        })
 
     } // observeLiveData()
 
@@ -673,6 +690,21 @@ class ProfileFragment : Fragment() {
         return type!!
 
     } // getUserType
+
+
+    fun getFile(): MultipartBody.Part {
+
+        val storage = requireActivity().cacheDir
+        val fileName = "${GetDate().getTime()}.jpg"
+        file = File(storage, fileName)
+
+        file.createNewFile()
+
+        val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+
+        return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
+
+    } // getFile()
 
 
     class TodayDecorator(context: Context) : DayViewDecorator {

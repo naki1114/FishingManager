@@ -62,7 +62,7 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
      */
     fun startCamera() {
 
-        liveDataCameraStatus.value = true
+        liveDataCameraStatus.value = liveDataCheckingFishCountText.value != "금일 남은 횟수 : 0 / 3"
 
     } // startCamera()
 

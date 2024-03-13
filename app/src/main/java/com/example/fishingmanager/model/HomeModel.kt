@@ -191,7 +191,7 @@ class HomeModel {
             parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
-            feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date)
+            feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, "", feedList[i].viewCount, date, feedList[i].profileImage)
             list.add(feed)
 
             if (list.size == 10) {
