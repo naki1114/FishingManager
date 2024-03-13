@@ -2,12 +2,15 @@ package com.example.fishingmanager.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -128,7 +131,11 @@ class ProfileFragment : Fragment() {
                 val uri = intent!!.data
 
                 Glide.with(requireActivity()).load(uri).into(binding.profileProfileImage)
-                viewModel.updateProfileImage(getFile(), nickname)
+
+                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), File(absolutelyPath(uri)))
+                val body = MultipartBody.Part.createFormData("uploadFile", "${GetDate().getTime()}.jpg", requestFile)
+
+                viewModel.updateProfileImage(body, nickname)
 
             }
 
@@ -201,7 +208,7 @@ class ProfileFragment : Fragment() {
     fun observeLiveData() {
 
         viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
-
+            
             if (it.profileImage == "FM") {
                 binding.profileProfileImage.setImageResource(R.drawable.fishing_logo)
             } else if (it.profileImage.substring(0,5) == "https") {
@@ -705,6 +712,21 @@ class ProfileFragment : Fragment() {
         return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
     } // getFile()
+
+
+    private fun absolutelyPath(path : Uri?) : String {
+
+        var proj : Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        var cursor : Cursor? = requireContext().contentResolver.query(path!!, proj, null, null, null)
+        var index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+
+        cursor?.moveToFirst()
+
+        var result = cursor?.getString(index!!)
+
+        return result!!
+
+    } // absolutelyPath
 
 
     class TodayDecorator(context: Context) : DayViewDecorator {
