@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.icu.util.LocaleData
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,6 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.ConditionCombineAdapter
@@ -35,45 +32,38 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter
-import com.prolificinteractive.materialcalendarview.format.TitleFormatter
 import java.lang.StringBuilder
 import java.util.Calendar
-import java.util.Locale
-import javax.mail.Quota.Resource
 import kotlin.concurrent.thread
 
 
 class ConditionFragment : Fragment() {
 
-    val TAG = "ConditionFragment"
-
     lateinit var binding: FragmentConditionBinding
 
     lateinit var viewModel: ConditionViewModel
 
-    lateinit var weatherAdapter: ConditionWeatherAdapter
-    lateinit var combineAdapter: ConditionCombineAdapter
-    lateinit var tideAdapter: ConditionTideAdapter
-    lateinit var selectFishAdapter: ConditionSelectFishAdapter
-    lateinit var searchLocationAdapter: ConditionSearchLocationAdapter
+    private lateinit var weatherAdapter: ConditionWeatherAdapter
+    private lateinit var combineAdapter: ConditionCombineAdapter
+    private lateinit var tideAdapter: ConditionTideAdapter
+    private lateinit var selectFishAdapter: ConditionSelectFishAdapter
+    private lateinit var searchLocationAdapter: ConditionSearchLocationAdapter
 
-    lateinit var conditionSharedPreferences: SharedPreferences
-    lateinit var conditionEditor: SharedPreferences.Editor
-    lateinit var searchLocation: SearchLocation
+    private lateinit var conditionSharedPreferences: SharedPreferences
+    private lateinit var conditionEditor: SharedPreferences.Editor
+    private lateinit var searchLocation: SearchLocation
 
-    lateinit var loadingAnimationRight: Animation
-    lateinit var loadingAnimationLeft: Animation
-    var loadingAnimationStatus = false
-    var previousLayout = ""
-    var currentLayout = "combine"
+    private lateinit var loadingAnimationRight: Animation
+    private lateinit var loadingAnimationLeft: Animation
+    private var loadingAnimationStatus = false
+    private var previousLayout = ""
+    private var currentLayout = "combine"
 
-    lateinit var animationThread: Thread
+    private lateinit var animationThread: Thread
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_condition, container, false)
 
         return binding.root
@@ -82,6 +72,7 @@ class ConditionFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
@@ -91,6 +82,7 @@ class ConditionFragment : Fragment() {
     } // onViewCreated()
 
 
+    // 초기화
     fun setVariable() {
 
         parentFragmentManager.setFragmentResultListener("layout", this) { key, bundle ->
@@ -136,7 +128,8 @@ class ConditionFragment : Fragment() {
     } // setVariable()
 
 
-    fun setView() {
+    // View 세팅
+    private fun setView() {
 
         binding.conditionSelectDateCalendarView.setTitleFormatter(
             MonthArrayTitleFormatter(
@@ -168,21 +161,18 @@ class ConditionFragment : Fragment() {
             MinMaxDecorator(maxDay, minDay)
         )
         binding.conditionSelectDateCalendarView.selectedDate = CalendarDay.today()
-        binding.conditionSelectDateCalendarView.setTitleFormatter(object : TitleFormatter {
-            override fun format(day: CalendarDay?): CharSequence {
+        binding.conditionSelectDateCalendarView.setTitleFormatter { day ->
 
-                val inputText: org.threeten.bp.LocalDate = day!!.date
-                val calendarHeaderElements = inputText.toString().split("-")
-                val calendarHeaderBuilder = StringBuilder()
-                calendarHeaderBuilder.append(calendarHeaderElements[0])
-                    .append("   ")
-                    .append(calendarHeaderElements[1])
+            val inputText: org.threeten.bp.LocalDate = day!!.date
+            val calendarHeaderElements = inputText.toString().split("-")
+            val calendarHeaderBuilder = StringBuilder()
+            calendarHeaderBuilder.append(calendarHeaderElements[0])
+                .append("   ")
+                .append(calendarHeaderElements[1])
 
-                return calendarHeaderBuilder.toString()
+            calendarHeaderBuilder.toString()
 
-            }
-
-        })
+        }
 
         binding.conditionSelectDateChoiceButton.setOnClickListener {
 
@@ -193,9 +183,10 @@ class ConditionFragment : Fragment() {
     } // setView()
 
 
-    fun observeLiveData() {
+    // LiveData observe
+    private fun observeLiveData() {
 
-        viewModel.liveDataCurrentLayout.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataCurrentLayout.observe(viewLifecycleOwner) {
 
             changeLayout(it)
             currentLayout = it
@@ -205,80 +196,89 @@ class ConditionFragment : Fragment() {
                 "combine" -> {
 
                     if (viewModel.liveDataCombineList.value?.size == 0) {
+
                         binding.conditionCombineLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                     }
 
                 }
-
                 "weather" -> {
 
                     if(viewModel.liveDataWeatherList.value?.size == 0) {
+
                         binding.conditionWeatherLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                     }
 
                 }
-
                 "tide" -> {
 
                     if(viewModel.liveDataTideList.value?.size == 0) {
+
                         binding.conditionTideLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                     }
 
                 }
-
                 "index" -> {
 
                     if(viewModel.liveDataBasicIndexList.value?.size == 0) {
+
                         binding.conditionIndexLayout.visibility = View.GONE
                         binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                     }
 
                 }
 
             }
 
-        })
+        }
 
-        viewModel.liveDataCombineList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataCombineList.observe(viewLifecycleOwner) {
 
             if (it.size != 0) {
+
                 combineAdapter.setItem(it)
+
             } else {
+
                 binding.conditionCombineLayout.visibility = View.GONE
                 binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
             }
 
-        })
+        }
 
-        viewModel.liveDataWeatherList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataWeatherList.observe(viewLifecycleOwner) {
 
             weatherAdapter.setItem(it)
 
-        })
+        }
 
-        viewModel.liveDataTideList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataTideList.observe(viewLifecycleOwner) {
 
             tideAdapter.setItem(it)
 
-        })
+        }
 
-        viewModel.liveDataIndex.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataIndex.observe(viewLifecycleOwner) {
 
             binding.conditionIndexAmTotalImage.setImageResource(it.amTotalImage)
             binding.conditionIndexPmTotalImage.setImageResource(it.pmTotalImage)
 
-        })
+        }
 
-        viewModel.liveDataSearchLocationList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataSearchLocationList.observe(viewLifecycleOwner) {
 
             searchLocationAdapter.setItem(it)
 
-        })
+        }
 
-        viewModel.liveDataSearchLocation.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataSearchLocation.observe(viewLifecycleOwner) {
 
             conditionEditor.putString("location", it.location)
             conditionEditor.putString("obsCode", it.obsCode)
@@ -286,15 +286,15 @@ class ConditionFragment : Fragment() {
             conditionEditor.putString("lon", it.lon)
             conditionEditor.commit()
 
-        })
+        }
 
-        viewModel.liveDataFishList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataFishList.observe(viewLifecycleOwner) {
 
             selectFishAdapter.setItem(it)
 
-        })
+        }
 
-        viewModel.liveDataLoadingStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataLoadingStatus.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -323,7 +323,6 @@ class ConditionFragment : Fragment() {
                     binding.conditionTideLayout.visibility = View.GONE
 
                 }
-                Log.d(TAG, "previous1 : $previousLayout")
 
                 binding.conditionLoadingLayout.visibility = View.VISIBLE
                 binding.conditionLoadingRightImage.visibility = View.VISIBLE
@@ -392,61 +391,78 @@ class ConditionFragment : Fragment() {
 
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
-                Log.d(TAG, "previous2 : $previousLayout")
 
                 when (previousLayout) {
 
                     "combine" -> {
+
                         if (viewModel.liveDataCombineList.value?.size == 0) {
+
                             binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                         } else {
+
                             binding.conditionCombineLayout.visibility = View.VISIBLE
-                        }
-                    }
 
+                        }
+
+                    }
                     "weather" -> {
-                        if (viewModel.liveDataWeatherList.value?.size == 0) {
-                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                        } else {
-                            binding.conditionWeatherLayout.visibility = View.VISIBLE
-                        }
-                    }
 
-                    "tide" -> {
-                        if (viewModel.liveDataTideList.value?.size == 0) {
+                        if (viewModel.liveDataWeatherList.value?.size == 0) {
+
                             binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                         } else {
-                            binding.conditionTideLayout.visibility = View.VISIBLE
+
+                            binding.conditionWeatherLayout.visibility = View.VISIBLE
+
                         }
+
+                    }
+                    "tide" -> {
+
+                        if (viewModel.liveDataTideList.value?.size == 0) {
+
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
+                        } else {
+
+                            binding.conditionTideLayout.visibility = View.VISIBLE
+
+                        }
+
                     }
 
                 }
 
             }
 
-        })
+        }
 
-        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).weatherList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicTideList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicTideList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).tideList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).indexList = it
 
-        })
+        }
 
-        viewModel.liveDataRefreshLoadingStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataRefreshLoadingStatus.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -533,48 +549,69 @@ class ConditionFragment : Fragment() {
                 when (currentLayout) {
 
                     "combine" -> {
+
                         if (viewModel.liveDataCombineList.value?.size == 0) {
+
                             binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                         } else {
+
                             binding.conditionCombineLayout.visibility = View.VISIBLE
-                        }
-                    }
 
+                        }
+
+                    }
                     "weather" -> {
+
                         if (viewModel.liveDataWeatherList.value?.size == 0) {
+
                             binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                         } else {
+
                             binding.conditionWeatherLayout.visibility = View.VISIBLE
-                        }
-                    }
 
+                        }
+
+                    }
                     "tide" -> {
-                        if (viewModel.liveDataTideList.value?.size == 0) {
-                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
-                        } else {
-                            binding.conditionTideLayout.visibility = View.VISIBLE
-                        }
-                    }
 
-                    "index" -> {
-                        if (viewModel.liveDataBasicIndexList.value?.size == 0) {
+                        if (viewModel.liveDataTideList.value?.size == 0) {
+
                             binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
                         } else {
-                            binding.conditionIndexLayout.visibility = View.VISIBLE
+
+                            binding.conditionTideLayout.visibility = View.VISIBLE
+
                         }
+
+                    }
+                    "index" -> {
+
+                        if (viewModel.liveDataBasicIndexList.value?.size == 0) {
+
+                            binding.conditionResponseFailureLayout.visibility = View.VISIBLE
+
+                        } else {
+
+                            binding.conditionIndexLayout.visibility = View.VISIBLE
+
+                        }
+
                     }
 
                 }
 
             }
 
-        })
-
+        }
 
     } // observeLiveData()
 
 
-    fun checkedLocationSharedPreference() {
+    // SharedPreferences에 저장된 지역 불러오기
+    private fun checkedLocationSharedPreference() {
 
         conditionSharedPreferences =
             requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
@@ -597,11 +634,13 @@ class ConditionFragment : Fragment() {
     } // checkedLocationSharedPreference()
 
 
+    // 레이아웃 전환
     fun changeLayout(layoutName: String) {
 
         when (layoutName) {
 
             "combine" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.VISIBLE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -631,9 +670,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTabWeatherBlock.visibility = View.GONE
                 binding.conditionTabTideBlock.visibility = View.GONE
                 binding.conditionTabIndexBlock.visibility = View.GONE
-            }
 
+            }
             "weather" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.VISIBLE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -663,9 +703,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTabWeatherBlock.visibility = View.VISIBLE
                 binding.conditionTabTideBlock.visibility = View.GONE
                 binding.conditionTabIndexBlock.visibility = View.GONE
-            }
 
+            }
             "tide" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.VISIBLE
@@ -695,9 +736,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTabWeatherBlock.visibility = View.GONE
                 binding.conditionTabTideBlock.visibility = View.VISIBLE
                 binding.conditionTabIndexBlock.visibility = View.GONE
-            }
 
+            }
             "index" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -727,9 +769,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTabWeatherBlock.visibility = View.GONE
                 binding.conditionTabTideBlock.visibility = View.GONE
                 binding.conditionTabIndexBlock.visibility = View.VISIBLE
-            }
 
+            }
             "selectDate" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -746,9 +789,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTideLayout.visibility = View.GONE
                 binding.conditionIndexLayout.visibility = View.GONE
                 binding.conditionSelectDateLayout.visibility = View.VISIBLE
-            }
 
+            }
             "searchLocation" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -765,9 +809,10 @@ class ConditionFragment : Fragment() {
                 binding.conditionTideLayout.visibility = View.GONE
                 binding.conditionIndexLayout.visibility = View.GONE
                 binding.conditionSearchLocationLayout.visibility = View.VISIBLE
-            }
 
+            }
             "selectFish" -> {
+
                 binding.conditionCombineTitleLayout.visibility = View.GONE
                 binding.conditionWeatherTitleLayout.visibility = View.GONE
                 binding.conditionTideTitleLayout.visibility = View.GONE
@@ -784,6 +829,7 @@ class ConditionFragment : Fragment() {
                 binding.conditionTideLayout.visibility = View.GONE
                 binding.conditionIndexLayout.visibility = View.GONE
                 binding.conditionSelectFishLayout.visibility = View.VISIBLE
+
             }
 
         }
@@ -791,63 +837,78 @@ class ConditionFragment : Fragment() {
     } // changeLayout()
 
 
-    class TodayDecorator(context: Context) : DayViewDecorator {
+    class TodayDecorator(context: Context): DayViewDecorator {
 
         val drawable: Drawable =
             ContextCompat.getDrawable(context, R.drawable.calendar_selector_color)!!
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
+
             return true
+
         }
 
-
         override fun decorate(view: DayViewFacade?) {
+
             view!!.setSelectionDrawable(drawable)
+
         }
 
     } // DayDecorator
 
 
-    class SundayDecorator : DayViewDecorator {
+    class SundayDecorator: DayViewDecorator {
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
+
             val sunday = day?.date?.with(org.threeten.bp.DayOfWeek.SUNDAY)?.dayOfMonth
             return sunday == day?.day
+
         }
 
         override fun decorate(view: DayViewFacade?) {
+
             view?.addSpan(object : ForegroundColorSpan(Color.RED) {})
+
         }
 
     } // SundayDecorator
 
 
-    class SaturdayDecorator : DayViewDecorator {
+    class SaturdayDecorator: DayViewDecorator {
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
+
             val saturday = day?.date?.with(org.threeten.bp.DayOfWeek.SATURDAY)?.dayOfMonth
             return saturday == day?.day
+
         }
 
         override fun decorate(view: DayViewFacade?) {
+
             view?.addSpan(object : ForegroundColorSpan(Color.BLUE) {})
+
         }
 
     } // SaturdayDecorator
 
 
-    class MinMaxDecorator(max: CalendarDay, min: CalendarDay) : DayViewDecorator {
+    class MinMaxDecorator(max: CalendarDay, min: CalendarDay): DayViewDecorator {
 
-        val maxDay = max
-        val minDay = min
+        private val maxDay = max
+        private val minDay = min
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
+
             return  (day!!.month != minDay.month) || (day.day > maxDay.day) || (day.day < minDay.day)
+
         }
 
         override fun decorate(view: DayViewFacade?) {
+
             view?.addSpan(object : ForegroundColorSpan(Color.parseColor("#D9D9D9")) {})
             view?.setDaysDisabled(true)
+
         }
 
     } // MinMaxDecorator

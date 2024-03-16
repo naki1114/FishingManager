@@ -1,8 +1,6 @@
 package com.example.fishingmanager.function
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -11,82 +9,75 @@ import java.util.Locale
 
 class GetDate {
 
-    fun getTime() : Long {
+
+    // 현재 시스템 시간 확인
+    fun getTime(): Long {
 
         return System.currentTimeMillis()
 
     } // getTime()
 
 
+    // 시스템 시간을 yyyyMMdd 형식으로 변환
     @SuppressLint("SimpleDateFormat")
-    fun getFormatDate(time : Long) : String {
+    fun getFormatDate2(time: Long): String {
 
-        var format = SimpleDateFormat("yyMMdd")
-        var formatTime : String = format.format(time)
+        val format = SimpleDateFormat("yyyyMMdd")
 
-        return formatTime
-
-    } // getFormatDate()
-
-
-    @SuppressLint("SimpleDateFormat")
-    fun getFormatDate2(time : Long) : String {
-
-        var format = SimpleDateFormat("yyyyMMdd")
-        var formatTime : String = format.format(time)
-
-        return formatTime
+        return format.format(time)
 
     } // getFormatDate2()
 
 
+    // 시스템 시간을 yyyy-MM-dd 형식으로 변환
     @SuppressLint("SimpleDateFormat")
-    fun getFormatDate3(time : Long) : String {
+    fun getFormatDate3(time: Long): String {
 
-        var format = SimpleDateFormat("yyyy-MM-dd")
-        var formatTime : String = format.format(time)
+        val format = SimpleDateFormat("yyyy-MM-dd")
 
-        return formatTime
+        return format.format(time)
 
-    } // getFormatDate2()
+    } // getFormatDate3()
 
 
+    // 하루 전 시스템 시간을 yyyyMMdd 형식으로 변환
     @SuppressLint("SimpleDateFormat")
-    fun getFormatDate4(time : Long) : String {
+    fun getFormatDate4(time: Long): String {
 
-        var format = SimpleDateFormat("yyyyMMdd")
-        var formatTime : String = format.format(time)
+        val format = SimpleDateFormat("yyyyMMdd")
+        val formatTime: String = format.format(time)
 
         return (Integer.parseInt(formatTime) - 1).toString()
 
     } // getFormatDate4()
 
 
+    // 시스템 시간을 yyyy.MM.dd 형식으로 변환
     @SuppressLint("SimpleDateFormat")
-    fun getFormatDate5(time : Long) : String {
+    fun getFormatDate5(time: Long): String {
 
-        var format = SimpleDateFormat("yyyy.MM.dd")
-        var formatTime : String = format.format(time)
+        val format = SimpleDateFormat("yyyy.MM.dd")
 
-        return formatTime
+        return format.format(time)
 
     } // getFormatDate5()
 
 
+    // 시스템 시간을 HH:00 형식으로 변환
     @SuppressLint("SimpleDateFormat")
-    fun getFormatTime(time : Long) : String {
+    fun getFormatTime(time: Long): String {
 
-        var format = SimpleDateFormat("HH:00")
-        var formatTime : String = format.format(time)
+        val format = SimpleDateFormat("HH:00")
 
-        return formatTime
+        return format.format(time)
 
     } // getFormatTime()
 
 
+    // 요일 확인
     fun getDayOfWeek(date: String): String {
 
-        var dayOfWeek = ""
+        val dayOfWeek: String
         val array = date.split("-")
 
         val year = Integer.parseInt(array[0])
@@ -98,22 +89,22 @@ class GetDate {
 
         return " (" + dayOfWeek.substring(0, 1) + ")"
 
-    }
+    } // getDayOfWeek()
 
 
+    //
     @SuppressLint("SimpleDateFormat")
-    fun getDaysLater(date : Int) : String {
+    fun getDaysLater(date: Int): String {
 
         val calendar = Calendar.getInstance()
 
         calendar.add(Calendar.DATE, date)
 
         val format = SimpleDateFormat("yyyy-MM-dd")
-        val formatTime : String = format.format(calendar.time)
 
-        return formatTime
+        return format.format(calendar.time)
 
-    }
+    } // getDaysLater()
 
 
 }

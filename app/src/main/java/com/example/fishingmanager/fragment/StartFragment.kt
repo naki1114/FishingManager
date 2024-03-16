@@ -29,7 +29,6 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -37,43 +36,45 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 
-class StartFragment : Fragment() {
+class StartFragment: Fragment() {
 
-    val TAG = "StartFragment"
+    private val TAG = "StartFragment"
 
-    private lateinit var startViewModel : StartViewModel
-    private lateinit var binding : FragmentStartBinding
+    private lateinit var startViewModel: StartViewModel
+    private lateinit var binding: FragmentStartBinding
 
-    private lateinit var googleClient : GoogleSignInClient
-    private lateinit var auth : FirebaseAuth
+    private lateinit var googleClient: GoogleSignInClient
+    private lateinit var auth: FirebaseAuth
     private val googleAuthLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
         val intent = result.data
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
+
         try {
+
             val account = task.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account)
-        }
-        catch (e : ApiException) {
+
+        } catch (e: ApiException) {
+
             Log.e(TAG, e.stackTraceToString())
+
         }
 
     }
 
-    // Lifecycle
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_start, container, false)
 
         return binding.root
-    }
+
+    } // onCreateView()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         startViewModel = StartViewModel()
@@ -81,7 +82,7 @@ class StartFragment : Fragment() {
 
         // LiveData Observe
         changeLayout()
-        changeSignupPage()
+        changeSignUpPage()
         passwordValidView()
         finishSignup()
         socialLoginCheck()
@@ -90,10 +91,11 @@ class StartFragment : Fragment() {
 
         loginCheck()
         timer()
-    }
 
-    // Custom Method
+    } // onViewCreated()
 
+
+    // 레이아웃 전환
     private fun changeLayout() {
 
         startViewModel.layoutLiveData.observe(viewLifecycleOwner) {
@@ -101,48 +103,57 @@ class StartFragment : Fragment() {
             when(it) {
 
                 "login" -> {
+
                     binding.loginLayout.visibility = View.VISIBLE
                     binding.signupLayout.visibility = View.GONE
-                    binding.signupGoogleLayout.visibility = View.GONE
+                    binding.signupSocialLayout.visibility = View.GONE
                     binding.startLayout.visibility = View.GONE
+
                 }
                 "signup" -> {
+
                     binding.loginLayout.visibility = View.GONE
                     binding.signupLayout.visibility = View.VISIBLE
-                    binding.signupGoogleLayout.visibility = View.GONE
+                    binding.signupSocialLayout.visibility = View.GONE
                     binding.startLayout.visibility = View.GONE
+
                 }
                 "signupSocial" -> {
+
                     binding.loginLayout.visibility = View.GONE
                     binding.signupLayout.visibility = View.GONE
-                    binding.signupGoogleLayout.visibility = View.VISIBLE
+                    binding.signupSocialLayout.visibility = View.VISIBLE
                     binding.startLayout.visibility = View.GONE
+
                 }
                 else -> {
+
                     binding.loginLayout.visibility = View.GONE
                     binding.signupLayout.visibility = View.GONE
-                    binding.signupGoogleLayout.visibility = View.GONE
+                    binding.signupSocialLayout.visibility = View.GONE
                     binding.startLayout.visibility = View.VISIBLE
+
                 }
 
             }
 
         }
 
-    } // changeLayout
+    } // changeLayout()
 
-    private fun changeSignupPage() {
+
+    // FM 회원가입 과정에서 사용자의 입력값(id, quthNumber, password, rePassword, nickname 등) observe
+    private fun changeSignUpPage() {
 
         // id observe
         startViewModel.isUsableEmail.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 viewSignUpSecondPage()
                 sendEmail()
 
-            }
-            else if (it == false) {
+            } else {
 
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
 
@@ -150,8 +161,7 @@ class StartFragment : Fragment() {
 
                     binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_not_input)
 
-                }
-                else {
+                } else {
 
                     binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_using)
 
@@ -166,12 +176,11 @@ class StartFragment : Fragment() {
         // authNumber observe
         startViewModel.isCorrectAuthNumber.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 viewSignUpThirdPage()
 
-            }
-            else {
+            } else {
 
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_2page_valid_mismatch)
@@ -184,7 +193,7 @@ class StartFragment : Fragment() {
         // password observe
         startViewModel.isUsablePassword.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 viewSignUpFourthPage()
 
@@ -195,12 +204,11 @@ class StartFragment : Fragment() {
         // rePassword observe
         startViewModel.isUsableRePassword.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 viewSignUpFifthPage()
 
-            }
-            else {
+            } else {
 
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_4page_valid)
@@ -252,8 +260,10 @@ class StartFragment : Fragment() {
 
         } // pageNumber observe
 
-    } // changeSignupPage
+    } // changeSignUpPage()
 
+
+    // 소셜 로그인시 닉네임 체크
     private fun socialNicknameCheck() {
 
         startViewModel.isUsableSocialNickname.observe(viewLifecycleOwner) {
@@ -262,19 +272,19 @@ class StartFragment : Fragment() {
 
                 0 -> {
 
-                    viewSignUpGoogleSecondPage()
+                    viewSignUpSocialSecondPage()
 
                 }
                 1 -> {
 
-                    binding.signupGoogleValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_using)
-                    binding.signupGoogleValidTextView.visibility = View.VISIBLE
+                    binding.signupSocialValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_using)
+                    binding.signupSocialValidTextView.visibility = View.VISIBLE
 
                 }
                 2 -> {
 
-                    binding.signupGoogleValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_false)
-                    binding.signupGoogleValidTextView.visibility = View.VISIBLE
+                    binding.signupSocialValidTextView.text = context?.resources?.getString(R.string.start_signup_5page_valid_false)
+                    binding.signupSocialValidTextView.visibility = View.VISIBLE
 
                 }
 
@@ -282,8 +292,10 @@ class StartFragment : Fragment() {
 
         }
 
-    } // googleNicknameCheck
+    } // socialNicknameCheck()
 
+
+    // FM 회원가입 1페이지 호출
     private fun viewSignUpFirstPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_main)
@@ -304,8 +316,10 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFirstPage <- id
+    } // viewSignUpFirstPage() <- id
 
+
+    // FM 회원가입 2페이지 호출
     private fun viewSignUpSecondPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
@@ -324,8 +338,10 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewSecondPage <- authNumber
+    } // viewSignUpSecondPage() <- authNumber
 
+
+    // FM 회원가입 3페이지 호출
     private fun viewSignUpThirdPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_main)
@@ -346,8 +362,10 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_3page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewThirdPage <- password
+    } // viewSignUpThirdPage() <- password
 
+
+    // FM 회원가입 4페이지 호출
     private fun viewSignUpFourthPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_4page_main)
@@ -366,8 +384,10 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFourthPage <- rePassword
+    } // viewSignUpFourthPage() <- rePassword
 
+
+    // FM 회원가입 5페이지 호출
     private fun viewSignUpFifthPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_main)
@@ -388,8 +408,10 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_5page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
 
-    } // viewFifthPage <- nickname
+    } // viewSignUpFifthPage() <- nickname
 
+
+    // FM 회원가입 6페이지 호출
     private fun viewSignUpSixthPage() {
 
         binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
@@ -402,52 +424,36 @@ class StartFragment : Fragment() {
         binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_6page)
         binding.signupNextButton.text =  context?.resources?.getString(R.string.complete)
 
-    } // viewSixthPage <- checkInfo
+    } // viewSignUpSixthPage() <- checkInfo
 
-    private fun viewSignUpGoogleFirstPage() {
 
-        binding.signupGoogleMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_5page_main)
-        binding.signupGoogleUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupGoogleUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_5page_hint)
-        binding.signupGoogleUserInfoEditText.setText(startViewModel.userID)
-        binding.signupGoogleUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
-        binding.signupGoogleValidTextView.visibility = View.INVISIBLE
-        binding.signupGoogleInputLayout.visibility = View.VISIBLE
-        binding.signupGoogleCheckEmailTextView.text = null
-        binding.signupGoogleCheckNicknameTextView.text = null
-        binding.signupGoogleCheckInfoLayout.visibility = View.GONE
-        binding.signupGooglePrevButton.visibility = View.INVISIBLE
-        binding.signupGoogleNextButton.text =  context?.resources?.getString(R.string.next)
-        binding.signupGoogleNextButton.visibility = View.VISIBLE
-        binding.signupGoogleProgressTextView.text = context?.resources?.getString(R.string.start_signup_google_1page)
+    // 소셜 회원가입 2페이지 호출
+    private fun viewSignUpSocialSecondPage() {
 
-    } // viewSignUpGoogleFirstPage
+        binding.signupSocialMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
+        binding.signupSocialInputLayout.visibility = View.GONE
+        binding.signupSocialCheckEmailTextView.text = startViewModel.userID
+        binding.signupSocialCheckNicknameTextView.text = startViewModel.userNickname
+        binding.signupSocialCheckInfoLayout.visibility = View.VISIBLE
+        binding.signupSocialPrevButton.visibility = View.VISIBLE
+        binding.signupSocialNextButton.text =  context?.resources?.getString(R.string.complete)
+        binding.signupSocialProgressTextView.text = context?.resources?.getString(R.string.start_signup_google_2page)
 
-    private fun viewSignUpGoogleSecondPage() {
+    } // viewSignUpSocialSecondPage() <- checkInfo
 
-        binding.signupGoogleMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_6page_main)
-        binding.signupGoogleInputLayout.visibility = View.GONE
-        binding.signupGoogleCheckEmailTextView.text = startViewModel.userID
-        binding.signupGoogleCheckNicknameTextView.text = startViewModel.userNickname
-        binding.signupGoogleCheckInfoLayout.visibility = View.VISIBLE
-        binding.signupGooglePrevButton.visibility = View.VISIBLE
-        binding.signupGoogleNextButton.text =  context?.resources?.getString(R.string.complete)
-        binding.signupGoogleProgressTextView.text = context?.resources?.getString(R.string.start_signup_google_2page)
 
-    } // viewSignUpGoogleSecondPage
-
+    // 비밀번호 정규식 확인
     private fun passwordValidView() {
 
         startViewModel.passwordValid.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
                 binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid_true)
                 binding.signupValidTextView.visibility = View.VISIBLE
 
-            }
-            else {
+            } else {
 
                 binding.signupValidTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_3page_valid_false)
@@ -457,36 +463,39 @@ class StartFragment : Fragment() {
 
         }
 
-    } // passwordValidView
+    } // passwordValidView()
 
+
+    // FM 회원가입 완료
     private fun finishSignup() {
 
         startViewModel.isSavedUserInfo.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 viewSignUpFirstPage()
                 binding.signupLayout.visibility = View.GONE
                 saveUserInfoToShared()
-                changeFragment("splash")
+                toSplashFragment()
 
             }
 
         }
 
-    } // finishSignup
+    } // finishSignup()
 
+
+    // 로그인시 회원 정보 확인
     private fun loginCheck() {
 
         startViewModel.isPossibleLogin.observe(viewLifecycleOwner) {
 
-            if (it == true) {
+            if (it) {
 
                 saveUserInfoToShared()
-                changeFragment("splash")
+                toSplashFragment()
 
-            }
-            else {
+            } else {
 
                 binding.failureLoginTextView.visibility = View.VISIBLE
 
@@ -494,8 +503,10 @@ class StartFragment : Fragment() {
 
         }
 
-    } // loginCheck
+    } // loginCheck()
 
+
+    // 사용자 이메일로 인증 번호 전송
     private fun sendEmail() {
 
         val email = startViewModel.userID
@@ -503,8 +514,10 @@ class StartFragment : Fragment() {
 
         GmailSender().sendMail(authNumber, email)
 
-    } // sendEmail
+    } // sendEmail()
 
+
+    // 타이머 남은 시간에 따라 사용자에게 표기
     private fun timer() {
 
         startViewModel.authTime.observe(viewLifecycleOwner) {
@@ -513,8 +526,8 @@ class StartFragment : Fragment() {
 
             if (time!! >= 0) {
 
-                val sec = if (time % 60 < 10) "0" + (time % 60).toString() else (time % 60).toString()
-                val min = "0" + (time / 60).toString()
+                val sec = if (time % 60 < 10) "0" + (time % 60).toString() else (time % 60)
+                val min = "0" + (time / 60)
 
                 binding.signupValidTextView.text = "$min : $sec"
 
@@ -524,7 +537,7 @@ class StartFragment : Fragment() {
 
         startViewModel.isTimeOutAuth.observe(viewLifecycleOwner) {
 
-            if (it == false) {
+            if (!it) {
 
                 binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_2page_valid_timeOut)
 
@@ -532,8 +545,10 @@ class StartFragment : Fragment() {
 
         }
 
-    } // timer
+    } // timer()
 
+
+    // FM 회원 정보 SharedPreferences에 저장
     private fun saveUserInfoToShared() {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
@@ -542,11 +557,13 @@ class StartFragment : Fragment() {
 
         edit?.putString("nickname", startViewModel.userNickname)
         edit?.putString("type", "FM")
-        edit?.commit()
+        edit?.apply()
 
-    } // saveUserInfoToShared
+    } // saveUserInfoToShared()
 
-    private fun saveUserInfoToShared(nickname : String, type : String) {
+
+    // 소셜 로그인 회원 정보 SharedPreferences에 저장
+    private fun saveUserInfoToShared(nickname: String, type: String) {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
         val edit = sharedPreferences?.edit()
@@ -554,10 +571,12 @@ class StartFragment : Fragment() {
 
         edit?.putString("nickname", nickname)
         edit?.putString("type", type)
-        edit?.commit()
+        edit?.apply()
 
-    } // saveUserInfoToShared
+    } // saveUserInfoToShared()
 
+
+    // 소셜 로그인 타입에 따라 로그인 실행
     private fun socialLoginCheck() {
 
         startViewModel.socialType.observe(viewLifecycleOwner) {
@@ -572,8 +591,10 @@ class StartFragment : Fragment() {
 
         }
 
-    } // socialLogin
+    } // socialLoginCheck()
 
+
+    // 구글 로그인
     private fun googleLogin() {
 
         auth = FirebaseAuth.getInstance()
@@ -591,12 +612,15 @@ class StartFragment : Fragment() {
         val signInIntent = googleClient.signInIntent
         googleAuthLauncher.launch(signInIntent)
 
-    } // googleLogin
+    } // googleLogin()
 
-    private fun firebaseAuthWithGoogle(account : GoogleSignInAccount) {
+
+    // Firebase 인증
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
 
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener { task ->
+
             if (task.isSuccessful) {
 
                 val id = account.email.toString()
@@ -609,48 +633,57 @@ class StartFragment : Fragment() {
                 startViewModel.isSignedUpUserCheck(id, type)
 
             }
+
         }
 
-    } // firebaseAuthWithGoogle
+    } // firebaseAuthWithGoogle()
 
+
+    // 카카오 로그인
     private fun kakaoLogin() {
 
         KakaoSdk.init(requireContext(), SocialAccount.KAKAO_NATIVE_APP_KEY)
 
-        val mCallback : (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+
             if (error != null) {
+
                 Log.d(TAG, "로그인 실패 $error")
-            }
-            else if (token != null) {
+
+            } else if (token != null) {
+
                 Log.d(TAG, "로그인 성공 ${token.accessToken}")
+
             }
+
         }
 
-        // 카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
-            // 카카오톡 로그인
+
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
-                // 로그인 실패 부분
+
                 if (error != null) {
+
                     Log.e(TAG, "로그인 실패 $error")
-                    // 사용자가 취소
+
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
+
                         return@loginWithKakaoTalk
+
+                    } else {
+
+                        UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = mCallback)
+
                     }
-                    // 다른 오류
-                    else {
-                        UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = mCallback) // 카카오 이메일 로그인
-                    }
-                }
-                // 로그인 성공 부분
-                else if (token != null) {
+                } else if (token != null) {
+
                     UserApiClient.instance.me { user, error ->
+
                         if (error != null) {
 
                             Log.d(TAG, "kakaoLogin : 사용자 정보 요청 실패 $error")
 
-                        }
-                        else if (user != null){
+                        } else if (user != null) {
 
                             val id = user.kakaoAccount?.email.toString()
                             val profileImage = user.kakaoAccount?.profile?.profileImageUrl.toString()
@@ -662,16 +695,23 @@ class StartFragment : Fragment() {
                             startViewModel.isSignedUpUserCheck(id, type)
 
                         }
+
                     }
 
                 }
+
             }
+
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = mCallback) // 카카오 이메일 로그인
+
+            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = mCallback)
+
         }
 
-    } // kakaoLogin
+    } // kakaoLogin()
 
+
+    // 네이버 로그인
     private fun naverLogin() {
 
         val naverClientId = SocialAccount.NAVER_CLIENT_ID
@@ -680,14 +720,14 @@ class StartFragment : Fragment() {
 
         NaverIdLoginSDK.initialize(requireActivity(), naverClientId, naverClientSecret, naverClientName)
 
-        var naverToken : String? = ""
+        var naverToken: String
 
-        val profileCallback = object : NidProfileCallback<NidProfileResponse> {
+        val profileCallback = object: NidProfileCallback<NidProfileResponse> {
 
-            override fun onSuccess(response: NidProfileResponse) {
+            override fun onSuccess(result: NidProfileResponse) {
 
-                val id = response.profile?.email.toString()
-                val profileImage = response.profile?.profileImage.toString()
+                val id = result.profile?.email.toString()
+                val profileImage = result.profile?.profileImage.toString()
                 val type = startViewModel.socialType.value.toString()
 
                 startViewModel.userID = id
@@ -698,35 +738,45 @@ class StartFragment : Fragment() {
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
+
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
                 Log.d(TAG, "errorCode : $errorCode")
                 Log.d(TAG, "errorDesc : $errorDescription")
+
             }
 
             override fun onError(errorCode: Int, message: String) {
+
                 onFailure(errorCode, message)
+
             }
 
         }
 
-        val oauthLoginCallback = object : OAuthLoginCallback {
+        val oauthLoginCallback = object: OAuthLoginCallback {
 
             override fun onSuccess() {
-                naverToken = NaverIdLoginSDK.getAccessToken()
+
+                naverToken = NaverIdLoginSDK.getAccessToken().toString()
 
                 NidOAuthLogin().callProfileApi(profileCallback)
+
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
+
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
                 Log.d(TAG, "errorCode : $errorCode")
                 Log.d(TAG, "errorDesc : $errorDescription")
+
             }
 
             override fun onError(errorCode: Int, message: String) {
+
                 onFailure(errorCode, message)
+
             }
 
         }
@@ -735,27 +785,29 @@ class StartFragment : Fragment() {
 
         NaverIdLoginSDK.logout()
 
-    } // naverLogin
+    } // naverLogin()
 
-    private fun changeFragment(fragment : String) {
 
-        (activity as MainActivity).changeFragment(fragment)
+    // 프래그먼트 전환
+    private fun toSplashFragment() {
 
-    } // changeFragment
+        (activity as MainActivity).changeFragment("splash")
 
+    } // toSplashFragment()
+
+
+    // 소셜 로그인 확인
     private fun socialLogin() {
 
         startViewModel.socialLoginCheck.observe(viewLifecycleOwner) {
 
             if (it) {
 
-                val id = startViewModel.userID
                 val nickname = startViewModel.userNickname
-                val profileImage = startViewModel.profileImage
                 val type = startViewModel.type
 
                 saveUserInfoToShared(nickname, type)
-                changeFragment("splash")
+                toSplashFragment()
 
             }
 
@@ -769,10 +821,9 @@ class StartFragment : Fragment() {
                 val type = startViewModel.type
 
                 saveUserInfoToShared(nickname, type)
-                changeFragment("splash")
+                toSplashFragment()
 
-            }
-            else {
+            } else {
 
                 startViewModel.changeLayout("signupSocial")
 
@@ -780,14 +831,7 @@ class StartFragment : Fragment() {
 
         }
 
-    } // socialLogin
+    } // socialLogin()
 
-    private fun getUserInfo() : String {
-
-        val userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
-
-        return userInfoShared.getString("nickname", "").toString()
-
-    } // checkUserShared
 
 }

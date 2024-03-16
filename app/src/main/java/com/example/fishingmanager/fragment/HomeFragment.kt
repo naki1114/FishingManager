@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.adapter.HomeHotFeedAdapter
@@ -30,33 +28,31 @@ class HomeFragment : Fragment() {
     lateinit var binding: FragmentHomeBinding
     lateinit var viewModel: HomeViewModel
 
-    lateinit var locationShared: SharedPreferences
-    lateinit var userShared: SharedPreferences
-    lateinit var location: SearchLocation
-    lateinit var nickname: String
-    lateinit var recommendAdapter: HomeRecommendAdapter
-    lateinit var recentCollectionAdapter: HomeRecentCollectionAdapter
-    lateinit var seeMoreAdapter: HomeSeeMoreRecentCollectionAdapter
-    lateinit var hotFeedAdapter: HomeHotFeedAdapter
+    private lateinit var locationShared: SharedPreferences
+    private lateinit var userShared: SharedPreferences
+    private lateinit var location: SearchLocation
+    private lateinit var nickname: String
+    private lateinit var recommendAdapter: HomeRecommendAdapter
+    private lateinit var recentCollectionAdapter: HomeRecentCollectionAdapter
+    private lateinit var seeMoreAdapter: HomeSeeMoreRecentCollectionAdapter
+    private lateinit var hotFeedAdapter: HomeHotFeedAdapter
 
-    lateinit var loadingAnimationRight: Animation
-    lateinit var loadingAnimationLeft: Animation
-    var loadingAnimationStatus = false
-    var animationThread: Thread = Thread()
+    private lateinit var loadingAnimationRight: Animation
+    private lateinit var loadingAnimationLeft: Animation
+    private var loadingAnimationStatus = false
+    private var animationThread: Thread = Thread()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
         return binding.root
 
-    }
+    } // onCreateView()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         checkSharedPreference()
@@ -67,6 +63,7 @@ class HomeFragment : Fragment() {
     } // onViewCreated()
 
 
+    // 초기화
     fun setVariable() {
 
         viewModel = HomeViewModel(
@@ -86,6 +83,7 @@ class HomeFragment : Fragment() {
             HomeRecentCollectionAdapter(HomeRecentCollectionAdapter.ItemClickListener {
                 viewModel.goPhotoView(it.fishImage)
             })
+
         seeMoreAdapter = HomeSeeMoreRecentCollectionAdapter()
         hotFeedAdapter = HomeHotFeedAdapter(HomeHotFeedAdapter.ItemClickListener {
             viewModel.goHotFeed(it)
@@ -102,14 +100,16 @@ class HomeFragment : Fragment() {
     } // setVariable()
 
 
-    fun observeLiveData() {
+    private fun observeLiveData() {
 
-        viewModel.liveDataWeather.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataWeather.observe(viewLifecycleOwner) {
 
             if (it.skyImage == 0) {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
                 binding.homeWeatherLayout.visibility = View.GONE
@@ -125,14 +125,16 @@ class HomeFragment : Fragment() {
 
             }
 
-        })
+        }
 
-        viewModel.liveDataRecommendList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataRecommendList.observe(viewLifecycleOwner) {
 
             if (it.size == 0) {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
                 binding.homeRecommendRecyclerView.visibility = View.GONE
@@ -146,32 +148,34 @@ class HomeFragment : Fragment() {
 
             }
 
-        })
+        }
 
-        viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataChangeFragment.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).changeFragmentWithData(it)
 
-        })
+        }
 
-        viewModel.liveDataClickedFishImage.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataClickedFishImage.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).goPhotoView(it)
 
-        })
+        }
 
-        viewModel.liveDataChangeLayout.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataChangeLayout.observe(viewLifecycleOwner) {
 
             changeLayout(it)
 
-        })
+        }
 
-        viewModel.liveDataRecentCollectionList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataRecentCollectionList.observe(viewLifecycleOwner) {
 
             if (it.size == 0) {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
                 binding.homeRecentCollectionRecyclerView.visibility = View.GONE
@@ -186,14 +190,16 @@ class HomeFragment : Fragment() {
 
             }
 
-        })
+        }
 
-        viewModel.liveDataHotFeedList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataHotFeedList.observe(viewLifecycleOwner) {
 
             if (it.size == 0) {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
                 binding.homeHotFeedRecyclerView.visibility = View.GONE
@@ -207,51 +213,51 @@ class HomeFragment : Fragment() {
 
             }
 
-        })
+        }
 
-        viewModel.liveDataHotFeedValue.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataHotFeedValue.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).changeFragmentFeed(it)
 
-        })
+        }
 
-        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicWeatherList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).weatherList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicIndexList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).indexList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicCollectionList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicCollectionList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).collectionList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicHistoryList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicHistoryList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).historyList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicFeedList.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicFeedList.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).feedList = it
 
-        })
+        }
 
-        viewModel.liveDataBasicUserInfo.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataBasicUserInfo.observe(viewLifecycleOwner) {
 
             (activity as MainActivity).userInfo = it
 
-        })
+        }
 
-        viewModel.liveDataWeatherLoadingStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataWeatherLoadingStatus.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -311,14 +317,16 @@ class HomeFragment : Fragment() {
             } else {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
             }
 
-        })
+        }
 
-        viewModel.liveDataIndexLoadingStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataIndexLoadingStatus.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -378,14 +386,16 @@ class HomeFragment : Fragment() {
             } else {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
             }
 
-        })
+        }
 
-        viewModel.liveDataCombineLoadingStatus.observe(viewLifecycleOwner, Observer {
+        viewModel.liveDataCombineLoadingStatus.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -460,17 +470,20 @@ class HomeFragment : Fragment() {
             } else {
 
                 if (animationThread.isAlive) {
+
                     animationThread.interrupt()
+
                 }
 
             }
 
-        })
+        }
 
     } // observeLiveData()
 
 
-    fun getData() {
+    // viewModel 데이터 가져오기
+    private fun getData() {
 
         viewModel.getWeather()
         viewModel.getRecommendList()
@@ -480,7 +493,8 @@ class HomeFragment : Fragment() {
     } // getData()
 
 
-    fun checkSharedPreference() {
+    // SharedPreferences에서 location, obsCode, 위치 좌표, 닉네임 가져오기
+    private fun checkSharedPreference() {
 
         locationShared =
             requireActivity().getSharedPreferences("location", AppCompatActivity.MODE_PRIVATE)
@@ -496,21 +510,25 @@ class HomeFragment : Fragment() {
 
         nickname = userShared.getString("nickname", "").toString()
 
-    }
+    } // checkSharedPreference()
 
 
+    // 레이아웃 전환
     fun changeLayout(layout: String) {
 
         when (layout) {
 
             "main" -> {
+
                 binding.homeSeeMoreLayout.visibility = View.GONE
                 binding.homeMainLayout.visibility = View.VISIBLE
-            }
 
+            }
             "seeMore" -> {
+
                 binding.homeMainLayout.visibility = View.GONE
                 binding.homeSeeMoreLayout.visibility = View.VISIBLE
+
             }
 
         }
