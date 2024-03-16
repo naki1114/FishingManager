@@ -640,7 +640,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/signupGoogleLayout"
+            android:id="@+id/signupSocialLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -656,7 +656,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/signupGoogleBackButton"
+                    android:id="@+id/signupSocialBackButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/btnbackblack"
@@ -698,7 +698,7 @@
                 />
 
             <TextView
-                android:id="@+id/signupGoogleMainInfoTextView"
+                android:id="@+id/signupSocialMainInfoTextView"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -714,7 +714,7 @@
                 />
 
             <LinearLayout
-                android:id="@+id/signupGoogleInputLayout"
+                android:id="@+id/signupSocialInputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -723,7 +723,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/signupGoogleSubInfoTextView"
+                    android:id="@+id/signupSocialSubInfoTextView"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -738,7 +738,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/signupGoogleUserInfoEditText"
+                    android:id="@+id/signupSocialUserInfoEditText"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -747,7 +747,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/signupGoogleValidTextView"
+                    android:id="@+id/signupSocialValidTextView"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
@@ -761,7 +761,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/signupGoogleCheckInfoLayout"
+                android:id="@+id/signupSocialCheckInfoLayout"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -785,7 +785,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/signupGoogleCheckEmailTextView"
+                    android:id="@+id/signupSocialCheckEmailTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -810,7 +810,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/signupGoogleCheckNicknameTextView"
+                    android:id="@+id/signupSocialCheckNicknameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -832,7 +832,7 @@
                 >
 
                 <Button
-                    android:id="@+id/signupGooglePrevButton"
+                    android:id="@+id/signupSocialPrevButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/previous"
@@ -853,7 +853,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/signupGoogleProgressTextView"
+                    android:id="@+id/signupSocialProgressTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -870,7 +870,7 @@
                     />
 
                 <Button
-                    android:id="@+id/signupGoogleNextButton"
+                    android:id="@+id/signupSocialNextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/next"
@@ -880,7 +880,7 @@
                     android:letterSpacing="0.3"
                     android:background="@drawable/custom_main_button_background"
                     android:layout_gravity="center"
-                    android:onClick='@{()->viewModel.clickSocialNextButton(signupGoogleUserInfoEditText.getText().toString())}'
+                    android:onClick='@{()->viewModel.clickSocialNextButton(signupSocialUserInfoEditText.getText().toString())}'
                     />
 
             </LinearLayout>
