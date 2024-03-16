@@ -20,30 +20,28 @@ import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.viewModel.FeedViewModel
 import java.text.SimpleDateFormat
 
-class FeedFragment : Fragment() {
+class FeedFragment: Fragment() {
 
-    private lateinit var feedViewModel : FeedViewModel
-    private lateinit var binding : FragmentFeedBinding
+    private lateinit var feedViewModel: FeedViewModel
+    private lateinit var binding: FragmentFeedBinding
 
-    private lateinit var feedAdapter : FeedAdapter
-    private lateinit var feedCommentAdapter : FeedCommentAdapter
+    private lateinit var feedAdapter: FeedAdapter
+    private lateinit var feedCommentAdapter: FeedCommentAdapter
 
-    private lateinit var feedList : ArrayList<Feed>
-    private lateinit var feedCommentList : ArrayList<Comment>
+    private lateinit var feedList: ArrayList<Feed>
+    private lateinit var feedCommentList: ArrayList<Comment>
 
-    // Lifecycle
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
 
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
@@ -53,10 +51,11 @@ class FeedFragment : Fragment() {
         readFeed()
         toFeedList()
         searchKeyword()
+
     }
 
-    // Custom Method
 
+    // 초기화
     private fun setVariable() {
 
         val nickname = (activity as MainActivity).nickname
@@ -91,25 +90,32 @@ class FeedFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener("feed", this) { key, bundle ->
 
             val feed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
                 bundle.getSerializable("feed", Feed::class.java)
 
             } else {
+
                 bundle.getSerializable("feed") as Feed
+
             }
 
             if (feed != null) {
+
                 feedViewModel.goFeedView(feed)
+
             }
 
         }
 
-    } // setVariable
+    } // setVariable()
 
+
+    // 게시글 추가 버튼 클릭시 Write Fragment로 전환
     private fun clickAddFeedButton() {
 
         feedViewModel.toWriteLiveData.observe(viewLifecycleOwner) {
 
-            if (feedViewModel.toWriteLiveData.value == true) {
+            if (it) {
 
                 (activity as MainActivity).changeFragment("write")
 
@@ -117,47 +123,58 @@ class FeedFragment : Fragment() {
 
         }
 
-    } // clickAddFeedButton
+    } // clickAddFeedButton()
 
+
+    // 게시글 상세 보기
     private fun readFeed() {
 
         feedViewModel.toReadLiveData.observe(viewLifecycleOwner) {
 
-            val feed = feedViewModel.toReadLiveData.value
+            val feed = it
             val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            var date = feed?.date
+            var date = feed.date
 
-            if (feed?.date?.length != 10) {
-                date = dateFormat.format(feed?.date!!.toLong()).toString()
+            if (feed.date.length != 10) {
+                date = dateFormat.format(feed.date.toLong()).toString()
             }
 
-            binding.feedViewWriterTextView.text = feed?.nickname
-            binding.feedViewTitleTextView.text = feed?.title
-            binding.feedViewContentTextView.text = feed?.content
+            binding.feedViewWriterTextView.text = feed.nickname
+            binding.feedViewTitleTextView.text = feed.title
+            binding.feedViewContentTextView.text = feed.content
             binding.feedViewWriteDateTextView.text = date
 
             if (it.profileImage.length < 3) {
 
                 if (it.profileImage == "FM") {
+
                     binding.feedViewWriterProfileImageView.setImageResource(R.drawable.fishing_logo)
+
                 }
 
             } else {
 
                 if (it.profileImage.substring(0,5) == "https") {
+
                     Glide.with(requireActivity()).load(it.profileImage).into(binding.feedViewWriterProfileImageView)
+
                 } else {
+
                     Glide.with(requireActivity()).load(RetrofitClient.BASE_URL + it.profileImage).into(binding.feedViewWriterProfileImageView)
+
                 }
 
             }
 
             if (feed?.feedImage == null) {
+
                 binding.feedViewImageView.visibility = View.GONE
-            }
-            else {
+
+            } else {
+
                 Glide.with(requireContext()).load(RetrofitClient.BASE_URL + feed?.feedImage).into(binding.feedViewImageView)
                 binding.feedViewImageView.visibility = View.VISIBLE
+
             }
 
             binding.feedLayout.visibility = View.GONE
@@ -167,8 +184,10 @@ class FeedFragment : Fragment() {
 
         }
 
-    } // readFeed
+    } // readFeed()
 
+
+    // 게시글 목록 보기
     private fun toFeedList() {
 
         feedViewModel.toFeedListLiveData.observe(viewLifecycleOwner) {
@@ -179,30 +198,31 @@ class FeedFragment : Fragment() {
 
         }
 
-    } // toFeedList
+    } // toFeedList()
 
+
+    // 검색 키워드에 맞게 게시글 목록 조회
     private fun searchKeyword() {
 
         feedViewModel.searchLiveData.observe(viewLifecycleOwner) {
 
-            feedList = ArrayList<Feed>()
-            val type = feedViewModel.searchLiveData.value?.get(0)
-            val keyword = feedViewModel.searchLiveData.value?.get(1)
+            feedList = arrayListOf()
+            val type = it[0]
+            val keyword = it[1]
             val originalList = (activity as MainActivity).feedList
             val size = originalList.size
 
-            for (i in 0 ..< size) {
+            for (i in 0 until size) {
 
                 if (type == "제목") {
 
-                    if (originalList[i].title.contains(keyword.toString())) {
+                    if (originalList[i].title.contains(keyword)) {
 
                         feedList.add(originalList[i])
 
                     }
 
-                }
-                else {
+                } else {
 
                     if (originalList[i].nickname == keyword) {
 
@@ -215,23 +235,32 @@ class FeedFragment : Fragment() {
             }
 
             feedAdapter = FeedAdapter(FeedAdapter.ItemClickListener {
+
                 feedViewModel.readFeed(it)
+
             }, feedList)
+
             binding.feedRecyclerView.adapter = feedAdapter
 
         }
 
-    } // searchKeyword
+    } // searchKeyword()
 
-    private fun bottomNavigationVisibility(visibility : Boolean) {
+
+    // 바텀 내비게이션 visibility 설정
+    private fun bottomNavigationVisibility(visibility: Boolean) {
 
         if (visibility) {
+
             (activity as MainActivity).binding.navigation.visibility = View.VISIBLE
-        }
-        else {
+
+        } else {
+
             (activity as MainActivity).binding.navigation.visibility = View.GONE
+
         }
 
-    } // bottomNavigationVisibility
+    } // bottomNavigationVisibility()
+
 
 }
