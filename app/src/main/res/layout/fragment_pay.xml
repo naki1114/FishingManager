@@ -21,56 +21,82 @@
         >
 
         <LinearLayout
-            android:id="@+id/payTitleLayout"
+            android:id="@+id/payMainLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp"
-            android:background="@drawable/custom_titlebar_background"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible"
             >
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/btnbackcream"
-                android:onClick="@{() -> viewModel.backToPrevious()}"
-                />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/payTitleLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textColor="@color/main2"
-                android:textSize="18dp"
-                android:layout_marginEnd="50dp"
-                android:text="@string/pay_title"
-                />
+                android:orientation="horizontal"
+                android:paddingVertical="10dp"
+                android:background="@drawable/custom_titlebar_background"
+                >
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/btnbackcream"
+                    android:onClick="@{() -> viewModel.backToPrevious()}"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:textSize="18dp"
+                    android:layout_marginEnd="50dp"
+                    android:text="@string/pay_title"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/payRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp"
                 />
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/payRecyclerView"
+        <LinearLayout
+            android:id="@+id/payWebViewLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            android:layout_marginHorizontal="10dp"
-            />
+            android:visibility="gone"
+            >
 
-    </LinearLayout>
+            <WebView
+                android:id="@+id/payWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
+
+        </LinearLayout>
 
 </layout>

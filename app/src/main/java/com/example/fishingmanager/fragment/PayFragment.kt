@@ -1,10 +1,16 @@
 package com.example.fishingmanager.fragment
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +26,7 @@ class PayFragment : Fragment() {
     lateinit var viewModel : PayViewModel
 
     lateinit var adapter : PayTicketAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,15 +51,17 @@ class PayFragment : Fragment() {
 
     fun setVariable() {
 
-        viewModel = PayViewModel()
+        viewModel = PayViewModel((activity as MainActivity).userInfo)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         adapter = PayTicketAdapter(PayTicketAdapter.ItemClickListener {
-            viewModel.startPayStep(it)
+            viewModel.readyKakaoPay(it)
         })
         binding.payRecyclerView.adapter = adapter
+
+
 
     } // setVariable()
 
@@ -103,6 +112,39 @@ class PayFragment : Fragment() {
 
         })
 
+        viewModel.liveDataKakaoPayReadyResponse.observe(viewLifecycleOwner, Observer {
+
+            Log.d("PayFragment", "kakaopayreadyresponse : $it")
+
+            binding.payWebView.webViewClient = KakaoPayWebViewClient()
+            binding.payWebView.settings.javaScriptEnabled = true
+            binding.payWebView.loadUrl(it.next_redirect_mobile_url)
+
+            binding.payMainLayout.visibility = View.GONE
+            binding.payWebViewLayout.visibility = View.VISIBLE
+
+
+        })
+
+        viewModel.liveDataPayApproveStatus.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
+                binding.payWebViewLayout.visibility = View.GONE
+                binding.payMainLayout.visibility = View.VISIBLE
+                Toast.makeText(requireActivity(), "결제 성공", Toast.LENGTH_SHORT).show()
+
+            } else {
+
+                binding.payWebViewLayout.visibility = View.GONE
+                binding.payMainLayout.visibility = View.VISIBLE
+                Toast.makeText(requireActivity(), "결제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+
+
     } // observeLiveData()
 
 
@@ -111,5 +153,45 @@ class PayFragment : Fragment() {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
 
     } // showToast()
+
+
+    inner class KakaoPayWebViewClient : WebViewClient() {
+
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+
+            val url = request?.url.toString()
+            Log.d("TAG", "shouldOverrideUrlLoading: $url")
+
+            if (url.startsWith("intent://")) {
+                Log.d("TAG", "shouldOverrideUrlLoading: intent")
+                val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                startActivity(intent)
+                return true
+
+            } else if (url.contains("pg_token=")) {
+                Log.d("TAG", "shouldOverrideUrlLoading: pgToken")
+                val pgToken = url.substringAfter("pg_token=")
+
+                viewModel.updatePgToken(pgToken)
+
+            } else if (url.contains("cancel")) {
+
+                binding.payWebViewLayout.visibility = View.GONE
+                binding.payMainLayout.visibility = View.VISIBLE
+
+            } else if (url.contains("fail")) {
+
+                binding.payWebViewLayout.visibility = View.GONE
+                binding.payMainLayout.visibility = View.VISIBLE
+                Toast.makeText(requireActivity(), "결제에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+
+            }
+
+            view!!.loadUrl(url)
+
+            return false
+        }
+
+    } // KakaoPayWebViewClient
 
 }
