@@ -1,6 +1,5 @@
 package com.example.fishingmanager.model
 
-import android.util.Log
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionTide
 import com.example.fishingmanager.data.ConditionWeather
@@ -27,6 +26,7 @@ class SplashModel {
     private val webServerRetrofitInterface: RetrofitInterface =
         RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
+
     // 날씨 API 요청
     fun requestWeather(
         pageNo: String,
@@ -44,15 +44,18 @@ class SplashModel {
         baseTime,
         nx,
         ny
-    )
+    ) // requestWeather()
+
 
     // 조석 API 요청
     fun requestTide(baseDate: String, location: String, resultType: String) =
         tideRetrofitInterface.requestTide(baseDate, location, resultType)
 
+
     // 지수 API 요청
     fun requestIndex(type: String, resultType: String) =
         indexRetrofitInterface.requestIndex(type, resultType)
+
 
     // Web Server DB 요청
     fun requestCombine(nickname: String) =
@@ -79,12 +82,12 @@ class SplashModel {
         }
 
         val weatherList = ArrayList<ConditionWeather>()
-        var time: String = ""
-        var temp: String = ""
-        var skyImage: Int = 0
-        var humidity: String = ""
-        var windSpeed: String = ""
-        var date: String = ""
+        var time: String
+        var temp = ""
+        var skyImage = 0
+        var humidity: String
+        var windSpeed = ""
+        var date: String
 
         for (i in 0 until list.size) {
 
@@ -96,7 +99,7 @@ class SplashModel {
 
                 temp = list[i].fcstValue + "˚C"
 
-                // 하늘 상태
+              // 하늘 상태
             } else if (list[i].category == "SKY") {
 
                 when (list[i].fcstValue) {
@@ -107,7 +110,7 @@ class SplashModel {
 
                 }
 
-                // 강수 타입
+              // 강수 타입
             } else if (list[i].category == "PTY") {
 
                 when (list[i].fcstValue) {
@@ -117,12 +120,12 @@ class SplashModel {
 
                 }
 
-                // 풍속
+              // 풍속
             } else if (list[i].category == "WSD") {
 
                 windSpeed = list[i].fcstValue + "m/s"
 
-                // 습도
+              // 습도
             } else if (list[i].category == "REH") {
 
                 humidity = list[i].fcstValue + "%"
@@ -146,7 +149,7 @@ class SplashModel {
         val list = ArrayList<Tide.Item>()
         val responseList: ArrayList<Tide.Item> = response.body()!!.result.data
         val listSize = responseList.size
-        var tideString = ""
+        var tideString: String
 
         for (i in 0 until listSize) {
 
@@ -157,11 +160,11 @@ class SplashModel {
         }
 
         val tideList = ArrayList<ConditionTide>()
-        var time: String = ""
-        var upDownImage: Int = 0
-        var tide: String = ""
-        var waterHeightImage: Int = 0
-        var waterHeight: String = ""
+        var time: String
+        var upDownImage = 0
+        var tide = ""
+        var waterHeightImage = 0
+        var waterHeight: String
 
         for (i in 0 until responseList.size) {
 
@@ -178,13 +181,16 @@ class SplashModel {
             when (list[i].hl_code) {
 
                 "고조" -> {
+
                     upDownImage = R.drawable.tide_high
                     waterHeightImage = R.drawable.water_height_high
-                }
 
+                }
                 "저조" -> {
+
                     upDownImage = R.drawable.tide_low
                     waterHeightImage = R.drawable.water_height_low
+
                 }
 
             }
@@ -196,6 +202,7 @@ class SplashModel {
                 waterHeightImage,
                 waterHeight
             )
+
             tideList.add(conditionTide)
 
         }
@@ -223,13 +230,15 @@ class SplashModel {
     } // getIndexList()
 
 
+    // history
     fun getHistoryList(responseList: ArrayList<History>?): ArrayList<History> {
 
         val list = ArrayList<History>()
-        var date = ""
+        var date: String
         var fishIcon = 0
 
         if (responseList != null) {
+
             for (i in 0 until responseList.size) {
 
                 date = GetDate().getFormatDate5(responseList[i].date.toLong())
