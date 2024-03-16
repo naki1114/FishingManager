@@ -1,17 +1,13 @@
 package com.example.fishingmanager.viewModel
 
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Combine
-import com.example.fishingmanager.data.ConditionIndex
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
-import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
@@ -27,22 +23,20 @@ import retrofit2.Response
 
 class HomeViewModel(
     weatherList: ArrayList<ConditionWeather>,
-    location: SearchLocation,
-    nickname: String,
+    val location: SearchLocation,
+    val nickname: String,
     indexList: ArrayList<Index.Item>,
-    historyList : ArrayList<History>,
-    feedList : ArrayList<Feed>
-) : ViewModel() {
+    historyList: ArrayList<History>,
+    feedList: ArrayList<Feed>
+): ViewModel() {
 
-    val TAG = "HomeViewModel"
+    private val TAG = "HomeViewModel"
 
     val model = HomeModel()
     val splashModel = SplashModel()
 
     var basicWeatherList = weatherList
     var basicIndexList = indexList
-    val location = location
-    val nickname = nickname
     var basicHistoryList = historyList
     var basicFeedList = feedList
 
@@ -67,6 +61,7 @@ class HomeViewModel(
     val liveDataCombineLoadingStatus = MutableLiveData<Boolean>()
 
 
+    // Weather 데이터
     fun getWeather() {
 
         liveDataWeather.value = model.getWeather(basicWeatherList, location.location)
@@ -74,6 +69,7 @@ class HomeViewModel(
     } // getWeather()
 
 
+    // 추천 어종 목록
     fun getRecommendList() {
 
         liveDataRecommendList.value = model.getRecommendList(basicIndexList)
@@ -81,6 +77,7 @@ class HomeViewModel(
     } // getRecommendList()
 
 
+    // 최근 잡은 물고기 목록
     fun getRecentCollectionList() {
 
         liveDataRecentCollectionList.value = model.getRecentCollectionList(basicHistoryList)
@@ -88,6 +85,7 @@ class HomeViewModel(
     } // getRecentCollectionList()
 
 
+    // HOT 게시글 목록
     fun getHotFeedList() {
 
         liveDataHotFeedList.value = model.getHotFeedList(basicFeedList)
@@ -95,6 +93,7 @@ class HomeViewModel(
     } // getHotFeedList()
 
 
+    // 프래그먼트 전환
     fun changeFragment(fragment: String) {
 
         liveDataChangeFragment.value = fragment
@@ -102,6 +101,7 @@ class HomeViewModel(
     } // changeFragment()
 
 
+    // 사진 크게 보기
     fun goPhotoView(image: String) {
 
         liveDataClickedFishImage.value = image
@@ -109,30 +109,34 @@ class HomeViewModel(
     } // goPhotoView()
 
 
+    // 레이아웃 전환
     fun changeLayout(layout: String) {
 
         liveDataChangeLayout.value = layout
 
-    }
+    } // changeLayout()
 
 
-    fun goHotFeed(feed : Feed) {
+    // HOT 게시글로 이동
+    fun goHotFeed(feed: Feed) {
 
         liveDataHotFeedValue.value = feed
 
     } // goHotFeed()
 
 
+    // Retrofit) Weather 데이터 요청
     fun requestWeather() {
 
         liveDataWeatherLoadingStatus.value = true
 
         model.requestWeather("1", "1000", "JSON", GetDate().getFormatDate4(GetDate().getTime()), "2300", location.lat, location.lon)
-            .enqueue(object : Callback<Weather> {
+            .enqueue(object: Callback<Weather> {
 
             override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
                 if (response.isSuccessful) {
+
                     Log.d(TAG, "onResponse: 들어옴!!!")
                     liveDataBasicWeatherList.value = splashModel.getWeatherList(response)
                     basicWeatherList = liveDataBasicWeatherList.value!!
@@ -142,17 +146,21 @@ class HomeViewModel(
                     liveDataWeatherLoadingStatus.value = false
 
                 } else {
+
                     Log.d(TAG, "requestWeather - onResponse : isFailure : ${response.message()}")
                     liveDataWeather.value = HomeWeather("", 0, "", "", "")
                     liveDataWeatherLoadingStatus.value = false
+
                 }
 
             }
 
             override fun onFailure(call: Call<Weather>, t: Throwable) {
+
                 Log.d(TAG, "requestWeather - onFailure : $t")
                 liveDataWeather.value = HomeWeather("", 0, "", "", "")
                 liveDataWeatherLoadingStatus.value = false
+
             }
 
         })
@@ -160,11 +168,12 @@ class HomeViewModel(
     } // requestWeather()
 
 
+    // Retrofit) Index 데이터 요청
     fun requestIndex() {
 
         liveDataIndexLoadingStatus.value = true
 
-        model.requestIndex("SF", "json").enqueue(object  : Callback<Index> {
+        model.requestIndex("SF", "json").enqueue(object: Callback<Index> {
 
             override fun onResponse(call: Call<Index>, response: Response<Index>) {
 
@@ -178,18 +187,21 @@ class HomeViewModel(
                     liveDataIndexLoadingStatus.value = false
 
                 } else {
+
                     Log.d(TAG, "requestIndex - onResponse : isFailure : ${response.message()}")
                     liveDataRecommendList.value = ArrayList()
                     liveDataIndexLoadingStatus.value = false
-                }
 
+                }
 
             }
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
+
                 Log.d(TAG, "requestIndex - onFailure : $t")
                 liveDataRecommendList.value = ArrayList()
                 liveDataIndexLoadingStatus.value = false
+
             }
 
         })
@@ -197,11 +209,12 @@ class HomeViewModel(
     } // requestIndex()
 
 
+    // Retrofit) Combine 데이터 요청
     fun requestCombine() {
 
         liveDataCombineLoadingStatus.value = true
 
-        model.requestCombine(nickname).enqueue(object : Callback<Combine> {
+        model.requestCombine(nickname).enqueue(object: Callback<Combine> {
 
             override fun onResponse(call: Call<Combine>, response: Response<Combine>) {
 
@@ -221,19 +234,23 @@ class HomeViewModel(
                     liveDataCombineLoadingStatus.value = false
 
                 } else {
+
                     Log.d(TAG, "requestCombine - onResponse : isFailure : ${response.message()}")
                     liveDataRecentCollectionList.value = ArrayList()
                     liveDataHotFeedList.value = ArrayList()
                     liveDataCombineLoadingStatus.value = false
+
                 }
 
             }
 
             override fun onFailure(call: Call<Combine>, t: Throwable) {
+
                 Log.d(TAG, "requestCombine - onFailure : $t")
                 liveDataRecentCollectionList.value = ArrayList()
                 liveDataHotFeedList.value = ArrayList()
                 liveDataCombineLoadingStatus.value = false
+
             }
 
         })
