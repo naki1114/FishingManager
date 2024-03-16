@@ -9,25 +9,33 @@ class StartModel {
 
     private val responseServer = RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
-    lateinit var authenticationNumber : String
+    lateinit var authenticationNumber: String
 
-    fun checkUserEmail(id : String) = responseServer.checkUserEmail(id)
 
-    fun createAuthNumber() : String {
+    // Retrofit) 이메일 중복 체크
+    fun checkUserEmail(id: String) = responseServer.checkUserEmail(id)
+
+
+    // 인증 번호 생성
+    fun createAuthNumber(): String {
 
         authenticationNumber = GetRandomResult().getRandomResult()
 
         return authenticationNumber
 
-    } // createAuthNumber
+    } // createAuthNumber()
 
-    fun checkAuthNumber(authNumber : String) : Boolean {
+
+    // 인증 번호 일치 확인
+    fun checkAuthNumber(authNumber: String): Boolean {
 
         return authenticationNumber == authNumber
 
-    } // checkAuthNumber
+    } // checkAuthNumber()
 
-    fun checkPassword(password : String) : Boolean {
+
+    // 비밀번호 정규식 확인
+    fun checkPassword(password: String): Boolean {
 
         val passwordPattern = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?%.])[A-Za-z[0-9]$@$!%*#?%.]{8,16}$"
         val pattern = Pattern.compile(passwordPattern)
@@ -36,15 +44,19 @@ class StartModel {
 
         return match.find().toString() == "true"
 
-    } // checkPassword
+    } // checkPassword()
 
-    fun checkRePassword(userPassword : String, password : String) : Boolean {
+
+    // 비밀번호 & 비밀번호 재입력 일치 확인
+    fun checkRePassword(userPassword: String, password: String): Boolean {
 
         return userPassword == password
 
-    } // checkRePassword
+    } // checkRePassword()
 
-    fun checkValidNickname(nickname : String) : Boolean {
+
+    // 닉네임 정규식 확인
+    fun checkValidNickname(nickname: String): Boolean {
 
         val nicknamePattern1 = "^(?=.*[가-힣])[가-힣]{2,10}$"
         val pattern1 = Pattern.compile(nicknamePattern1)
@@ -73,16 +85,26 @@ class StartModel {
         return match1.find().toString() == "true" || match2.find().toString() == "true" || match3.find().toString() == "true" || match4.find().toString() == "true"
                 || match5.find().toString() == "true" || match6.find().toString() == "true"
 
-    }
+    } // checkValidNickname()
 
-    fun checkUserNickname(nickname : String) = responseServer.checkUserNickname(nickname)
 
-    fun saveUserInfo(id : String, password : String, nickname : String) = responseServer.saveUserInfo(id, password, nickname)
+    // Retrofit) 닉네임 중복 확인
+    fun checkUserNickname(nickname: String) = responseServer.checkUserNickname(nickname)
 
-    fun checkUserInfo(id : String, password : String) = responseServer.checkUserInfo(id, password)
 
-    fun isSignedUpUserCheck(id : String, type : String) = responseServer.isSignedUpUserCheck(id, type)
+    // Retrofit) 회원 정보 서버에 저장
+    fun saveUserInfo(id: String, password: String, nickname: String) = responseServer.saveUserInfo(id, password, nickname)
 
-    fun socialLoginCheck(id : String, nickname : String, profileImage : String, type : String) = responseServer.socialLoginCheck(id, nickname, profileImage, type)
+
+    // Retrofit) 로그인 정보 조회
+    fun checkUserInfo(id: String, password: String) = responseServer.checkUserInfo(id, password)
+
+
+    // Retrofit) 소셜 로그인 가입된 회원인지 확인
+    fun isSignedUpUserCheck(id: String, type: String) = responseServer.isSignedUpUserCheck(id, type)
+
+
+    // Retrofit) 소셜 로그인 회원가입
+    fun socialLoginCheck(id: String, nickname: String, profileImage: String, type: String) = responseServer.socialLoginCheck(id, nickname, profileImage, type)
 
 }
