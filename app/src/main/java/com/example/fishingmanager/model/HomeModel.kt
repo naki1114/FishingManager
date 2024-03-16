@@ -1,13 +1,9 @@
 package com.example.fishingmanager.model
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.History
-import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.data.HomeRecommend
 import com.example.fishingmanager.data.HomeWeather
 import com.example.fishingmanager.data.Index
@@ -28,7 +24,8 @@ class HomeModel {
         RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
 
-    fun getWeather(weatherList : ArrayList<ConditionWeather>, location : String) : HomeWeather {
+    // 날씨 데이터
+    fun getWeather(weatherList: ArrayList<ConditionWeather>, location: String): HomeWeather {
 
         val currentDate = GetDate().getFormatDate2(GetDate().getTime())
         val currentTime = GetDate().getFormatTime(GetDate().getTime())
@@ -55,7 +52,8 @@ class HomeModel {
     } // getWeather()
     
 
-    fun getRecommendList(indexList : ArrayList<Index.Item>) : ArrayList<HomeRecommend>{
+    // 추천 어종 목록
+    fun getRecommendList(indexList: ArrayList<Index.Item>): ArrayList<HomeRecommend>{
         
         val veryGoodList = ArrayList<HomeRecommend>()
 
@@ -129,28 +127,21 @@ class HomeModel {
     } // getRecommendList()
 
 
-    fun getFishImage(fishName : String) : Int {
+    // 물고기 이미지
+    private fun getFishImage(fishName: String): Int {
 
         var fishImage = 0
 
         when (fishName) {
 
             "우럭" -> fishImage = R.drawable.uruck
-
             "광어" -> fishImage = R.drawable.gawnga
-
             "볼락" -> fishImage = R.drawable.bollock
-
             "농어" -> fishImage = R.drawable.nonga
-
             "열기" -> fishImage = R.drawable.yulgi
-
             "참돔" -> fishImage = R.drawable.chamdom
-
             "감성돔" -> fishImage = R.drawable.gamsungdom
-
             "돌돔" -> fishImage = R.drawable.doldom
-
             "벵에돔" -> fishImage = R.drawable.bengedom
 
         }
@@ -160,6 +151,7 @@ class HomeModel {
     } // getFishImage()
 
 
+    // 최근 잡은 물고기 목록
     fun getRecentCollectionList(historyList : ArrayList<History>) : ArrayList<History> {
 
         val list = ArrayList<History>()
@@ -179,7 +171,8 @@ class HomeModel {
     } // getRecentCollectionList()
 
 
-    fun getHotFeedList(feedList : ArrayList<Feed>) : ArrayList<Feed> {
+    // Hot 게시글 목록
+    fun getHotFeedList(feedList: ArrayList<Feed>): ArrayList<Feed> {
 
         val list = ArrayList<Feed>()
         var parseDate : String
@@ -192,17 +185,17 @@ class HomeModel {
             parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
-            if (feedList[i].feedImage == null) {
-                feedImage = ""
-            } else {
-                feedImage = feedList[i].feedImage
+            feedImage = feedList[i].feedImage.ifEmpty {
+                ""
             }
 
             feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, feedImage, feedList[i].viewCount, date, feedList[i].profileImage)
             list.add(feed)
 
             if (list.size == 10) {
+
                 break
+
             }
 
         }
@@ -212,6 +205,7 @@ class HomeModel {
     } // getHotFeedList()
 
 
+    // Retrofit) Weather 데이터 요청
     fun requestWeather(
         pageNo: String,
         numOfRows: String,
@@ -223,11 +217,12 @@ class HomeModel {
     ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
 
 
-    fun requestIndex(type: String, resultType: String) =
-        indexRetrofitInterface.requestIndex(type, resultType)
+    // Retrofit) Index 데이터 요청
+    fun requestIndex(type: String, resultType: String) = indexRetrofitInterface.requestIndex(type, resultType)
 
 
-    fun requestCombine(nickname : String) =
-        webServerRetrofitInterface.requestDB(nickname)
+    // Retrofit) Combine 데이터 요청
+    fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
+
 
 }

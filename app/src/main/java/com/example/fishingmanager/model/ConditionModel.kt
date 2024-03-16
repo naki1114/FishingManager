@@ -1,6 +1,5 @@
 package com.example.fishingmanager.model
 
-import android.util.Log
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionCombine
 import com.example.fishingmanager.data.ConditionIndex
@@ -11,7 +10,6 @@ import com.example.fishingmanager.data.SearchLocation
 import com.example.fishingmanager.data.SelectFish
 import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
-import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.network.RetrofitClient
 import com.example.fishingmanager.network.RetrofitInterface
 import retrofit2.Response
@@ -30,7 +28,7 @@ class ConditionModel {
         RetrofitClient.getIndexAPI().create(RetrofitInterface::class.java)
 
     lateinit var index: ConditionIndex
-    val locationBaseList = ArrayList<SearchLocation>()
+    private val locationBaseList = ArrayList<SearchLocation>()
 
     init {
 
@@ -69,9 +67,11 @@ class ConditionModel {
         locationBaseList.add(SearchLocation("하조도", "DT_0028", "34", "126"))
         locationBaseList.add(SearchLocation("후포", "DT_0011", "37", "129"))
 
-    }
+    } // init
 
-    fun changeWeatherList(responseList: ArrayList<ConditionWeather>, date : String) : ArrayList<ConditionWeather> {
+
+    // Weather 목록 변경
+    fun changeWeatherList(responseList: ArrayList<ConditionWeather>, date: String): ArrayList<ConditionWeather> {
 
         val formatDate = date.substring(0,4) + date.substring(5,7) + date.substring(8,10)
 
@@ -89,15 +89,16 @@ class ConditionModel {
 
         return list
 
-    }
+    } // changeWeatherList()
 
 
-    fun getWeatherList(response : Response<Weather>, date : String) : ArrayList<ConditionWeather> {
+    // Weather 목록
+    fun getWeatherList(response: Response<Weather>, date: String): ArrayList<ConditionWeather> {
 
         val list = ArrayList<Weather.Item>()
-        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
+        val responseList: List<Weather.Item> = response.body()!!.response.body.items.item
         val listSize = responseList.size
-        var formatDate = date.substring(0,4) + date.substring(5,7) + date.substring(8,10)
+        val formatDate = date.substring(0,4) + date.substring(5,7) + date.substring(8,10)
 
         for (i in 0 until listSize) {
 
@@ -115,12 +116,12 @@ class ConditionModel {
         }
 
         val weatherList = ArrayList<ConditionWeather>()
-        var time: String = ""
-        var temp: String = ""
-        var skyImage: Int = 0
-        var humidity: String = ""
-        var windSpeed: String = ""
-        var date: String = ""
+        var time: String
+        var temp = ""
+        var skyImage = 0
+        var humidity: String
+        var windSpeed = ""
+        var date: String
 
         for (i in 0 until list.size) {
 
@@ -133,11 +134,11 @@ class ConditionModel {
 
             } else if (list[i].category == "SKY") {
 
-                when (list[i].fcstValue) {
+                when (Integer.valueOf(list[i].fcstValue)) {
 
-                    "0", "1", "2", "3", "4", "5" -> skyImage = R.drawable.sun
-                    "6", "7", "8" -> skyImage = R.drawable.cloudy
-                    "9", "10" -> skyImage = R.drawable.fade
+                    in 0..5 -> skyImage = R.drawable.sun
+                    in 6..8 -> skyImage = R.drawable.cloudy
+                    in 9..10 -> skyImage = R.drawable.fade
 
                 }
 
@@ -170,10 +171,11 @@ class ConditionModel {
     } // getWeatherList()
 
 
-    fun getBasicWeatherList(response : Response<Weather>) : ArrayList<ConditionWeather> {
+    // 기본 Weather 목록
+    fun getBasicWeatherList(response: Response<Weather>): ArrayList<ConditionWeather> {
 
         val list = ArrayList<Weather.Item>()
-        val responseList : List<Weather.Item> = response.body()!!.response.body.items.item
+        val responseList: List<Weather.Item> = response.body()!!.response.body.items.item
         val listSize = responseList.size
 
         for (i in 0 until listSize) {
@@ -187,12 +189,12 @@ class ConditionModel {
         }
 
         val weatherList = ArrayList<ConditionWeather>()
-        var time: String = ""
-        var temp: String = ""
-        var skyImage: Int = 0
-        var humidity: String = ""
-        var windSpeed: String = ""
-        var date: String = ""
+        var time: String
+        var temp = ""
+        var skyImage = 0
+        var humidity: String
+        var windSpeed = ""
+        var date: String
 
         for (i in 0 until list.size) {
 
@@ -204,7 +206,7 @@ class ConditionModel {
 
                 temp = list[i].fcstValue + "˚C"
 
-                // 하늘 상태
+              // 하늘 상태
             } else if (list[i].category == "SKY") {
 
                 when (list[i].fcstValue) {
@@ -215,7 +217,7 @@ class ConditionModel {
 
                 }
 
-                // 강수 타입
+              // 강수 타입
             } else if (list[i].category == "PTY") {
 
                 when (list[i].fcstValue) {
@@ -225,12 +227,12 @@ class ConditionModel {
 
                 }
 
-                // 풍속
+              // 풍속
             } else if (list[i].category == "WSD") {
 
                 windSpeed = list[i].fcstValue + "m/s"
 
-                // 습도
+              // 습도
             } else if (list[i].category == "REH") {
 
                 humidity = list[i].fcstValue + "%"
@@ -247,12 +249,13 @@ class ConditionModel {
     } // getBasicWeatherList()
 
 
-    fun getTideList(response : Response<Tide>) : ArrayList<ConditionTide> {
+    // Tide 목록
+    fun getTideList(response: Response<Tide>): ArrayList<ConditionTide> {
 
         val list = ArrayList<Tide.Item>()
         val responseList = response.body()!!.result.data
         val listSize = responseList.size
-        var tideString = ""
+        var tideString: String
 
         for (i in 0 until listSize) {
 
@@ -263,11 +266,11 @@ class ConditionModel {
         }
 
         val tideList = ArrayList<ConditionTide>()
-        var time : String = ""
-        var upDownImage: Int = 0
-        var tide : String = ""
-        var waterHeightImage: Int = 0
-        var waterHeight : String = ""
+        var time : String
+        var upDownImage = 0
+        var tide = ""
+        var waterHeightImage = 0
+        var waterHeight : String
 
         for (i in 0 until list.size) {
 
@@ -284,13 +287,16 @@ class ConditionModel {
             when (list[i].hl_code) {
 
                 "고조" -> {
+
                     upDownImage = R.drawable.tide_high
                     waterHeightImage = R.drawable.water_height_high
-                }
 
+                }
                 "저조" -> {
+
                     upDownImage = R.drawable.tide_low
                     waterHeightImage = R.drawable.water_height_low
+
                 }
 
             }
@@ -311,6 +317,7 @@ class ConditionModel {
     } // getBasicTideList()
 
 
+    // Weather 데이터 요청
     fun requestWeather(
         pageNo: String,
         numOfRows: String,
@@ -322,23 +329,26 @@ class ConditionModel {
     ) = weatherRetrofitInterface.requestWeather(pageNo, numOfRows, dataType, baseDate, baseTime, nx, ny)
 
 
+    // Tide 데이터 요청
     fun requestTide(baseDate: String, location: String, resultType: String) =
         tideRetrofitInterface.requestTide(baseDate, location, resultType)
 
 
+    // Index 데이터 요청
     fun requestIndex(type: String, resultType: String) =
         indexRetrofitInterface.requestIndex(type, resultType)
 
 
-    fun getCombineList(weatherList : ArrayList<ConditionWeather>, tideList : ArrayList<ConditionTide>, indexTotal : ArrayList<Int>): ArrayList<ConditionCombine> {
+    // Combine 목록
+    fun getCombineList(weatherList: ArrayList<ConditionWeather>, tideList: ArrayList<ConditionTide>, indexTotal: ArrayList<Int>): ArrayList<ConditionCombine> {
 
         val combineList = ArrayList<ConditionCombine>()
 
-        var time : String = ""
-        var indexImage : Int = 0
-        var skyImage : Int = 0
-        var temp : String = ""
-        var tide : String = ""
+        var time: String
+        var indexImage: Int
+        var skyImage: Int
+        var temp: String
+        var tide = ""
 
         if (weatherList.size != 0 && tideList.size != 0 && indexTotal.size != 0) {
 
@@ -348,13 +358,13 @@ class ConditionModel {
                 temp = weatherList[i].temp
                 skyImage = weatherList[i].skyImage
 
-                if (weatherList.size / 2 > i) {
+                indexImage = if (weatherList.size / 2 > i) {
 
-                    indexImage = indexTotal[0]
+                    indexTotal[0]
 
                 } else {
 
-                    indexImage = indexTotal[1]
+                    indexTotal[1]
 
                 }
 
@@ -362,13 +372,13 @@ class ConditionModel {
 
                     if (weatherList[i].time.substring(0,2) == tideList[j].time.substring(0,2)) {
 
-                        if (tideList[j].tide == "간조") {
+                        tide = if (tideList[j].tide == "간조") {
 
-                            tide = "간조 " + tideList[j].time
+                            "간조 " + tideList[j].time
 
                         } else {
 
-                            tide = "만조 " + tideList[j].time
+                            "만조 " + tideList[j].time
 
                         }
 
@@ -395,18 +405,19 @@ class ConditionModel {
     } // getCombineList()
 
 
-    fun getIndex(responseList: ArrayList<Index.Item>, date : String, fishName : String, location: String): ConditionIndex {
+    // Index 데이터
+    fun getIndex(responseList: ArrayList<Index.Item>, date: String, fishName: String, location: String): ConditionIndex {
 
-        var amWaterTemp: String = ""
-        var amWaveHeight: String = ""
-        var amTide: String = ""
-        var amTotal: String = ""
-        var amTotalImage: Int = 0
-        var pmWaterTemp: String = ""
-        var pmWaveHeight: String = ""
-        var pmTide: String = ""
-        var pmTotal: String = ""
-        var pmTotalImage: Int = 0
+        var amWaterTemp = ""
+        var amWaveHeight = ""
+        var amTide = ""
+        var amTotal = ""
+        var amTotalImage = 0
+        var pmWaterTemp = ""
+        var pmWaveHeight = ""
+        var pmTide = ""
+        var pmTotal = ""
+        var pmTotalImage = 0
 
 
         for (i in 0 until responseList.size) {
@@ -475,15 +486,16 @@ class ConditionModel {
     } // getIndex()
 
 
-    fun getIndexTotalList(responseList: ArrayList<Index.Item>) : ArrayList<Int> {
+    // 종합 Index 목록
+    fun getIndexTotalList(responseList: ArrayList<Index.Item>): ArrayList<Int> {
 
         val list = ArrayList<Int>()
-        var amTotal : Int = 0
-        var pmTotal : Int = 0
+        var amTotal = 0
+        var pmTotal = 0
         var amTotalSum = 0
         var pmTotalSum = 0
-        val amTotalAvg : Int
-        val pmTotalAvg : Int
+        val amTotalAvg: Int
+        val pmTotalAvg: Int
 
         if (responseList.size != 0) {
 
@@ -550,7 +562,8 @@ class ConditionModel {
     } // getIndexTotalList()
 
 
-    fun getIndexList(indexList: ArrayList<Index.Item>, location: String, date : String) : ArrayList<Index.Item> {
+    // Index 목록
+    fun getIndexList(indexList: ArrayList<Index.Item>, location: String, date: String): ArrayList<Index.Item> {
 
         val list = ArrayList<Index.Item>()
 
@@ -569,6 +582,7 @@ class ConditionModel {
     } // getIndexList()
 
 
+    // 검색 지역 목록
     fun getSearchLocationList(keyword: String): ArrayList<SearchLocation> {
 
         var searchLocationList = ArrayList<SearchLocation>()
@@ -596,6 +610,7 @@ class ConditionModel {
     } // getSearchLocationList()
 
 
+    // 물고기 목록
     fun getFishList(
         indexList: ArrayList<Index.Item>,
         searchLocation: SearchLocation,
@@ -603,8 +618,8 @@ class ConditionModel {
     ): ArrayList<SelectFish> {
 
         val fishList = ArrayList<SelectFish>()
-        var fishImage: Int = 0
-        var fishName: String = ""
+        var fishImage = 0
+        var fishName = ""
 
         for (i in 0 until indexList.size) {
 
@@ -615,48 +630,58 @@ class ConditionModel {
                     when (indexList[i].fish_name) {
 
                         "우럭" -> {
+
                             fishImage = R.drawable.uruck
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "광어" -> {
+
                             fishImage = R.drawable.gawnga
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "볼락" -> {
+
                             fishImage = R.drawable.bollock
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "농어" -> {
+
                             fishImage = R.drawable.nonga
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "열기" -> {
+
                             fishImage = R.drawable.yulgi
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "참돔" -> {
+
                             fishImage = R.drawable.chamdom
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "감성돔" -> {
+
                             fishImage = R.drawable.gamsungdom
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "돌돔" -> {
+
                             fishImage = R.drawable.doldom
                             fishName = indexList[i].fish_name
-                        }
 
+                        }
                         "벵에돔" -> {
+
                             fishImage = R.drawable.bengedom
                             fishName = indexList[i].fish_name
+
                         }
 
                     }
@@ -673,14 +698,14 @@ class ConditionModel {
 
     } // getSelectFish()
 
+
+    // 물고기 어종
     fun getFish(fishList : ArrayList<SelectFish>) : String {
 
-        var fishName : String
-
-        if (fishList.size != 0) {
-            fishName = fishList[0].fishName
+        val fishName = if (fishList.size != 0) {
+            fishList[0].fishName
         } else {
-            fishName = ""
+            ""
         }
 
         return fishName

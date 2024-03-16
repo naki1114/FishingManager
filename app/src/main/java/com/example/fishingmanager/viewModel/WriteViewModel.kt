@@ -10,9 +10,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WriteViewModel(val nickname : String) : ViewModel() {
+class WriteViewModel(val nickname: String): ViewModel() {
 
-    val TAG = "WriteViewModel"
+    private val TAG = "WriteViewModel"
 
     val doBackLayout = MutableLiveData<Boolean>()
     val doSaveLayout = MutableLiveData<Boolean>()
@@ -28,123 +28,162 @@ class WriteViewModel(val nickname : String) : ViewModel() {
 
     private var model = WriteModel()
 
+
+    // 뒤로 가기 버튼 클릭 시, 다이얼로그 띄워줄지 확인
     fun writeBackLayout() {
 
         doBackLayout.value = true
 
-    } // writeBackLayout
+    } // writeBackLayout()
 
+
+    // 뒤로 가기 취소
     fun clickBackCancel() {
 
         doBackLayout.value = false
 
-    } // clickBackCancel
+    } // clickBackCancel()
 
+
+    // 뒤로 가기 선택
     fun clickBackCheck() {
 
         doBackLayout.value = false
         isBack.value = true
 
-    } // clickBackCheck
+    } // clickBackCheck()
 
-    fun writeSaveLayout(title : String, content : String) {
+
+    // 완료 버튼 클릭 시, 다이얼로그 띄워줄지 확인
+    fun writeSaveLayout(title: String, content: String) {
 
         if (title.isEmpty()) {
+
             feedStatus.value = "titleEmpty"
-        }
-        else if (title.length > 20) {
+
+        } else if (title.length > 20) {
+
             feedStatus.value = "titleOver"
-        }
-        else if (content.isEmpty()) {
+
+        } else if (content.isEmpty()) {
+
             feedStatus.value = "contentEmpty"
-        }
-        else if (content.length > 1000) {
-            feedStatus.value = "contentEmpty"
-        }
-        else {
+
+        } else if (content.length > 1000) {
+
+            feedStatus.value = "contentOver"
+
+        } else {
+
             feedStatus.value = "notEmpty"
             titleLiveData.value = title
             contentLiveData.value = content
             doSaveLayout.value = true
+
         }
 
-    } // writeSaveLayout
+    } // writeSaveLayout()
 
+
+    // 게시글 저장 취소
     fun clickSaveCancel() {
 
         doSaveLayout.value = false
 
-    } // clickSaveCancel
+    } // clickSaveCancel()
 
+
+    // 게시글 저장 확인
     fun clickSaveCheck() {
 
         doSaveLayout.value = false
         isSave.value = true
 
-    } // clickSaveCheck
+    } // clickSaveCheck()
 
-    fun titleChanged(title : String) {
+
+    // 게시글 제목 변화 적용
+    fun titleChanged(title: String) {
 
         titleLiveData.value = title
 
-    }  // titleChanged
+    }  // titleChanged()
 
-    fun contentChanged(content : String) {
+
+    // 게시글 내용 변화 적용
+    fun contentChanged(content: String) {
 
         contentLiveData.value = content
 
-    }  // contentChanged
+    }  // contentChanged()
 
+
+    // Retrofit) 게시글 저장 (이미지 없을 경우)
     fun insertFeed() {
 
         val date = System.currentTimeMillis().toString()
         val title = titleLiveData.value
         val content = contentLiveData.value
 
-        model.insertFeed(nickname, title!!, content!!, date).enqueue(object : Callback<ArrayList<Feed>> {
+        model.insertFeed(nickname, title!!, content!!, date).enqueue(object: Callback<ArrayList<Feed>> {
 
             override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
+
                 if (response.isSuccessful) {
-                    var msg = response.body()
+
                     isSave.value = false
+
                 }
+
             }
 
             override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
+
                 Log.d(TAG, "onFailure : ${t.message}")
+
             }
 
         })
 
-    } // insertFeed
+    } // insertFeed()
 
-    fun insertImageFeed(body : MultipartBody.Part) {
+
+    // Retrofit) 게시글 저장 (이미지 있을 경우)
+    fun insertImageFeed(body: MultipartBody.Part) {
 
         val date = System.currentTimeMillis().toString()
         val title = titleLiveData.value
         val content = contentLiveData.value
 
-        model.insertImageFeed(body, nickname, title!!, content!!, date).enqueue(object : Callback<ArrayList<Feed>> {
+        model.insertImageFeed(body, nickname, title!!, content!!, date).enqueue(object: Callback<ArrayList<Feed>> {
 
             override fun onResponse(call: Call<ArrayList<Feed>>, response: Response<ArrayList<Feed>>) {
+
                 if (response.isSuccessful) {
-                    var msg = response.body()
+
                     isSave.value = false
+
                 }
+
             }
 
             override fun onFailure(call: Call<ArrayList<Feed>>, t: Throwable) {
+
                 Log.d(TAG, "onFailure : ${t.message}")
+
             }
 
         })
 
-    } // insertImageFeed
+    } // insertImageFeed()
 
+
+    // 내장 갤러리로 이동할지 확인
     fun toGallery() {
 
         toGalleryLiveData.value = true
 
-    } // toGallery
+    } // toGallery()
+
 
 }

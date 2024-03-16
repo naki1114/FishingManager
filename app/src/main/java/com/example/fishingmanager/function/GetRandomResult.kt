@@ -4,13 +4,13 @@ import java.util.Random
 
 class GetRandomResult {
 
-    fun getRandomResult() : String {
+
+    // 랜덤 값 추출
+    fun getRandomResult(): String {
 
         var random = Random()
         var result = ""
-        var type = 0
         var i = 0
-        var c : Char
 
         for (j in 0..5) {
 

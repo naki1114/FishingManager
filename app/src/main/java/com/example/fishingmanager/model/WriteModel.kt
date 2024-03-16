@@ -8,8 +8,8 @@ class WriteModel {
 
     private val responseServer = RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
-    fun insertFeed(nickname : String, title : String, content : String, date : String) = responseServer.insertFeed(nickname, title, content, date)
+    fun insertFeed(nickname: String, title: String, content: String, date: String) = responseServer.insertFeed(nickname, title, content, date)
 
-    fun insertImageFeed(file : MultipartBody.Part, nickname : String, title : String, content : String, date : String) = responseServer.insertImageFeed(file, nickname, title, content, date)
+    fun insertImageFeed(file: MultipartBody.Part, nickname: String, title: String, content: String, date: String) = responseServer.insertImageFeed(file, nickname, title, content, date)
 
 }

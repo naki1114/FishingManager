@@ -1,13 +1,10 @@
 package com.example.fishingmanager.network
 
-import com.example.fishingmanager.data.Collection
 import com.example.fishingmanager.data.Combine
 import com.example.fishingmanager.data.Comment
 import com.example.fishingmanager.data.Feed
-import com.example.fishingmanager.data.History
 import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.Tide
-import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.data.Weather
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -54,19 +51,25 @@ interface RetrofitInterface {
     // 도감, 기록, 게시글, 사용자 정보 조회
     @FormUrlEncoded
     @POST("File/Splash/GetUserData.php")
-    fun requestDB(@Field("nickname") nickname: String) : Call<Combine>
+    fun requestDB(
+        @Field("nickname") nickname: String
+    ): Call<Combine>
 
 
     // 이메일 중복 체크
     @FormUrlEncoded
     @POST("File/UserInfo/EmailDuplicateCheck.php")
-    fun checkUserEmail(@Field("id") id: String): Call<String>
+    fun checkUserEmail(
+        @Field("id") id: String
+    ): Call<String>
 
 
     // 닉네임 중복 체크
     @FormUrlEncoded
     @POST("File/UserInfo/NicknameDuplicateCheck.php")
-    fun checkUserNickname(@Field("nickname") nickname: String): Call<String>
+    fun checkUserNickname(
+        @Field("nickname") nickname: String
+    ): Call<String>
 
 
     // 회원가입 완료
@@ -163,29 +166,6 @@ interface RetrofitInterface {
     ): Call<ArrayList<Feed>>
 
 
-    // 게시글 수정
-    @Multipart
-    @FormUrlEncoded
-    @POST("File/Feed/UpdateFeed.php")
-    fun updateFeed(
-        @Part uploadFile: MultipartBody.Part,
-        @Field("nickname") nickname: String,
-        @Field("writeImage") writeImage: String,
-        @Field("title") title: String,
-        @Field("content") content: String,
-        @Field("date") date: String
-    ): Call<String>
-
-
-    // 게시글 삭제
-    @FormUrlEncoded
-    @POST("File/Feed/DeleteFeed.php")
-    fun deleteFeed(
-        @Field("nickname") nickname: String,
-        @Field("feedNum") feedNum: Int
-    ): Call<String>
-
-
     // 게시글 조회수 업데이트
     @FormUrlEncoded
     @POST("File/Feed/UpdateViewCount.php")
@@ -199,7 +179,7 @@ interface RetrofitInterface {
     @FormUrlEncoded
     @POST("File/Feed/GetComment.php")
     fun getComment(
-        @Field("feedNum") feedNum : Int
+        @Field("feedNum") feedNum: Int
     ): Call<ArrayList<Comment>>
 
 
@@ -212,27 +192,6 @@ interface RetrofitInterface {
         @Field("content") content: String,
         @Field("date") date: String
     ): Call<ArrayList<Comment>>
-
-
-    // 댓글 삭제
-    @FormUrlEncoded
-    @POST("File/Feed/DeleteComment.php")
-    fun deleteComment(
-        @Field("nickname") nickname: String,
-        @Field("feedNum") feedNum: Int,
-        @Field("date") date: String
-    ): Call<String>
-
-
-    // 도감 조회
-    @FormUrlEncoded
-    @POST("File/CheckingFish/CheckCollection.php")
-    fun checkCollection(
-        @Field("nickname") nickname: String,
-        @Field("fish") fish: String,
-        @Field("fishLength") fishLength: String,
-        @Field("date") date: String
-    ): Call<ArrayList<Collection>>
 
 
     // 기록 추가
