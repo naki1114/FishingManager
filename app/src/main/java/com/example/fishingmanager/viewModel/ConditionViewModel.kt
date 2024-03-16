@@ -24,12 +24,12 @@ class ConditionViewModel(
     tideList: ArrayList<ConditionTide>,
     indexList: ArrayList<Index.Item>,
     searchLocation: SearchLocation,
-    nickname: String
-) : ViewModel() {
+    val nickname: String
+): ViewModel() {
 
+    private val TAG = "ConditionViewModel"
     val model = ConditionModel()
     val splashModel = SplashModel()
-    val TAG = "ConditionViewModel"
 
     val liveDataCurrentLayout = MutableLiveData<String>()
     lateinit var previousLayout: String
@@ -52,7 +52,6 @@ class ConditionViewModel(
     val liveDataBasicTideList = MutableLiveData<ArrayList<ConditionTide>>()
     val liveDataBasicIndexList = MutableLiveData<ArrayList<Index.Item>>()
     var callBackStatus = 0
-    val nickname = nickname
 
 
     init {
@@ -91,6 +90,7 @@ class ConditionViewModel(
     }
 
 
+    // 레이아웃 전환
     fun changeLayout(layoutName: String) {
 
         previousLayout = liveDataCurrentLayout.value!!
@@ -99,13 +99,15 @@ class ConditionViewModel(
     } // changeLayout()
 
 
+    // 키워드에 맞는 지역 검색
     fun locationSearchAfterTextChanged(keyword: String) {
 
         liveDataSearchLocationList.value = model.getSearchLocationList(keyword)
 
-    } // locationSearchAfterTextChanged
+    } // locationSearchAfterTextChanged()
 
 
+    // 날짜 변경
     fun changeDate(date: String) {
 
         liveDataLoadingStatus.value = true
@@ -120,8 +122,7 @@ class ConditionViewModel(
             liveDataSearchLocation.value!!.location
         )
 
-        var requestDate = ""
-        requestDate = liveDataDate.value!!.substring(0, 4) + liveDataDate.value!!.substring(
+        val requestDate = liveDataDate.value!!.substring(0, 4) + liveDataDate.value!!.substring(
             5,
             7
         ) + liveDataDate.value!!.substring(8, 10)
@@ -155,14 +156,17 @@ class ConditionViewModel(
                         liveDataCombineList.value = ArrayList()
                         liveDataTideList.value = ArrayList()
                         liveDataLoadingStatus.value = false
+
                     }
                 }
 
                 override fun onFailure(call: Call<Tide>, t: Throwable) {
+
                     Log.d(TAG, "onFailure : $t")
                     liveDataCombineList.value = ArrayList()
                     liveDataTideList.value = ArrayList()
                     liveDataLoadingStatus.value = false
+
                 }
 
             })
@@ -170,6 +174,7 @@ class ConditionViewModel(
     } // changeDate()
 
 
+    // 지역 변경
     fun changeLocation(location: SearchLocation) {
 
         callBackStatus = 0
@@ -201,8 +206,8 @@ class ConditionViewModel(
             "2300",
             liveDataSearchLocation.value!!.lat,
             liveDataSearchLocation.value!!.lon
-        )
-            .enqueue(object : Callback<Weather> {
+        ).enqueue(object: Callback<Weather> {
+
                 override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
                     if (response.isSuccessful) {
@@ -235,19 +240,23 @@ class ConditionViewModel(
                         }
 
                     } else {
+
                         Log.d(TAG, "onResponse : isFailure : ${response.message()}")
                         liveDataWeatherList.value = ArrayList()
                         liveDataCombineList.value = ArrayList()
                         liveDataLoadingStatus.value = false
+
                     }
 
                 }
 
                 override fun onFailure(call: Call<Weather>, t: Throwable) {
+
                     Log.d(TAG, "onFailure : $t")
                     liveDataWeatherList.value = ArrayList()
                     liveDataCombineList.value = ArrayList()
                     liveDataLoadingStatus.value = false
+
                 }
 
             })
@@ -259,7 +268,9 @@ class ConditionViewModel(
 
         model.requestTide(requestDate, liveDataSearchLocation.value!!.obsCode, "json")
             .enqueue(object : Callback<Tide> {
+
                 override fun onResponse(call: Call<Tide>, response: Response<Tide>) {
+
                     if (response.isSuccessful) {
 
                         liveDataTideList.value = model.getTideList(response)
@@ -287,18 +298,22 @@ class ConditionViewModel(
                         }
 
                     } else {
+
                         Log.d(TAG, "onResponse : isFailure : ${response.message()}")
                         liveDataCombineList.value = ArrayList()
                         liveDataTideList.value = ArrayList()
                         liveDataLoadingStatus.value = false
+
                     }
                 }
 
                 override fun onFailure(call: Call<Tide>, t: Throwable) {
+
                     Log.d(TAG, "onFailure : $t")
                     liveDataCombineList.value = ArrayList()
                     liveDataTideList.value = ArrayList()
                     liveDataLoadingStatus.value = false
+
                 }
 
             })
@@ -306,6 +321,7 @@ class ConditionViewModel(
     } // changeLocation()
 
 
+    // 어종 변경
     fun changeFish(fishName: String) {
 
         liveDataFish.value = fishName
@@ -322,6 +338,7 @@ class ConditionViewModel(
     } // changeFish()
 
 
+    // 새로 고침
     fun refresh() {
 
         callBackStatus = 0
@@ -335,8 +352,8 @@ class ConditionViewModel(
             "2300",
             liveDataSearchLocation.value!!.lat,
             liveDataSearchLocation.value!!.lon
-        )
-            .enqueue(object : Callback<Weather> {
+        ).enqueue(object: Callback<Weather> {
+
                 override fun onResponse(call: Call<Weather>, response: Response<Weather>) {
 
                     if (response.isSuccessful) {
@@ -369,19 +386,23 @@ class ConditionViewModel(
                         }
 
                     } else {
+
                         Log.d(TAG, "onResponse : isFailure : ${response.message()}")
                         liveDataWeatherList.value = ArrayList()
                         liveDataCombineList.value = ArrayList()
                         liveDataRefreshLoadingStatus.value = false
+
                     }
 
                 }
 
                 override fun onFailure(call: Call<Weather>, t: Throwable) {
+
                     Log.d(TAG, "onFailure : $t")
                     liveDataWeatherList.value = ArrayList()
                     liveDataCombineList.value = ArrayList()
                     liveDataRefreshLoadingStatus.value = false
+
                 }
 
             })
@@ -392,8 +413,10 @@ class ConditionViewModel(
         ) + liveDataDate.value!!.substring(8, 10)
 
         model.requestTide(requestDate, liveDataSearchLocation.value!!.obsCode, "json")
-            .enqueue(object : Callback<Tide> {
+            .enqueue(object: Callback<Tide> {
+
                 override fun onResponse(call: Call<Tide>, response: Response<Tide>) {
+
                     if (response.isSuccessful) {
 
                         liveDataTideList.value = model.getTideList(response)
@@ -421,23 +444,27 @@ class ConditionViewModel(
                         }
 
                     } else {
+
                         Log.d(TAG, "onResponse : isFailure : ${response.message()}")
                         liveDataTideList.value = ArrayList()
                         liveDataCombineList.value = ArrayList()
                         liveDataRefreshLoadingStatus.value = false
+
                     }
                 }
 
                 override fun onFailure(call: Call<Tide>, t: Throwable) {
+
                     Log.d(TAG, "onFailure : $t")
                     liveDataTideList.value = ArrayList()
                     liveDataCombineList.value = ArrayList()
                     liveDataRefreshLoadingStatus.value = false
+
                 }
 
             })
 
-        model.requestIndex("SF", "json").enqueue(object : Callback<Index> {
+        model.requestIndex("SF", "json").enqueue(object: Callback<Index> {
 
             override fun onResponse(call: Call<Index>, response: Response<Index>) {
 
@@ -480,25 +507,28 @@ class ConditionViewModel(
                     }
 
                 } else {
+
                     Log.d(TAG, "requestIndex - onResponse : isFailure : ${response.message()}")
                     liveDataIndex.value = ConditionIndex("", "", "", "", 0, "", "", "", "", 0)
                     liveDataCombineList.value = ArrayList()
                     liveDataRefreshLoadingStatus.value = false
-                }
 
+                }
 
             }
 
             override fun onFailure(call: Call<Index>, t: Throwable) {
+
                 Log.d(TAG, "requestIndex - onFailure : $t")
                 liveDataIndex.value = ConditionIndex("", "", "", "", 0, "", "", "", "", 0)
                 liveDataCombineList.value = ArrayList()
                 liveDataRefreshLoadingStatus.value = false
+
             }
 
         })
 
-
     } // refresh()
+
 
 }
