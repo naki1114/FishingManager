@@ -4,13 +4,17 @@ import com.example.fishingmanager.data.Combine
 import com.example.fishingmanager.data.Comment
 import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.data.Index
+import com.example.fishingmanager.data.KakaoPayLoad
+import com.example.fishingmanager.data.KakaoPayReadyResponse
 import com.example.fishingmanager.data.Tide
 import com.example.fishingmanager.data.Weather
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Field
+import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -210,8 +214,25 @@ interface RetrofitInterface {
     @POST("File/UserInfo/UpdateTicket.php")
     fun updateTicket(
         @Field("nickname") nickname: String,
-        @Field("product") product: String,
-        @Field("dueDate") dueDate: String
+        @Field("product") product: String
     ): Call<String>
+
+
+    // 카카오페이 요청
+    @POST("v1/payment/ready")
+    @FormUrlEncoded
+    fun readyKakaoPay(
+        @Header("Authorization") authorization : String,
+        @FieldMap map : HashMap<String, String>
+    ): Call<KakaoPayReadyResponse>
+
+
+    // 카카오페이 승인
+    @POST("v1/payment/approve")
+    @FormUrlEncoded
+    fun approveKakaoPay(
+        @Header("Authorization") authorization : String,
+        @FieldMap map : HashMap<String, String>
+    ): Call<KakaoPayLoad>
 
 }
