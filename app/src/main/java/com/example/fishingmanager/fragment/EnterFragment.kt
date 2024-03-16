@@ -18,19 +18,27 @@ class EnterFragment : Fragment() {
 
     lateinit var binding : FragmentEnterBinding
     lateinit var nickname: String
-    lateinit var animation : Animation
+    private lateinit var animation : Animation
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private val enterThread = thread(false) {
+
+        Thread.sleep(2500)
+        (activity as MainActivity).changeFragment("start")
+
+    }
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_enter, container, false)
+
         return binding.root
 
     } // onCreateView()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         setVariable()
@@ -38,19 +46,14 @@ class EnterFragment : Fragment() {
 
     } // onViewCreated()
 
+
+    // 초기화
     fun setVariable() {
 
         animation = AnimationUtils.loadAnimation(activity, R.anim.splash_alpha)
         binding.enterImage.startAnimation(animation)
 
-    }
+    } // setVariable()
 
-
-    val enterThread = thread(false) {
-
-        Thread.sleep(2500)
-        (activity as MainActivity).changeFragment("start")
-
-    }
 
 }
