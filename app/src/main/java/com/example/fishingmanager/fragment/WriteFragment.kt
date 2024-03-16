@@ -1,7 +1,6 @@
 package com.example.fishingmanager.fragment
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
@@ -21,7 +20,6 @@ import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.databinding.FragmentWriteBinding
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.viewModel.WriteViewModel
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -29,23 +27,23 @@ import java.io.File
 
 class WriteFragment : Fragment() {
 
-    private lateinit var writeViewModel : WriteViewModel
-    private lateinit var binding : FragmentWriteBinding
-    private lateinit var nickname : String
-    private lateinit var body : MultipartBody.Part
+    private lateinit var writeViewModel: WriteViewModel
+    private lateinit var binding: FragmentWriteBinding
+    private lateinit var nickname: String
+    private lateinit var body: MultipartBody.Part
 
     private var galleryCheck = false
 
-    private var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result : ActivityResult ->
+    private var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
 
         if (result.resultCode == Activity.RESULT_OK) {
 
             val imagePath = result.data!!.data
             val fileName = GetDate().getTime().toString() + ".jpg"
-            val file = File(absolutelyPath(imagePath, requireContext()))
+            val file = File(absolutelyPath(imagePath))
             val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-            body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
 
+            body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
             galleryCheck = true
 
             loadImage(result.data!!.data!!)
@@ -53,19 +51,18 @@ class WriteFragment : Fragment() {
 
     }
 
-    // Lifecycle
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_write, container, false)
 
         return binding.root
-    }
+
+    } // onCreateView()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         nickname = (activity as MainActivity).nickname
@@ -77,115 +74,116 @@ class WriteFragment : Fragment() {
         checkSave()
         feedStatus()
         toGallery()
-    }
 
-    // Custom Method
+    } // onViewCreated()
 
+
+    // 뒤로 가기 관련 observe
     private fun checkBack() {
 
         writeViewModel.doBackLayout.observe(viewLifecycleOwner) {
 
-            if (writeViewModel.doBackLayout.value == true) {
+            if (it) {
 
                 binding.writeBackLayout.visibility = View.VISIBLE
 
-            }
-            else {
+            } else {
 
                 binding.writeBackLayout.visibility = View.GONE
-                writeViewModel.isBack.observe(viewLifecycleOwner) {
-
-                    if (writeViewModel.isBack.value == true) {
-
-                        binding.writeTitleEditText.text = null
-                        binding.writeContentEditText.text = null
-                        changeFragment("feed")
-
-                    }
-
-                }
 
             }
 
         }
 
-    } // checkBack
+        writeViewModel.isBack.observe(viewLifecycleOwner) {
 
+            if (it) {
+
+                binding.writeTitleEditText.text = null
+                binding.writeContentEditText.text = null
+                toFeedFragment()
+
+            }
+
+        }
+
+    } // checkBack()
+
+
+    // 게시글 저장 관련 observe
     private fun checkSave() {
 
         writeViewModel.doSaveLayout.observe(viewLifecycleOwner) {
 
-            if (writeViewModel.doSaveLayout.value == true) {
+            if (it) {
 
                 binding.writeSaveLayout.visibility = View.VISIBLE
 
             }
-            else {
 
-                writeViewModel.isSave.observe(viewLifecycleOwner) {
+        }
 
-                    if (writeViewModel.isSave.value == true) {
+        writeViewModel.isSave.observe(viewLifecycleOwner) {
 
-                        if (galleryCheck) {
-                            writeViewModel.insertImageFeed(body)
-                            galleryCheck = false
-                        }
-                        else {
-                            writeViewModel.insertFeed()
-                        }
+            if (it) {
 
-                        binding.writeImageView.setImageResource(R.drawable.btnimg)
-                        binding.writeTitleEditText.text = null
-                        binding.writeContentEditText.text = null
+                if (galleryCheck) {
 
-                        binding.writeSaveLayout.visibility = View.GONE
+                    writeViewModel.insertImageFeed(body)
+                    galleryCheck = false
 
-                        changeFragment("feed")
-
-                    }
-
+                } else {
+                    writeViewModel.insertFeed()
                 }
+
+                binding.writeImageView.setImageResource(R.drawable.btnimg)
+                binding.writeTitleEditText.text = null
+                binding.writeContentEditText.text = null
+
+                binding.writeSaveLayout.visibility = View.GONE
+
+                toFeedFragment()
 
             }
 
         }
 
-    }
+    } // checkSave()
 
+
+    // 게시글 제목, 내용의 길이에 따른 Toast 메시지
     private fun feedStatus() {
 
         writeViewModel.feedStatus.observe(viewLifecycleOwner) {
 
-            when (writeViewModel.feedStatus.value) {
-                "titleEmpty" -> {
-                    Toast.makeText(context, "제목을 입력해 주세요.", Toast.LENGTH_LONG).show()
-                }
-                "titleOver" -> {
-                    Toast.makeText(context, "제목은 20자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
-                }
-                "contentEmpty" -> {
-                    Toast.makeText(context, "내용을 입력해 주세요.", Toast.LENGTH_LONG).show()
-                }
-                "contentOver" -> {
-                    Toast.makeText(context, "내용은 1000자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
-                }
+            when (it) {
+
+                "titleEmpty" -> Toast.makeText(context, "제목을 입력해 주세요.", Toast.LENGTH_LONG).show()
+                "titleOver" -> Toast.makeText(context, "제목은 20자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
+                "contentEmpty" -> Toast.makeText(context, "내용을 입력해 주세요.", Toast.LENGTH_LONG).show()
+                "contentOver" -> Toast.makeText(context, "내용은 1000자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
+
             }
 
         }
 
-    } // feedStatus
+    } // feedStatus()
 
-    private fun changeFragment(fragment : String) {
 
-        (activity as MainActivity).changeFragment(fragment)
+    // 프래그먼트 전환
+    private fun toFeedFragment() {
 
-    } // changeFragment
+        (activity as MainActivity).changeFragment("feed")
 
+    } // toFeedFragment()
+
+
+    // 갤러리로 이동
     private fun toGallery() {
 
         writeViewModel.toGalleryLiveData.observe(viewLifecycleOwner) {
 
-            if (writeViewModel.toGalleryLiveData.value == true) {
+            if (it) {
 
                 val chooserIntent = Intent(Intent.ACTION_CHOOSER)
                 val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -199,30 +197,33 @@ class WriteFragment : Fragment() {
 
         }
 
-    } // toGallery
+    } // toGallery()
 
-    private fun absolutelyPath(path : Uri?, context : Context) : String {
 
-        var proj : Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var cursor : Cursor? = requireContext().contentResolver.query(path!!, proj, null, null, null)
-        var index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+    // 이미지 절대 경로
+    private fun absolutelyPath(path: Uri?): String {
+
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = requireContext().contentResolver.query(path!!, proj, null, null, null)
+        val index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
 
         cursor?.moveToFirst()
 
-        var result = cursor?.getString(index!!)
+        val result = cursor?.getString(index!!)
 
         return result!!
 
-    } // absolutelyPath
+    } // absolutelyPath()
 
-    private fun loadImage(imageUri : Uri) {
 
-        if (imageUri != null) {
-            Glide.with(requireContext())
-                .load(imageUri)
-                .into(binding.writeImageView)
-        }
+    // Glide) ImageView에 이미지 띄우기
+    private fun loadImage(imageUri: Uri) {
 
-    } // loadImage
+        Glide.with(requireContext())
+            .load(imageUri)
+            .into(binding.writeImageView)
+
+    } // loadImage()
+
 
 }
