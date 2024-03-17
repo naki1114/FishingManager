@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
@@ -156,7 +157,7 @@ class WriteFragment : Fragment() {
 
         }
 
-        writeViewModel.isSave.observe(viewLifecycleOwner) {
+        writeViewModel.isRequestSave.observe(viewLifecycleOwner) {
 
             if (it) {
 
@@ -169,6 +170,14 @@ class WriteFragment : Fragment() {
                     writeViewModel.insertFeed()
                 }
 
+            }
+
+        }
+
+        writeViewModel.isSaved.observe(viewLifecycleOwner, Observer {
+
+            if (it) {
+
                 binding.writeImageView.setImageResource(R.drawable.btnimg)
                 binding.writeTitleEditText.text = null
                 binding.writeContentEditText.text = null
@@ -179,7 +188,7 @@ class WriteFragment : Fragment() {
 
             }
 
-        }
+        })
 
     } // checkSave()
 
