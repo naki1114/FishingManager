@@ -245,36 +245,36 @@ class SplashModel {
 
                 when (responseList[i].fishName) {
 
-                    "가자미" -> fishIcon = 0
-                    "갈치" -> fishIcon = 0
+                    "가자미" -> fishIcon = R.drawable.gajami
+                    "갈치" -> fishIcon = R.drawable.galchi
                     "감성돔" -> fishIcon = R.drawable.gamsungdom
-                    "갑오징어" -> fishIcon = 0
-                    "고등어" -> fishIcon = 0
+                    "갑오징어" -> fishIcon = R.drawable.gapojinga
+                    "고등어" -> fishIcon = R.drawable.godeunga
                     "광어" -> fishIcon = R.drawable.gawnga
-                    "노래미" -> fishIcon = 0
+                    "노래미" -> fishIcon = R.drawable.norami
                     "농어" -> fishIcon = R.drawable.nonga
-                    "대구" -> fishIcon = 0
+                    "대구" -> fishIcon = R.drawable.dagu
                     "돌돔" -> fishIcon = R.drawable.doldom
-                    "문어" -> fishIcon = 0
-                    "방어" -> fishIcon = 0
-                    "배도라치" -> fishIcon = 0
+                    "문어" -> fishIcon = R.drawable.muna
+                    "방어" -> fishIcon = R.drawable.banga
+                    "배도라치" -> fishIcon = R.drawable.badorachi
                     "벵에돔" -> fishIcon = R.drawable.bengedom
-                    "병어" -> fishIcon = 0
+                    "병어" -> fishIcon = R.drawable.buenga
                     "볼락" -> fishIcon = R.drawable.bollock
-                    "붕장어" -> fishIcon = 0
-                    "삼치" -> fishIcon = 0
-                    "성대" -> fishIcon = 0
-                    "숭어" -> fishIcon = 0
-                    "쏨뱅이" -> fishIcon = 0
-                    "양태" -> fishIcon = 0
+                    "붕장어" -> fishIcon = R.drawable.boongjanga
+                    "삼치" -> fishIcon = R.drawable.samchi
+                    "성대" -> fishIcon = R.drawable.sungdae
+                    "숭어" -> fishIcon = R.drawable.sunga
+                    "쏨뱅이" -> fishIcon = R.drawable.ssombange
+                    "양태" -> fishIcon = R.drawable.yangtae
                     "열기" -> fishIcon = R.drawable.yulgi
-                    "용치놀래기" -> fishIcon = 0
+                    "용치놀래기" -> fishIcon = R.drawable.yongchi
                     "우럭" -> fishIcon = R.drawable.uruck
-                    "전어" -> fishIcon = 0
-                    "주꾸미" -> fishIcon = 0
-                    "쥐치" -> fishIcon = 0
+                    "전어" -> fishIcon = R.drawable.juna
+                    "주꾸미" -> fishIcon = R.drawable.jukkumi
+                    "쥐치" -> fishIcon = R.drawable.jwichi
                     "참돔" -> fishIcon = R.drawable.chamdom
-                    "홍어" -> fishIcon = 0
+                    "홍어" -> fishIcon = R.drawable.honga
 
                 }
 
