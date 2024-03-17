@@ -57,7 +57,10 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
 
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
     val liveDataUpdateProfileImage = MutableLiveData<Combine>()
+    val liveDataTicketDateCount = MutableLiveData<String>()
 
+
+    // ViewModel 초기화
     fun init() {
 
         liveDataUserInfo.value = userInfo
@@ -70,10 +73,12 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
         liveDataCurrentFish.value = "전 체"
         liveDataCurrentDate.value = "전 체"
+        liveDataTicketDateCount.value = "이용권 남은 기간 : ${userInfo.checkingFishTicket}일"
 
     } // init()
 
 
+    // 물고기 자세히 보기
     fun readMoreFish(collection: Collection) {
 
         if (collection.fishName != "") {
@@ -84,6 +89,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // selectedFish()
 
 
+    // 화면 전환
     fun changeTab(tab: String) {
 
         liveDataChangeTab.value = tab
@@ -91,6 +97,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeTab()
 
 
+    // 레이아웃 전환
     fun changeLayout(layout: String) {
 
         if (previousLayout != "") {
@@ -103,6 +110,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeLayout()
 
 
+    // 이전 화면으로 돌아가기
     fun backToMainLayout() {
 
         liveDataChangeLayout.value = previousLayout
@@ -110,6 +118,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // backToMainLayout()
 
 
+    // 햄버거 버튼 클릭 시
     fun clickedMenu() {
 
         liveDataClickedMenu.value = true
@@ -117,6 +126,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // clickedMenu()
 
 
+    // 프래그먼트 전환
     fun changeFragment(fragment : String) {
 
         liveDataChangeFragment.value = fragment
@@ -124,6 +134,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeFragment()
 
 
+    // 물고기 필터링
     fun changeFish(fishName: String) {
 
         liveDataCurrentFish.value = fishName
@@ -133,6 +144,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeFish()
 
 
+    // 날짜 필터링
     fun changeDate(date: String) {
 
         if (date != "전 체") {
@@ -153,6 +165,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeDate()
 
 
+    // 다이얼로그 띄우기
     fun showDialog(dialogName : String) {
 
         liveDataShowDialog.value = dialogName
@@ -160,6 +173,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // showDialog()
 
 
+    // 로그아웃 처리
     fun changeLogoutStatus(status : Boolean) {
 
         liveDataLogoutStatus.value = status
@@ -167,6 +181,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeLogoutStatus()
 
 
+    // 회원탈퇴 처리
     fun changeDeleteAccountStatus(status : Boolean) {
 
         liveDataDeleteAccountStatus.value = status
@@ -174,6 +189,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // changeDeleteAccountStatus()
 
 
+    // 회원 탈퇴 요청 및 응답
     fun deleteAccount(nickname: String, type: String) {
 
         model.requestDeleteAccount(nickname, type).enqueue(object : Callback<String> {
@@ -197,6 +213,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // deleteAccount()
 
 
+    // 포토뷰 프래그먼트로 이동
     fun goPhotoView(userInfo: UserInfo) {
 
         liveDataClickedFishImage.value = userInfo
@@ -204,6 +221,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // goPhotoView()
 
 
+    // 갤러리로 이동
     fun goToGallery() {
 
         liveDataGoToGallery.value = true
@@ -211,6 +229,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // goToGallery()
 
 
+    // 새로고침 후 웹 서버에 데이터 다시 요청 및 응답
     fun refresh() {
 
         liveDataLoadingStatus.value = true
@@ -263,6 +282,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     } // refresh()
 
 
+    // 프로필 사진 수정 요청 및 응답
     fun updateProfileImage(file : MultipartBody.Part, nickname : String) {
 
         model.requestUpdateProfileImage(file, nickname).enqueue(object : Callback<Combine> {

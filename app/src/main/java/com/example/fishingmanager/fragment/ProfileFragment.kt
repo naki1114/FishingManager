@@ -104,6 +104,7 @@ class ProfileFragment : Fragment() {
     } // onViewCreated()
 
 
+    // 변수 초기화
     fun setVariable() {
 
         userInfo = (activity as MainActivity).userInfo
@@ -148,6 +149,7 @@ class ProfileFragment : Fragment() {
     } // setVariable()
 
 
+    // 캘린더뷰 세팅
     fun setCalendarView(list : ArrayList<CalendarDay>) {
 
         binding.profileCalendarView.setTitleFormatter(
@@ -206,6 +208,7 @@ class ProfileFragment : Fragment() {
     } // setView()
 
 
+    // ViewModel의 LiveData 관찰
     fun observeLiveData() {
 
         viewModel.liveDataUserInfo.observe(viewLifecycleOwner, Observer {
@@ -568,9 +571,22 @@ class ProfileFragment : Fragment() {
 
         })
 
+        viewModel.liveDataTicketDateCount.observe(viewLifecycleOwner, Observer {
+
+            if (it == "이용권 남은 기간 : 0일") {
+                binding.profileDrawerLineView.visibility = View.GONE
+                binding.profileDrawerTicketCountText.visibility = View.GONE
+            } else {
+                binding.profileDrawerLineView.visibility = View.VISIBLE
+                binding.profileDrawerTicketCountText.visibility = View.VISIBLE
+            }
+
+        })
+
     } // observeLiveData()
 
 
+    // ViewModel 내부 객체 초기화
     fun getData() {
 
         viewModel.init()
@@ -578,6 +594,7 @@ class ProfileFragment : Fragment() {
     } // getData()
 
 
+    // SharedPreference 데이터 삭제
     fun removeUserShared() {
 
         val userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
@@ -587,6 +604,8 @@ class ProfileFragment : Fragment() {
 
     } // removeUserShared()
 
+
+    // SharedPreference의 데이터 확인
     fun checkUserShared() {
 
         val userInfoShared = requireActivity().getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
@@ -595,6 +614,7 @@ class ProfileFragment : Fragment() {
     } // checkUserShared()
 
 
+    // 화면 전환
     fun changeTab(tab : String) {
 
         when(tab) {
@@ -640,6 +660,7 @@ class ProfileFragment : Fragment() {
     } // changeTab()
 
 
+    // 레이아웃 전환
     fun changeLayout(layout : String) {
 
         when(layout) {
@@ -693,6 +714,8 @@ class ProfileFragment : Fragment() {
 
     } // changeLayout()
 
+
+    // 유저 로그인 타입 불러오기
     private fun getUserType() : String {
 
         val sharedPreferences = activity?.getSharedPreferences("loginInfo", AppCompatActivity.MODE_PRIVATE)
@@ -703,21 +726,7 @@ class ProfileFragment : Fragment() {
     } // getUserType
 
 
-    fun getFile(): MultipartBody.Part {
-
-        val storage = requireActivity().cacheDir
-        val fileName = "${GetDate().getTime()}.jpg"
-        file = File(storage, fileName)
-
-        file.createNewFile()
-
-        val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-
-        return MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
-
-    } // getFile()
-
-
+    // 이미지 절대 경로 불러오기
     private fun absolutelyPath(path : Uri?) : String {
 
         var proj : Array<String> = arrayOf(MediaStore.Images.Media.DATA)
@@ -733,6 +742,7 @@ class ProfileFragment : Fragment() {
     } // absolutelyPath
 
 
+    // 커스텀 캘린더뷰 데코레이터 - 오늘 날짜
     class TodayDecorator(context: Context) : DayViewDecorator {
 
         val drawable: Drawable =
@@ -750,6 +760,7 @@ class ProfileFragment : Fragment() {
     } // DayDecorator
 
 
+    // 커스텀 캘린더뷰 데코레이터 - 일요일
     class SundayDecorator : DayViewDecorator {
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
@@ -764,6 +775,7 @@ class ProfileFragment : Fragment() {
     } // SundayDecorator
 
 
+    // 커스텀 캘린더뷰 데코레이터 - 토요일
     class SaturdayDecorator : DayViewDecorator {
 
         override fun shouldDecorate(day: CalendarDay?): Boolean {
@@ -778,6 +790,7 @@ class ProfileFragment : Fragment() {
     } // SaturdayDecorator
 
 
+    // 커스텀 캘린더뷰 데코레이터 - 선택한 날짜
     class SelectableDecorator(selectableDay : ArrayList<CalendarDay>) : DayViewDecorator {
 
         val list = selectableDay

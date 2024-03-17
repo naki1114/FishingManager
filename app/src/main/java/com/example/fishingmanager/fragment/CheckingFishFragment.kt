@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
@@ -95,16 +96,26 @@ class CheckingFishFragment : Fragment() {
         checkUserShared()
         setVariable()
         observeLiveData()
-
+        viewModel.init()
 
     } // onViewCreated()
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (modelStatus) {
+            tensorflowModel.closeModel()
+        }
+
+    } // onDestroy()
+
+
+    // 변수 초기화
     fun setVariable() {
 
         tensorflowModel = TensorflowModel(requireActivity())
         viewModel = CheckingFishViewModel((activity as MainActivity).historyList, (activity as MainActivity).userInfo)
-        viewModel.init()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -122,6 +133,7 @@ class CheckingFishFragment : Fragment() {
     } // setVariable()
 
 
+    // ViewModel의 LiveData 관찰
     fun observeLiveData() {
 
         viewModel.liveDataHistoryList.observe(viewLifecycleOwner, Observer {
@@ -254,10 +266,14 @@ class CheckingFishFragment : Fragment() {
 
         viewModel.liveDataCameraStatus.observe(viewLifecycleOwner, Observer {
 
-            if (it) {
+            if (viewModel.liveDataCheckingFishDayCount.value!! > 0) {
                 startCamera()
             } else {
-                Toast.makeText(requireActivity(), "금일 이용 횟수를 모두 소진하였습니다.", Toast.LENGTH_SHORT).show()
+                if (it) {
+                    startCamera()
+                } else {
+                    Toast.makeText(requireActivity(), "금일 이용 횟수를 모두 소진하였습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         })
@@ -312,7 +328,17 @@ class CheckingFishFragment : Fragment() {
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).changeFragment(it)
+            (activity as MainActivity).changeFragmentWrite(file.toUri().toString())
+
+        })
+
+        viewModel.liveDataCheckingFishDayCount.observe(viewLifecycleOwner, Observer {
+
+            if (it > 0) {
+                binding.checkingFishCountText.visibility = View.GONE
+            } else {
+                binding.checkingFishCountText.visibility = View.VISIBLE
+            }
 
         })
 
@@ -320,6 +346,7 @@ class CheckingFishFragment : Fragment() {
     } // observeLiveData()
 
 
+    // 파일 만들기
     fun getFile(): MultipartBody.Part {
 
         val storage = requireActivity().cacheDir
@@ -339,6 +366,7 @@ class CheckingFishFragment : Fragment() {
     } // getFile()
 
 
+    // 레이아웃 변환
     fun changeLayout(layout: String) {
 
         when (layout) {
@@ -379,6 +407,7 @@ class CheckingFishFragment : Fragment() {
     } // changeLayout()
 
 
+    // SharedPreference에서 유저 정보 불러오기
     fun checkUserShared() {
 
         userInfoShared =
@@ -388,6 +417,7 @@ class CheckingFishFragment : Fragment() {
     } // checkUserShared()
 
 
+    // 카메라 전환
     fun startCamera() {
 
         TedPermission.create().setPermissionListener(object : PermissionListener {
@@ -411,6 +441,7 @@ class CheckingFishFragment : Fragment() {
     } // startCamera()
 
 
+    // 어종 검출
     fun classify() {
 
         tensorflowModel.init()
@@ -422,15 +453,5 @@ class CheckingFishFragment : Fragment() {
         modelStatus = true
 
     } // classify()
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        if (modelStatus) {
-            tensorflowModel.closeModel()
-        }
-        
-    }
 
 }

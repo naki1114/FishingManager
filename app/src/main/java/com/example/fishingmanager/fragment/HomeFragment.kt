@@ -152,7 +152,7 @@ class HomeFragment : Fragment() {
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner) {
 
-            (activity as MainActivity).changeFragmentWithData(it)
+            (activity as MainActivity).changeFragmentCondition(it)
 
         }
 

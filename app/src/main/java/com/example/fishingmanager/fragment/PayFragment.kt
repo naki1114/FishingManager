@@ -49,6 +49,7 @@ class PayFragment : Fragment() {
     } // onViewCreated()
 
 
+    // 변수 초기화
     fun setVariable() {
 
         viewModel = PayViewModel((activity as MainActivity).userInfo)
@@ -61,11 +62,10 @@ class PayFragment : Fragment() {
         })
         binding.payRecyclerView.adapter = adapter
 
-
-
     } // setVariable()
 
 
+    // ViewModel의 LiveData 관찰
     fun observeLiveData() {
 
         viewModel.liveDataTicketList.observe(viewLifecycleOwner, Observer {
@@ -80,33 +80,6 @@ class PayFragment : Fragment() {
 
                 (activity as MainActivity).removeFragmentStack()
                 (activity as MainActivity).navigationVisible()
-
-            }
-
-        })
-
-        viewModel.liveDataProduct.observe(viewLifecycleOwner, Observer {
-
-            when (it.ticketName) {
-
-                "FM 세트 한 달 이용권" -> {
-                    showToast("FM 세트 한 달 이용권")
-                }
-                "FM 세트 일 년 이용권" -> {
-                    showToast("FM 세트 일 년 이용권")
-                }
-                "어종 확인 한 달 이용권" -> {
-                    showToast("어종 확인 한 달 이용권")
-                }
-                "어종 확인 일 년 이용권" -> {
-                    showToast("어종 확인 일 년 이용권")
-                }
-                "광고 제거 한 달 이용권" -> {
-                    showToast("광고 제거 한 달 이용권")
-                }
-                "광고 제거 일 년 이용권" -> {
-                    showToast("광고 제거 일 년 이용권")
-                }
 
             }
 
@@ -144,17 +117,17 @@ class PayFragment : Fragment() {
 
         })
 
+        viewModel.liveDataUpdateUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).userInfo = it
+
+        })
+
 
     } // observeLiveData()
 
 
-    fun showToast(message : String) {
-
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
-
-    } // showToast()
-
-
+    // WebViewClient 상속하여 shouldOverrideUrlLoading() 메서드 사용하기 위한 목적의 inner Class
     inner class KakaoPayWebViewClient : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

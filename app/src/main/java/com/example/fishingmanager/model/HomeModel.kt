@@ -1,5 +1,6 @@
 package com.example.fishingmanager.model
 
+import android.util.Log
 import com.example.fishingmanager.R
 import com.example.fishingmanager.data.ConditionWeather
 import com.example.fishingmanager.data.Feed
@@ -178,15 +179,15 @@ class HomeModel {
         var parseDate : String
         var date : String
         var feed : Feed
-        var feedImage : String
+        var feedImage : String = ""
 
         for(i in 0 until feedList.size) {
 
             parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
-            feedImage = feedList[i].feedImage.ifEmpty {
-                ""
+            if (feedList[i]?.feedImage == null) {
+                feedImage = ""
             }
 
             feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, feedImage, feedList[i].viewCount, date, feedList[i].profileImage)

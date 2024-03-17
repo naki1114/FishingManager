@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -13,10 +14,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.fishingmanager.R
 import com.example.fishingmanager.activity.MainActivity
+import com.example.fishingmanager.data.Feed
 import com.example.fishingmanager.databinding.FragmentWriteBinding
 import com.example.fishingmanager.function.GetDate
 import com.example.fishingmanager.viewModel.WriteViewModel
@@ -69,6 +72,7 @@ class WriteFragment : Fragment() {
         writeViewModel = WriteViewModel(nickname)
         binding.viewModel = writeViewModel
 
+        getFragmentChangeBundle()
         // LiveData Observe
         checkBack()
         checkSave()
@@ -76,6 +80,29 @@ class WriteFragment : Fragment() {
         toGallery()
 
     } // onViewCreated()
+
+
+    fun getFragmentChangeBundle() {
+
+        parentFragmentManager.setFragmentResultListener("write", this) { key, bundle ->
+
+            val uri = bundle.getString("write")?.toUri()
+
+            if (uri != null) {
+
+                loadImage(uri)
+
+                val fileName = GetDate().getTime().toString() + ".jpg"
+                val file = File(uri.toString())
+                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+
+                body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
+
+            }
+
+        }
+
+    } // getFragmentChangeBundle()
 
 
     // 뒤로 가기 관련 observe

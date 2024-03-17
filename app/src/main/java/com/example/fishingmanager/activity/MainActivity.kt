@@ -1,5 +1,6 @@
 package com.example.fishingmanager.activity
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,7 @@ import com.example.fishingmanager.fragment.EnterFragment
 import com.example.fishingmanager.fragment.FeedFragment
 import com.example.fishingmanager.fragment.PayFragment
 import com.example.fishingmanager.fragment.ProfileFragment
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
@@ -68,14 +70,6 @@ class MainActivity : AppCompatActivity() {
 
 
     } // onCreate()
-
-
-    override fun onStart() {
-        super.onStart()
-
-        // 현재 프래그먼트 확인해서 바텀 네비게이션 visible 처리
-
-    } // onStart()
 
 
     // 변수 초기화
@@ -151,13 +145,6 @@ class MainActivity : AppCompatActivity() {
     } // setListener()
 
 
-    fun selectHomeMenu() {
-
-        binding.navigation.selectedItemId = R.id.home_fragment
-
-    }
-
-
     // Fragment 전환
     fun changeFragment(fragmentName: String) {
 
@@ -225,7 +212,8 @@ class MainActivity : AppCompatActivity() {
     } // changeFragment()
 
 
-    fun changeFragmentWithData(fragmentName: String) {
+    // Condition 프래그먼트로 전환할 때 데이터 함께 전달 처리
+    fun changeFragmentCondition(fragmentName: String) {
 
         bundle = Bundle()
 
@@ -251,6 +239,7 @@ class MainActivity : AppCompatActivity() {
     } // changeFragmentWithData()
 
 
+    // Feed 프래그먼트로 전환할 때 데이터 함께 전달 처리
     fun changeFragmentFeed(feed : Feed) {
 
         bundle = Bundle()
@@ -263,6 +252,29 @@ class MainActivity : AppCompatActivity() {
     } // changeFragmentFeed()
 
 
+    // Write 프래그먼트로 전환할 때 데이터 함께 전달 처리
+    fun changeFragmentWrite(uri : String) {
+
+        bundle = Bundle()
+
+        bundle.putString("write", uri)
+
+        fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentManager.setFragmentResult("write", bundle)
+        fragmentTransaction.replace(R.id.mainFragment, WriteFragment()).commit()
+
+    } // changeFragmentWrite()
+
+
+    // Home 프래그먼트로 이동
+    fun selectHomeMenu() {
+
+        binding.navigation.selectedItemId = R.id.home_fragment
+
+    } // selectHomeMenu()
+
+
+    // PhotoView 프래그먼트로 데이터 전달과 함께 이동
     fun goPhotoView(image : String) {
 
         bundle = Bundle()
@@ -273,6 +285,7 @@ class MainActivity : AppCompatActivity() {
     } // changeFragmentToPhotoView()
 
 
+    // 바텀 내비게이션 숨김
     fun navigationGone() {
 
         runOnUiThread { binding.navigation.visibility = View.GONE }
@@ -280,6 +293,7 @@ class MainActivity : AppCompatActivity() {
     } // navigationGone()
 
 
+    // 바텀 내비게이션 보임
     fun navigationVisible() {
 
         runOnUiThread { binding.navigation.visibility = View.VISIBLE }
@@ -312,6 +326,7 @@ class MainActivity : AppCompatActivity() {
     } // removeFragmentStack()
 
 
+    // SharedPreference에 저장된 사용자 정보 확인 후 앱 진입 처리
     fun checkSharedPreference() {
 
         val sharedPreferences = getSharedPreferences("loginInfo", MODE_PRIVATE)
