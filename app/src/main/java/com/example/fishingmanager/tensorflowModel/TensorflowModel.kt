@@ -27,6 +27,7 @@ class TensorflowModel(val context: Context) {
     var inputChannel = 0
 
 
+    // 모델 초기화 작업 (*이미지 분류 학습된 딥러닝 로봇을 모델이라 통칭)
     fun init() {
 
         model = Model.createModel(context, MODEL_NAME)
@@ -36,6 +37,7 @@ class TensorflowModel(val context: Context) {
     } // init()
 
 
+    // 모델 형태 초기화
     fun initModelShape() {
 
         val inputTensor = model.getInputTensor(0)
@@ -51,6 +53,7 @@ class TensorflowModel(val context: Context) {
     } // initModelShape()
 
 
+    // ARGB_8888 비트맵 변환
     fun convertBitmap(bitmap: Bitmap): Bitmap {
 
         return bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -58,6 +61,7 @@ class TensorflowModel(val context: Context) {
     } // convertBitmap()
 
 
+    // 이미지 불러오기
     fun loadImage(bitmap: Bitmap): TensorImage {
 
         if (bitmap.config != Bitmap.Config.ARGB_8888) {
@@ -76,6 +80,7 @@ class TensorflowModel(val context: Context) {
     } // loadImage()
 
 
+    // 이미지 분류 작업
     fun classify(bitmap : Bitmap) : Pair<String, Float> {
 
         inputImage = loadImage(bitmap)
@@ -92,6 +97,7 @@ class TensorflowModel(val context: Context) {
     } // classify()
 
 
+    // 분류한 이미지로 결과 도출
     fun argmax(map : Map<String, Float>) : Pair<String, Float> {
 
         var maxKey = ""
@@ -115,6 +121,7 @@ class TensorflowModel(val context: Context) {
     } // argmax()
 
 
+    // 모델 종료
     fun closeModel() {
 
         model.close()
