@@ -186,7 +186,7 @@ class HomeModel {
             parseDate = feedList[i].date
             date = GetDate().getFormatDate3(parseDate.toLong())
 
-            if (feedList[i].feedImage == null) {
+            if (feedList[i]?.feedImage == null) {
                 feedImage = ""
             }
 
