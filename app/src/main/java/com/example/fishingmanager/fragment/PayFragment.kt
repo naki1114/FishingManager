@@ -85,33 +85,6 @@ class PayFragment : Fragment() {
 
         })
 
-        viewModel.liveDataProduct.observe(viewLifecycleOwner, Observer {
-
-            when (it.ticketName) {
-
-                "FM 세트 한 달 이용권" -> {
-                    showToast("FM 세트 한 달 이용권")
-                }
-                "FM 세트 일 년 이용권" -> {
-                    showToast("FM 세트 일 년 이용권")
-                }
-                "어종 확인 한 달 이용권" -> {
-                    showToast("어종 확인 한 달 이용권")
-                }
-                "어종 확인 일 년 이용권" -> {
-                    showToast("어종 확인 일 년 이용권")
-                }
-                "광고 제거 한 달 이용권" -> {
-                    showToast("광고 제거 한 달 이용권")
-                }
-                "광고 제거 일 년 이용권" -> {
-                    showToast("광고 제거 일 년 이용권")
-                }
-
-            }
-
-        })
-
         viewModel.liveDataKakaoPayReadyResponse.observe(viewLifecycleOwner, Observer {
 
             Log.d("PayFragment", "kakaopayreadyresponse : $it")
@@ -144,16 +117,14 @@ class PayFragment : Fragment() {
 
         })
 
+        viewModel.liveDataUpdateUserInfo.observe(viewLifecycleOwner, Observer {
+
+            (activity as MainActivity).userInfo = it
+
+        })
+
 
     } // observeLiveData()
-
-
-    // 토스트 메시지 모듈화
-    fun showToast(message : String) {
-
-        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
-
-    } // showToast()
 
 
     // WebViewClient 상속하여 shouldOverrideUrlLoading() 메서드 사용하기 위한 목적의 inner Class

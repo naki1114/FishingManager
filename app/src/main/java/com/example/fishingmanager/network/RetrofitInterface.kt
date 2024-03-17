@@ -7,6 +7,7 @@ import com.example.fishingmanager.data.Index
 import com.example.fishingmanager.data.KakaoPayLoad
 import com.example.fishingmanager.data.KakaoPayReadyResponse
 import com.example.fishingmanager.data.Tide
+import com.example.fishingmanager.data.UserInfo
 import com.example.fishingmanager.data.Weather
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -215,7 +216,7 @@ interface RetrofitInterface {
     fun updateTicket(
         @Field("nickname") nickname: String,
         @Field("product") product: String
-    ): Call<String>
+    ): Call<UserInfo>
 
 
     // 카카오페이 요청

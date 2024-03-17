@@ -21,9 +21,9 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
 
     val liveDataTicketList = MutableLiveData<ArrayList<PayTicket>>()
     val liveDataBackStatus = MutableLiveData<Boolean>()
-    val liveDataProduct = MutableLiveData<PayTicket>()
     val liveDataKakaoPayReadyResponse = MutableLiveData<KakaoPayReadyResponse>()
     val liveDataPayApproveStatus = MutableLiveData<Boolean>()
+    val liveDataUpdateUserInfo = MutableLiveData<UserInfo>()
     var partner_order : String = ""
 
 
@@ -46,7 +46,6 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
     // 카카오페이 준비 단계 요청 및 응답
     fun readyKakaoPay(payTicket: PayTicket) {
 
-        liveDataProduct.value = payTicket
         partner_order = "${userInfo.nickname}${System.currentTimeMillis()}"
 
         val map = HashMap<String, String>()
@@ -98,14 +97,15 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
             override fun onResponse(call: Call<KakaoPayLoad>, response: Response<KakaoPayLoad>) {
                 if (response.isSuccessful) {
 
-                    Log.d("PayViewModel", "updatePgToken - onResponse isSuccessful")
+                    Log.d("PayViewModel", "item_name : ${response.body()!!.item_name}")
                     val product = response.body()!!.item_name
 
-                    model.updateTicket(userInfo.nickname, product).enqueue(object : Callback<String> {
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                    model.updateTicket(userInfo.nickname, product).enqueue(object : Callback<UserInfo> {
+                        override fun onResponse(call: Call<UserInfo>, response2: Response<UserInfo>) {
                             if (response.isSuccessful) {
-
+                                Log.d("PayViewModel", "onResponse: ${response2.body()}")
                                 liveDataPayApproveStatus.value = true
+                                liveDataUpdateUserInfo.value = response2.body()
 
                             } else {
                                 liveDataPayApproveStatus.value = false
@@ -113,7 +113,7 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
                             }
                         }
 
-                        override fun onFailure(call: Call<String>, t: Throwable) {
+                        override fun onFailure(call: Call<UserInfo>, t: Throwable) {
                             liveDataPayApproveStatus.value = false
                             Log.d("PayViewModel", "updateTicket - onFailure : $t")
                         }

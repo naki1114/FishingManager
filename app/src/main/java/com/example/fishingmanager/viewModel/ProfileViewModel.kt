@@ -73,7 +73,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
         liveDataCurrentFish.value = "전 체"
         liveDataCurrentDate.value = "전 체"
-        liveDataTicketDateCount.value = "이용권 남은 기간 : ${userInfo.checkingFishCount}일"
+        liveDataTicketDateCount.value = "이용권 남은 기간 : ${userInfo.checkingFishTicket}일"
 
     } // init()
 

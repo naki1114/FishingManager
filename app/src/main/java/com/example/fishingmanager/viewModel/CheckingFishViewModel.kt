@@ -54,6 +54,7 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
         liveDataBasicHistoryList.value = basicHistoryList
         liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
         liveDataCheckingFishCountText.value = "금일 남은 횟수 : ${userInfo.checkingFishCount} / 3"
+        liveDataCheckingFishDayCount.value = userInfo.checkingFishTicket
 
     } // init()
 

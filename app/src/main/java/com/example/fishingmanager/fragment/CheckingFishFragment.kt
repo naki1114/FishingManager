@@ -95,6 +95,7 @@ class CheckingFishFragment : Fragment() {
         checkUserShared()
         setVariable()
         observeLiveData()
+        viewModel.init()
 
     } // onViewCreated()
 
@@ -114,7 +115,6 @@ class CheckingFishFragment : Fragment() {
 
         tensorflowModel = TensorflowModel(requireActivity())
         viewModel = CheckingFishViewModel((activity as MainActivity).historyList, (activity as MainActivity).userInfo)
-        viewModel.init()
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
