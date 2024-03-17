@@ -49,6 +49,7 @@ class PayFragment : Fragment() {
     } // onViewCreated()
 
 
+    // 변수 초기화
     fun setVariable() {
 
         viewModel = PayViewModel((activity as MainActivity).userInfo)
@@ -61,11 +62,10 @@ class PayFragment : Fragment() {
         })
         binding.payRecyclerView.adapter = adapter
 
-
-
     } // setVariable()
 
 
+    // ViewModel의 LiveData 관찰
     fun observeLiveData() {
 
         viewModel.liveDataTicketList.observe(viewLifecycleOwner, Observer {
@@ -148,6 +148,7 @@ class PayFragment : Fragment() {
     } // observeLiveData()
 
 
+    // 토스트 메시지 모듈화
     fun showToast(message : String) {
 
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
@@ -155,6 +156,7 @@ class PayFragment : Fragment() {
     } // showToast()
 
 
+    // WebViewClient 상속하여 shouldOverrideUrlLoading() 메서드 사용하기 위한 목적의 inner Class
     inner class KakaoPayWebViewClient : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

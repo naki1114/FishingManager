@@ -27,6 +27,7 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
     var partner_order : String = ""
 
 
+    // 이용권 리스트 불러오기
     fun getTicketList() {
 
         liveDataTicketList.value = model.getTicketList()
@@ -34,6 +35,7 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
     } // getTicketList()
 
 
+    // 이전 프래그먼트로 돌아가기
     fun backToPrevious() {
 
         liveDataBackStatus.value = true
@@ -41,6 +43,7 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
     } // backToPrevious()
 
 
+    // 카카오페이 준비 단계 요청 및 응답
     fun readyKakaoPay(payTicket: PayTicket) {
 
         liveDataProduct.value = payTicket
@@ -81,6 +84,7 @@ class PayViewModel(val userInfo: UserInfo) : ViewModel() {
     } // requestKakaoPay()
 
 
+    // 카카오페이 결제 요청을 위한 pgToken 업데이트 및 서버에 데이터 수정 요청 및 응답
     fun updatePgToken(pgToken : String) {
 
         val map = HashMap<String, String>()

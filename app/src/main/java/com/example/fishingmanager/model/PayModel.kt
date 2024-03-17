@@ -17,6 +17,7 @@ class PayModel : WebViewClient() {
     val list = ArrayList<PayTicket>()
 
 
+    // 이용권 리스트 불러오기
     fun getTicketList(): ArrayList<PayTicket> {
 
         list.add(
@@ -98,6 +99,7 @@ class PayModel : WebViewClient() {
     } // getTicketList()
 
 
+    // 카카오페이 준비 단계 - 요청
     fun readyKakaoPay(
         map : HashMap<String, String>
     ) = kakaoPayRetrofitInterface.readyKakaoPay(
@@ -106,6 +108,7 @@ class PayModel : WebViewClient() {
     ) // readyKakaoPay()
 
 
+    // 카카오페이 결제 완료 - 요청
     fun approveKakaoPay(
         map : HashMap<String, String>
     ) = kakaoPayRetrofitInterface.approveKakaoPay(
@@ -114,6 +117,7 @@ class PayModel : WebViewClient() {
     ) // readyKakaoPay()
 
 
+    // 결제 완료 후 웹 서버에 이용권 업데이트 요청
     fun updateTicket(nickname : String, product : String) = webServerRetrofitInterface.updateTicket(nickname, product)
 
 
