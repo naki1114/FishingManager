@@ -221,7 +221,7 @@ class WriteFragment : Fragment() {
     // 프래그먼트 전환
     private fun toFeedFragment() {
 
-        (activity as MainActivity).changeFragment("feed")
+        (activity as MainActivity).changeFragmentFeedNavigation()
 
     } // toFeedFragment()
 

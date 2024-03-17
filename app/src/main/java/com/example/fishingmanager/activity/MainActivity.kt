@@ -266,6 +266,13 @@ class MainActivity : AppCompatActivity() {
     } // changeFragmentWrite()
 
 
+    fun changeFragmentFeedNavigation() {
+
+        binding.navigation.selectedItemId = R.id.feed_fragment
+
+    }
+
+
     // Home 프래그먼트로 이동
     fun selectHomeMenu() {
 
