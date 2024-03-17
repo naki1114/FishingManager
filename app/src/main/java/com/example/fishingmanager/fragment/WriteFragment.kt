@@ -93,7 +93,7 @@ class WriteFragment : Fragment() {
                 loadImage(uri)
 
                 val fileName = GetDate().getTime().toString() + ".jpg"
-                val file = File(absolutelyPath(uri))
+                val file = File(uri.toString())
                 val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
 
                 body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
