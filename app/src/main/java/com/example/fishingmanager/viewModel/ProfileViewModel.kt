@@ -57,6 +57,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
 
     val liveDataLoadingStatus = MutableLiveData<Boolean>()
     val liveDataUpdateProfileImage = MutableLiveData<Combine>()
+    val liveDataTicketDateCount = MutableLiveData<String>()
 
 
     // ViewModel 초기화
@@ -72,6 +73,7 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         liveDataFishList.value = model.getFishList(basicHistoryList, nickname)
         liveDataCurrentFish.value = "전 체"
         liveDataCurrentDate.value = "전 체"
+        liveDataTicketDateCount.value = "이용권 남은 기간 : ${userInfo.checkingFishCount}일"
 
     } // init()
 

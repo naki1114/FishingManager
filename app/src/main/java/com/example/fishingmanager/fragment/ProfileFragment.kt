@@ -571,6 +571,18 @@ class ProfileFragment : Fragment() {
 
         })
 
+        viewModel.liveDataTicketDateCount.observe(viewLifecycleOwner, Observer {
+
+            if (it == "이용권 남은 기간 : 0일") {
+                binding.profileDrawerLineView.visibility = View.GONE
+                binding.profileDrawerTicketCountText.visibility = View.GONE
+            } else {
+                binding.profileDrawerLineView.visibility = View.VISIBLE
+                binding.profileDrawerTicketCountText.visibility = View.VISIBLE
+            }
+
+        })
+
     } // observeLiveData()
 
 

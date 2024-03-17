@@ -957,6 +957,24 @@
                     />
 
                 <View
+                    android:id="@+id/profileDrawerLineView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray2"
+                    />
+
+                <TextView
+                    android:id="@+id/profileDrawerTicketCountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:text="@{viewModel.liveDataTicketDateCount}"
+                    android:paddingVertical="10dp"
+                    />
+
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="@color/gray2"
