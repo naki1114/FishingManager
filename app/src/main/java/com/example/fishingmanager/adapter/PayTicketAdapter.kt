@@ -19,8 +19,8 @@ import com.example.fishingmanager.databinding.PayTicketItemBinding
 
 class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView.Adapter<PayTicketAdapter.ViewHolder>() {
 
-    lateinit var binding : PayTicketItemBinding
-    lateinit var ticketList : ArrayList<PayTicket>
+    lateinit var binding: PayTicketItemBinding
+    lateinit var ticketList: ArrayList<PayTicket>
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,7 +46,7 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
     } // getItemCount()
 
 
-    fun setItem(item : ArrayList<PayTicket>) {
+    fun setItem(item: ArrayList<PayTicket>) {
 
         ticketList = item
         notifyDataSetChanged()
@@ -54,7 +54,11 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
     } // setItem()
 
 
-    class ViewHolder(val binding : PayTicketItemBinding, val itemClickListener : ItemClickListener, val context : Context) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        val binding: PayTicketItemBinding,
+        val itemClickListener: ItemClickListener,
+        val context: Context
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(payTicket: PayTicket) {
 
@@ -90,17 +94,10 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
 
             val spanString = SpannableString(payTicket.buttonText)
 
-            when (adapterPosition) {
-                0 -> {
-                    spanString.setSpan(StrikethroughSpan(), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spanString.setSpan(RelativeSizeSpan(0.85f), 0, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    binding.payTicketButton.text = spanString
-                }
-                1, 3, 5 -> {
-                    spanString.setSpan(StrikethroughSpan(), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spanString.setSpan(RelativeSizeSpan(0.85f), 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    binding.payTicketButton.text = spanString
-                }
+            if (payTicket.ticketNum == "2") {
+                spanString.setSpan(StrikethroughSpan(), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanString.setSpan(RelativeSizeSpan(0.85f), 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                binding.payTicketButton.text = spanString
             }
 
         }
@@ -108,10 +105,12 @@ class PayTicketAdapter(val itemClickListener : ItemClickListener) : RecyclerView
     } // ViewHolder
 
 
-    class ItemClickListener(val clickListener: (payTicket : PayTicket) -> Unit) {
+        class ItemClickListener(val clickListener: (payTicket: PayTicket) -> Unit) {
 
-        fun onClick(payTicket: PayTicket) = clickListener(payTicket)
+            fun onClick(payTicket: PayTicket) = clickListener(payTicket)
 
-    } // ItemClickListener
+        } // ItemClickListener
+
+
 
 }
