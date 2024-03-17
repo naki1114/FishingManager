@@ -193,7 +193,7 @@ class WriteFragment : Fragment() {
     } // checkSave()
 
 
-    // 게시글 제목, 내용의 길이에 따른 Toast 메시지
+    // 게시글 제목, 내용의 길이에 따른 상태
     private fun feedStatus() {
 
         writeViewModel.feedStatus.observe(viewLifecycleOwner) {
@@ -206,6 +206,12 @@ class WriteFragment : Fragment() {
                 "contentOver" -> Toast.makeText(context, "내용은 1000자까지 입력 가능합니다.", Toast.LENGTH_LONG).show()
 
             }
+
+        }
+
+        writeViewModel.contentLiveData.observe(viewLifecycleOwner) {
+
+            binding.writeLimitCountTextView.text = it.length.toString() + " / 1000"
 
         }
 
