@@ -3,6 +3,7 @@ package com.example.fishingmanager.fragment
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -166,12 +167,12 @@ class FeedFragment: Fragment() {
 
             }
 
-            if (feed?.feedImage == null) {
+            if (feed?.feedImage == null || feed?.feedImage == "") {
 
                 binding.feedViewImageView.visibility = View.GONE
 
             } else {
-
+                
                 Glide.with(requireContext()).load(RetrofitClient.BASE_URL + feed?.feedImage).into(binding.feedViewImageView)
                 binding.feedViewImageView.visibility = View.VISIBLE
 

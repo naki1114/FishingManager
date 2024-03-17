@@ -188,6 +188,8 @@ class HomeModel {
 
             if (feedList[i]?.feedImage == null) {
                 feedImage = ""
+            } else {
+                feedImage = feedList[i].feedImage
             }
 
             feed = Feed(feedList[i].nickname, feedList[i].feedNum, feedList[i].title, feedList[i].content, feedImage, feedList[i].viewCount, date, feedList[i].profileImage)
