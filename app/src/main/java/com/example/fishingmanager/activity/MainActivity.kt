@@ -253,11 +253,11 @@ class MainActivity : AppCompatActivity() {
 
 
     // Write 프래그먼트로 전환할 때 데이터 함께 전달 처리
-    fun changeFragmentWrite(uri : String) {
+    fun changeFragmentWrite(file : File) {
 
         bundle = Bundle()
 
-        bundle.putString("write", uri)
+        bundle.putSerializable("write", file)
 
         fragmentTransaction = fragmentManager.beginTransaction()
         fragmentManager.setFragmentResult("write", bundle)

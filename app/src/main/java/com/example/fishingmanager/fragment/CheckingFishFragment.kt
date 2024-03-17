@@ -327,8 +327,9 @@ class CheckingFishFragment : Fragment() {
         })
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
-
-            (activity as MainActivity).changeFragmentWrite(file.toUri().toString())
+            Log.d(TAG, "observeLiveData333: ${file.toUri()}")
+            Log.d(TAG, "observeLiveData333: ${file.toURI()}")
+            (activity as MainActivity).changeFragmentWrite(file)
 
         })
 

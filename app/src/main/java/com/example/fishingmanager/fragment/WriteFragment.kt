@@ -27,6 +27,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.Serializable
 
 class WriteFragment : Fragment() {
 
@@ -86,17 +87,22 @@ class WriteFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("write", this) { key, bundle ->
 
-            val uri = bundle.getString("write")?.toUri()
+            val file = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 
-            if (uri != null) {
+                bundle.getSerializable("write", File::class.java)
 
-                loadImage(uri)
+            } else {
 
-                val fileName = GetDate().getTime().toString() + ".jpg"
-                val file = File(uri.toString())
+                bundle.getSerializable("write") as File
+
+            }
+
+            if (file != null) {
+
+                Glide.with(requireActivity()).load(file).into(binding.writeImageView)
                 val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-
-                body = MultipartBody.Part.createFormData("uploadFile", fileName, requestFile)
+                body = MultipartBody.Part.createFormData("uploadFile", GetDate().getTime().toString() + ".jpg", requestFile)
+                galleryCheck = true
 
             }
 
