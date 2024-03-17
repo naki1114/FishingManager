@@ -9,9 +9,10 @@ import okhttp3.MultipartBody
 
 class CheckingFishModel {
 
-    private val webServerRetrofitInterface: RetrofitInterface =
-        RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
+    private val webServerRetrofitInterface: RetrofitInterface = RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
+
+    // 기록 리스트 불러오기
     fun getHistoryList(historyList : ArrayList<History>, nickname : String) : ArrayList<History> {
 
         val list = ArrayList<History>()
@@ -31,9 +32,11 @@ class CheckingFishModel {
     } // getHistoryList()
 
 
+    // 사용자 정보 요청
     fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
 
 
+    // 물고기 설명 불러오기
     fun getDescription(fishName : String, arg : Float) : CheckingFish {
 
         var fishDescription = ""
@@ -89,6 +92,7 @@ class CheckingFishModel {
     } // getDescription()
 
 
+    // 기록에 저장 요청
     fun requestSaveHistory(file : MultipartBody.Part, nickname : String, fishName : String, date : String) = webServerRetrofitInterface.saveHistory(file, nickname, fishName, date)
 
 

@@ -96,10 +96,20 @@ class CheckingFishFragment : Fragment() {
         setVariable()
         observeLiveData()
 
-
     } // onViewCreated()
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (modelStatus) {
+            tensorflowModel.closeModel()
+        }
+
+    } // onDestroy()
+
+
+    // 변수 초기화
     fun setVariable() {
 
         tensorflowModel = TensorflowModel(requireActivity())
@@ -122,6 +132,7 @@ class CheckingFishFragment : Fragment() {
     } // setVariable()
 
 
+    // ViewModel의 LiveData 관찰
     fun observeLiveData() {
 
         viewModel.liveDataHistoryList.observe(viewLifecycleOwner, Observer {
@@ -320,6 +331,7 @@ class CheckingFishFragment : Fragment() {
     } // observeLiveData()
 
 
+    // 파일 만들기
     fun getFile(): MultipartBody.Part {
 
         val storage = requireActivity().cacheDir
@@ -339,6 +351,7 @@ class CheckingFishFragment : Fragment() {
     } // getFile()
 
 
+    // 레이아웃 변환
     fun changeLayout(layout: String) {
 
         when (layout) {
@@ -379,6 +392,7 @@ class CheckingFishFragment : Fragment() {
     } // changeLayout()
 
 
+    // SharedPreference에서 유저 정보 불러오기
     fun checkUserShared() {
 
         userInfoShared =
@@ -388,6 +402,7 @@ class CheckingFishFragment : Fragment() {
     } // checkUserShared()
 
 
+    // 카메라 전환
     fun startCamera() {
 
         TedPermission.create().setPermissionListener(object : PermissionListener {
@@ -411,6 +426,7 @@ class CheckingFishFragment : Fragment() {
     } // startCamera()
 
 
+    // 어종 검출
     fun classify() {
 
         tensorflowModel.init()
@@ -422,15 +438,5 @@ class CheckingFishFragment : Fragment() {
         modelStatus = true
 
     } // classify()
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        if (modelStatus) {
-            tensorflowModel.closeModel()
-        }
-        
-    }
 
 }
