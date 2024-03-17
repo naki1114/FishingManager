@@ -1,14 +1,11 @@
 package com.example.fishingmanager.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.fishingmanager.activity.MainActivity
 import com.example.fishingmanager.data.History
-import com.example.fishingmanager.data.HomeRecentCollection
 import com.example.fishingmanager.databinding.HomeRecentcollectionItemBinding
 import com.example.fishingmanager.network.RetrofitClient
 
