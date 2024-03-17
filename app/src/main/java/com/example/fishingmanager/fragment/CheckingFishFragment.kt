@@ -20,6 +20,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.fishingmanager.R
@@ -327,7 +328,7 @@ class CheckingFishFragment : Fragment() {
 
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
-            (activity as MainActivity).changeFragment(it)
+            (activity as MainActivity).changeFragmentWrite(file.toUri().toString())
 
         })
 
