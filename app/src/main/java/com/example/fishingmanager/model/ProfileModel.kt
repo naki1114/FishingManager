@@ -20,6 +20,8 @@ class ProfileModel {
     private val webServerRetrofitInterface: RetrofitInterface =
         RetrofitClient.getWebServer().create(RetrofitInterface::class.java)
 
+
+    // 도감 리스트 불러오기
     fun getCollectionList(
         collectionList: ArrayList<Collection>,
         nickname: String
@@ -42,6 +44,7 @@ class ProfileModel {
     } // getCollectionList()
 
 
+    // 기록 리스트 불러오기
     fun getHistoryList(historyList: ArrayList<History>, nickname: String): ArrayList<History> {
 
         val list = ArrayList<History>()
@@ -61,6 +64,7 @@ class ProfileModel {
     } // getHistoryList()
 
 
+    // 물고기 리스트 불러오기
     fun getFishList(historyList: ArrayList<History>, nickname: String): ArrayList<SelectFish> {
 
         val list = ArrayList<SelectFish>()
@@ -143,6 +147,7 @@ class ProfileModel {
     } // getFishList()
 
 
+    // 도감 자세히보기 전용 데이터 불러오기
     fun checkCollection(collectionList: ArrayList<Collection>): ArrayList<Collection> {
 
         val list = ArrayList<Collection>()
@@ -195,6 +200,7 @@ class ProfileModel {
     } // checkCollection()
 
 
+    // 도감에 추가
     fun addCollection(list: ArrayList<Collection>, fish: String, image: Int, explane: String) {
 
         for (j in 0 until list.size) {
@@ -216,6 +222,7 @@ class ProfileModel {
     } // addCollection()
 
 
+    // 기록 리스트 필터링
     fun refreshHistoryList(historyList: ArrayList<History>, nickname: String, fishName: String, date : String) : ArrayList<History> {
 
         val list = ArrayList<History>()
@@ -280,6 +287,7 @@ class ProfileModel {
     } // changeFish()
 
 
+    // 날짜 정보 불러오기
     @SuppressLint("SimpleDateFormat")
     fun getCalendarList(historyList : ArrayList<History>) : ArrayList<CalendarDay> {
 
@@ -305,10 +313,15 @@ class ProfileModel {
     } // getCalendarList()
 
 
+    // 회원 탈퇴 요청
     fun requestDeleteAccount(nickname : String, type : String) = webServerRetrofitInterface.deleteUserInfo(nickname, type)
 
+
+    // 회원 정보 요청
     fun requestCombine(nickname: String) = webServerRetrofitInterface.requestDB(nickname)
 
+
+    // 프로필 이미지 수정 요청
     fun requestUpdateProfileImage(file : MultipartBody.Part, nickname : String) = webServerRetrofitInterface.updateProfileImage(file, nickname)
 
 
