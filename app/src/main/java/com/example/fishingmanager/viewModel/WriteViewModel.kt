@@ -18,13 +18,14 @@ class WriteViewModel(val nickname: String): ViewModel() {
     val doSaveLayout = MutableLiveData<Boolean>()
 
     val isBack = MutableLiveData<Boolean>()
-    val isSave = MutableLiveData<Boolean>()
+    val isRequestSave = MutableLiveData<Boolean>()
 
     val feedStatus = MutableLiveData<String>()
     val titleLiveData = MutableLiveData<String>()
     val contentLiveData = MutableLiveData<String>()
 
     val toGalleryLiveData = MutableLiveData<Boolean>()
+    val isSaved = MutableLiveData<Boolean>()
 
     private var model = WriteModel()
 
@@ -97,7 +98,7 @@ class WriteViewModel(val nickname: String): ViewModel() {
     fun clickSaveCheck() {
 
         doSaveLayout.value = false
-        isSave.value = true
+        isRequestSave.value = true
 
     } // clickSaveCheck()
 
@@ -131,7 +132,8 @@ class WriteViewModel(val nickname: String): ViewModel() {
 
                 if (response.isSuccessful) {
 
-                    isSave.value = false
+                    isRequestSave.value = false
+                    isSaved.value = true
 
                 }
 
@@ -161,7 +163,8 @@ class WriteViewModel(val nickname: String): ViewModel() {
 
                 if (response.isSuccessful) {
 
-                    isSave.value = false
+                    isRequestSave.value = false
+                    isSaved.value = true
 
                 }
 
