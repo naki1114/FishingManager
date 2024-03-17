@@ -41,6 +41,7 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
     val liveDataSaveAndWriteStatus = MutableLiveData<Boolean>()
     val liveDataChangeFragment = MutableLiveData<String>()
     val liveDataCheckingFishCountText = MutableLiveData<String>()
+    val liveDataCheckingFishDayCount = MutableLiveData<Int>()
 
     lateinit var complete : String
 
@@ -205,7 +206,13 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
 
                     basicHistoryList = liveDataBasicHistoryList.value!!
                     liveDataHistoryList.value = model.getHistoryList(basicHistoryList, nickname)
-                    liveDataCheckingFishCountText.value = "금일 남은 횟수 : ${response.body()?.userInfo?.checkingFishCount} / 3"
+
+                    liveDataCheckingFishDayCount.value = response.body()!!.userInfo.checkingFishTicket
+                    if (response.body()!!.userInfo.checkingFishTicket > 0) {
+                        liveDataCheckingFishCountText.value = ""
+                    } else {
+                        liveDataCheckingFishCountText.value = "금일 남은 횟수 : ${response.body()?.userInfo?.checkingFishCount} / 3"
+                    }
 
                     if (complete == "save") {
 

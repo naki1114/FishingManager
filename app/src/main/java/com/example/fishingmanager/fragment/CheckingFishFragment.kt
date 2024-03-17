@@ -265,10 +265,14 @@ class CheckingFishFragment : Fragment() {
 
         viewModel.liveDataCameraStatus.observe(viewLifecycleOwner, Observer {
 
-            if (it) {
+            if (viewModel.liveDataCheckingFishDayCount.value!! > 0) {
                 startCamera()
             } else {
-                Toast.makeText(requireActivity(), "금일 이용 횟수를 모두 소진하였습니다.", Toast.LENGTH_SHORT).show()
+                if (it) {
+                    startCamera()
+                } else {
+                    Toast.makeText(requireActivity(), "금일 이용 횟수를 모두 소진하였습니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         })
@@ -324,6 +328,16 @@ class CheckingFishFragment : Fragment() {
         viewModel.liveDataChangeFragment.observe(viewLifecycleOwner, Observer {
 
             (activity as MainActivity).changeFragment(it)
+
+        })
+
+        viewModel.liveDataCheckingFishDayCount.observe(viewLifecycleOwner, Observer {
+
+            if (it > 0) {
+                binding.checkingFishCountText.visibility = View.GONE
+            } else {
+                binding.checkingFishCountText.visibility = View.VISIBLE
+            }
 
         })
 
