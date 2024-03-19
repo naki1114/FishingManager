@@ -73,6 +73,7 @@
     <string name="start_findPassword_4page_main">비밀번호를 한 번 더\n입력해 주세요.</string>
     <string name="start_findPassword_1page_sub">입력하신 이메일로 인증 번호가 발송됩니다.</string>
     <string name="start_findPassword_3page_sub">비밀번호는 영문자, 숫자, 특수문자를\n포함하여 8~16자로 사용해 주세요.</string>
+    <string name="start_findPassword_1page_valid">가입되지 않은 이메일 입니다.</string>
     <string name="start_findPassword_2page_valid_timeOut">인증 시간이 만료되었습니다.</string>
     <string name="start_findPassword_2page_valid_mismatch">인증 번호가 일치하지 않습니다.</string>
     <string name="start_findPassword_3page_valid">비밀번호 양식에 맞게 입력해 주세요.</string>

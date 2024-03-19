@@ -27,7 +27,7 @@
             android:background="@color/main2"
             android:orientation="vertical"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -294,6 +294,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/start_findPassword"
                     android:textColor="@color/black"
+                    android:onClick='@{() -> viewModel.changeLayout("findPassword")}'
                     />
 
                 <View
@@ -889,6 +890,260 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/findPasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/main2"
+            android:visibility="visible"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="20dp"
+                >
+
+                <ImageView
+                    android:id="@+id/findPasswordBackButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/btnbackblack"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:onClick='@{() -> viewModel.changeLayout("login")}'
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_findPassword"
+                    android:textSize="24dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="60dp"
+                    android:letterSpacing="0.3"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <TextView
+                android:id="@+id/findPasswordMainInfoTextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/start_findPassword_1page_main"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <LinearLayout
+                android:id="@+id/findPasswordInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/findPasswordSubInfoTextView"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/start_findPassword_1page_sub"
+                    android:textSize="12dp"
+                    android:textColor="@color/black"
+                    android:visibility="visible"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/findPasswordUserInfoEditText"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/start_findPassword_1page_hint"
+                    android:inputType="text"
+                    android:afterTextChanged='@{() -> viewModel.passwordValidCheck(signupUserInfoEditText.getText().toString())}'
+                    />
+
+                <TextView
+                    android:id="@+id/findPasswordValidTextView"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:text="@string/start_findPassword_1page_valid"
+                    android:textSize="12dp"
+                    android:textColor="@color/red"
+                    android:visibility="invisible"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                />
+
+            <LinearLayout
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/findPasswordPrevButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/previous"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    android:background="@drawable/custom_main_button_background"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    android:onClick='@{() -> viewModel.clickFindPasswordPrevButton()}'
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/findPasswordProgressTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/start_findPassword_1page"
+                    android:textColor="@color/gray2"
+                    android:letterSpacing="0.5"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <Button
+                    android:id="@+id/findPasswordNextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    android:background="@drawable/custom_main_button_background"
+                    android:layout_gravity="center"
+                    android:onClick='@{() -> viewModel.clickFindPasswordNextButton(signupUserInfoEditText.getText().toString())}'
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                />
+
+            <LinearLayout
+                android:id="@+id/findPasswordReSendLayout"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                >
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/start_resend_info"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <Button
+                    android:id="@+id/findPasswordReSendButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_resend"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main2"
+                    android:letterSpacing="0.3"
+                    android:background="@drawable/custom_main_button_background"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> viewModel.reSendMail()}"
+                    />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
                 />
 
         </LinearLayout>
