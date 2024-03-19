@@ -236,4 +236,11 @@ interface RetrofitInterface {
         @FieldMap map : HashMap<String, String>
     ): Call<KakaoPayLoad>
 
+
+    @POST("File/UserInfo/ResetCheckingFishCount.php")
+    @FormUrlEncoded
+    fun resetCheckingFishCount(
+        @Field("nickname") nickname: String
+    ): Call<String>
+
 }

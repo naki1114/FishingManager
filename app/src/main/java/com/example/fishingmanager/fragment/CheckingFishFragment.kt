@@ -1,5 +1,6 @@
 package com.example.fishingmanager.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -39,6 +40,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 
 class CheckingFishFragment : Fragment() {
@@ -95,6 +97,7 @@ class CheckingFishFragment : Fragment() {
 
         checkUserShared()
         setVariable()
+        checkCheckingFishCount()
         observeLiveData()
         viewModel.init()
 
@@ -453,5 +456,28 @@ class CheckingFishFragment : Fragment() {
         modelStatus = true
 
     } // classify()
+
+
+    // 어종 검출 횟수 일일 초기화
+    private fun checkCheckingFishCount() {
+
+        val beforeNickname = userInfoShared.getString("nickname", "")
+        val beforeDate = userInfoShared.getString("date", "")
+
+        val form = SimpleDateFormat("yy/MM/dd")
+        val currentDate = form.format(System.currentTimeMillis())
+
+        if (nickname == beforeNickname && beforeDate != currentDate) {
+
+            val edit = userInfoShared.edit()
+            edit.putString("nickname", nickname)
+            edit.putString("date", currentDate)
+            edit.apply()
+
+            viewModel.resetCheckingFishCount(nickname)
+
+        }
+
+    }
 
 }

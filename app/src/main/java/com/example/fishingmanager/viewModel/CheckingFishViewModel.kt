@@ -238,4 +238,35 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
 
     } // saveHistoryServer()
 
+
+    // 어종 검출 횟수 초기화
+    fun resetCheckingFishCount(nickname: String) {
+
+        model.resetCheckingFishCount(nickname).enqueue(object: Callback<String> {
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                if (response.isSuccessful) {
+
+                    val msg = response.body()
+                    if (msg == "success") {
+
+                        liveDataCheckingFishDayCount.value = 3
+
+                    }
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+                Log.d(TAG, "onFailure : ${t.message}")
+
+            }
+
+        })
+
+    }
+
 }

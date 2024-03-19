@@ -96,4 +96,8 @@ class CheckingFishModel {
     fun requestSaveHistory(file : MultipartBody.Part, nickname : String, fishName : String, date : String) = webServerRetrofitInterface.saveHistory(file, nickname, fishName, date)
 
 
+    // 어종 검출 횟수 초기화
+    fun resetCheckingFishCount(nickname: String) = webServerRetrofitInterface.resetCheckingFishCount(nickname)
+
+
 }
