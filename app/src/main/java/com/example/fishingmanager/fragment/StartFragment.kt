@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -110,7 +111,13 @@ class StartFragment: Fragment() {
                     binding.startLayout.visibility = View.GONE
 
                 }
-                "signup" -> {
+                "signup", "findPassword" -> {
+
+                    if (it == "signup") {
+                        binding.signupTitleTextView.text = context?.resources?.getString(R.string.start_signup)
+                    } else {
+                        binding.signupTitleTextView.text =context?.resources?.getString(R.string.start_findPassword)
+                    }
 
                     binding.loginLayout.visibility = View.GONE
                     binding.signupLayout.visibility = View.VISIBLE
@@ -245,6 +252,23 @@ class StartFragment: Fragment() {
 
         } // nickname observe
 
+        startViewModel.isSuccessfulFindPassword.observe(viewLifecycleOwner) {
+
+            if (it) {
+
+                binding.loginLayout.visibility = View.VISIBLE
+                binding.signupLayout.visibility = View.GONE
+                binding.signupSocialLayout.visibility = View.GONE
+                binding.startLayout.visibility = View.GONE
+
+                viewSignUpFirstPage()
+
+                Toast.makeText(requireContext(), "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show()
+
+            }
+
+        }
+
         // pageNumber observe
         startViewModel.pageNumberLiveData.observe(viewLifecycleOwner) {
 
@@ -295,14 +319,41 @@ class StartFragment: Fragment() {
     } // socialNicknameCheck()
 
 
-    // FM 회원가입 1페이지 호출
+    // FM 회원가입 / 비밀번호 찾기 1페이지 호출
     private fun viewSignUpFirstPage() {
 
-        binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_main)
-        binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_1page_sub)
+        val select = startViewModel.layoutLiveData.value
+
+        if (select == "signup") {
+
+            binding.signupTitleTextView.text =
+                context?.resources?.getString(R.string.start_signup)
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_1page_main)
+            binding.signupSubInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_1page_sub)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_signup_1page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_signup_1page)
+
+        } else if (select == "findPassword") {
+
+            binding.signupTitleTextView.text =
+                context?.resources?.getString(R.string.start_findPassword)
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_1page_main)
+            binding.signupSubInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_1page_sub)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_findPassword_1page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_1page)
+
+        }
+
         binding.signupSubInfoTextView.visibility = View.VISIBLE
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_1page_hint)
         binding.signupUserInfoEditText.text = null
         binding.signupUserInfoEditText.setText(startViewModel.userID)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
@@ -313,20 +364,39 @@ class StartFragment: Fragment() {
         binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
         binding.signupPrevButton.visibility = View.INVISIBLE
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_1page)
-        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
+        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
 
     } // viewSignUpFirstPage() <- id
 
 
-    // FM 회원가입 2페이지 호출
+    // FM 회원가입 / 비밀번호 찾기 2페이지 호출
     private fun viewSignUpSecondPage() {
 
-        binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_2page_main)
+        val select = startViewModel.layoutLiveData.value
+
+        if (select == "signup") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_2page_main)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_signup_2page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_signup_2page)
+
+        } else if (select == "findPassword") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_2page_main)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_findPassword_2page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_2page)
+
+        }
+
         binding.signupSubInfoTextView.text = null
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
         binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_NUMBER
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_2page_hint)
         binding.signupUserInfoEditText.text = null
         binding.signupValidTextView.visibility = View.VISIBLE
         binding.signupInputLayout.visibility = View.VISIBLE
@@ -335,20 +405,43 @@ class StartFragment: Fragment() {
         binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
         binding.signupPrevButton.visibility = View.VISIBLE
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_2page)
-        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
+        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
 
     } // viewSignUpSecondPage() <- authNumber
 
 
-    // FM 회원가입 3페이지 호출
+    // FM 회원가입 / 비밀번호 찾기 3페이지 호출
     private fun viewSignUpThirdPage() {
 
-        binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_main)
-        binding.signupSubInfoTextView.text = context?.resources?.getString(R.string.start_signup_3page_sub)
+        val select = startViewModel.layoutLiveData.value
+
+        if (select == "signup") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_3page_main)
+            binding.signupSubInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_3page_sub)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_signup_3page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_signup_3page)
+
+        } else if (select == "findPassword") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_3page_main)
+            binding.signupSubInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_3page_sub)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_findPassword_3page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_3page)
+
+        }
+
         binding.signupSubInfoTextView.visibility = View.VISIBLE
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_3page_hint)
+        binding.signupUserInfoEditText.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.signupUserInfoEditText.text = null
         binding.signupUserInfoEditText.setText(startViewModel.userPassword)
         binding.signupUserInfoEditText.setSelection(binding.signupUserInfoEditText.length())
@@ -359,20 +452,40 @@ class StartFragment: Fragment() {
         binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
         binding.signupPrevButton.visibility = View.VISIBLE
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_3page)
-        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
+        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
 
     } // viewSignUpThirdPage() <- password
 
 
-    // FM 회원가입 4페이지 호출
+    // FM 회원가입 / 비밀번호 찾기 4페이지 호출
     private fun viewSignUpFourthPage() {
 
-        binding.signupMainInfoTextView.text = context?.resources?.getString(R.string.start_signup_4page_main)
+        val select = startViewModel.layoutLiveData.value
+
+        if (select == "signup") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_signup_4page_main)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_signup_4page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_signup_4page)
+
+        } else if (select == "findPassword") {
+
+            binding.signupMainInfoTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_4page_main)
+            binding.signupUserInfoEditText.hint =
+                context?.resources?.getString(R.string.start_findPassword_4page_hint)
+            binding.signupProgressTextView.text =
+                context?.resources?.getString(R.string.start_findPassword_4page)
+
+        }
+
         binding.signupSubInfoTextView.text = null
         binding.signupSubInfoTextView.visibility = View.INVISIBLE
-        binding.signupUserInfoEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        binding.signupUserInfoEditText.hint = context?.resources?.getString(R.string.start_signup_4page_hint)
+        binding.signupUserInfoEditText.inputType =
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         binding.signupUserInfoEditText.text = null
         binding.signupValidTextView.visibility = View.INVISIBLE
         binding.signupInputLayout.visibility = View.VISIBLE
@@ -381,8 +494,7 @@ class StartFragment: Fragment() {
         binding.signupCheckNicknameTextView.text = null
         binding.signupCheckInfoLayout.visibility = View.GONE
         binding.signupPrevButton.visibility = View.VISIBLE
-        binding.signupProgressTextView.text = context?.resources?.getString(R.string.start_signup_4page)
-        binding.signupNextButton.text =  context?.resources?.getString(R.string.next)
+        binding.signupNextButton.text = context?.resources?.getString(R.string.next)
 
     } // viewSignUpFourthPage() <- rePassword
 

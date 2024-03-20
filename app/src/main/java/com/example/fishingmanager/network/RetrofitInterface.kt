@@ -61,11 +61,12 @@ interface RetrofitInterface {
     ): Call<Combine>
 
 
-    // 이메일 중복 체크
+    // 이메일 체크
     @FormUrlEncoded
-    @POST("File/UserInfo/EmailDuplicateCheck.php")
+    @POST("File/UserInfo/EmailCheck.php")
     fun checkUserEmail(
-        @Field("id") id: String
+        @Field("id") id: String,
+        @Field("layout") layout: String
     ): Call<String>
 
 
@@ -113,7 +114,7 @@ interface RetrofitInterface {
     fun changePassword(
         @Field("id") id: String,
         @Field("password") password: String
-    )
+    ): Call<String>
 
 
     // 로그인 정보 조회
@@ -237,6 +238,7 @@ interface RetrofitInterface {
     ): Call<KakaoPayLoad>
 
 
+    // 어종 검출 횟수 초기화
     @POST("File/UserInfo/ResetCheckingFishCount.php")
     @FormUrlEncoded
     fun resetCheckingFishCount(
