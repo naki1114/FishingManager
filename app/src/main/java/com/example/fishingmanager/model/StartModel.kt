@@ -13,7 +13,7 @@ class StartModel {
 
 
     // Retrofit) 이메일 중복 체크
-    fun checkUserEmail(id: String) = responseServer.checkUserEmail(id)
+    fun checkUserEmail(id: String, layout: String) = responseServer.checkUserEmail(id, layout)
 
 
     // 인증 번호 생성
@@ -106,5 +106,9 @@ class StartModel {
 
     // Retrofit) 소셜 로그인 회원가입
     fun socialLoginCheck(id: String, nickname: String, profileImage: String, type: String) = responseServer.socialLoginCheck(id, nickname, profileImage, type)
+
+
+    // Retrofit) 비밀번호 변경
+    fun changePassword(id: String, password: String) = responseServer.changePassword(id, password)
 
 }

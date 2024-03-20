@@ -33,6 +33,7 @@ class StartViewModel: ViewModel() {
     val socialType = MutableLiveData<String>()
     val socialLoginCheck = MutableLiveData<Boolean>()
     val isSignedUpUser = MutableLiveData<Boolean>()
+    val isSuccessfulFindPassword = MutableLiveData<Boolean>()
 
     val passwordValid = MutableLiveData<Boolean>()
 
@@ -102,21 +103,21 @@ class StartViewModel: ViewModel() {
 
 
     // FM 회원 가입시 다음 버튼 클릭
-    fun clickNextButton(getText: String) {
+    fun clickNextButton(userInfo: String) {
 
         when (signUpPageNumber) {
 
             1 -> {
 
-                checkUserEmail(getText)
+                checkUserEmail(userInfo)
                 authNumber = model.createAuthNumber()
                 startTimer()
 
             }
-            2 -> checkAuthNumber(getText)
-            3 -> checkPassword(getText)
-            4 -> checkRePassword(getText)
-            5 -> checkUserNickname(getText)
+            2 -> checkAuthNumber(userInfo)
+            3 -> checkPassword(userInfo)
+            4 -> checkRePassword(userInfo)
+            5 -> checkUserNickname(userInfo)
             6 -> saveUserInfo()
 
         }
@@ -197,7 +198,9 @@ class StartViewModel: ViewModel() {
     // Retrofit) 이메일 중복 체크
     private fun checkUserEmail(id: String) {
 
-        model.checkUserEmail(id).enqueue(object: Callback<String> {
+        val layout = layoutLiveData.value
+
+        model.checkUserEmail(id, layout!!).enqueue(object: Callback<String> {
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
 
@@ -275,7 +278,15 @@ class StartViewModel: ViewModel() {
 
         if (isUsableRePassword.value == true) {
 
-            signUpPageNumber++
+            if (layoutLiveData.value == "signup") {
+
+                signUpPageNumber++
+
+            } else if (layoutLiveData.value == "findPassword") {
+
+                changePassword(userID, userPassword)
+
+            }
 
         }
 
@@ -497,6 +508,37 @@ class StartViewModel: ViewModel() {
         })
 
     } // isSignedUpUserCheck()
+
+
+    // Retrofit) 비밀번호 변경
+    private fun changePassword(id: String, password: String) {
+
+        model.changePassword(id, password).enqueue(object: Callback<String> {
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+                if (response.isSuccessful) {
+
+                    val msg = response.body()
+                    if (msg == "successful") {
+
+                        isSuccessfulFindPassword.value = true
+
+                    }
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+                Log.d(TAG, "onFailure : ${t.message}")
+
+            }
+
+        })
+
+    }
 
 
 }
