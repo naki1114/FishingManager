@@ -228,14 +228,29 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:visibility="visible"
+                        android:weightSum="1"
                         >
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/profileCollectionRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="3"
+                            />
+
+                        <TextView
+                            android:id="@+id/profileCollectionCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:text='@{viewModel.collectionCount + " / 30"}'
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
                             />
 
                     </LinearLayout>

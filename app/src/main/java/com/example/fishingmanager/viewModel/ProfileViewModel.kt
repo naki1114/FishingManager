@@ -59,6 +59,8 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
     val liveDataUpdateProfileImage = MutableLiveData<Combine>()
     val liveDataTicketDateCount = MutableLiveData<String>()
 
+    var collectionCount = 0
+
 
     // ViewModel 초기화
     fun init() {
@@ -74,6 +76,14 @@ class ProfileViewModel(collectionList: ArrayList<Collection>, historyList: Array
         liveDataCurrentFish.value = "전 체"
         liveDataCurrentDate.value = "전 체"
         liveDataTicketDateCount.value = "이용권 남은 기간 : ${userInfo.checkingFishTicket}일"
+
+        for (i in 0 until 30) {
+
+            if (liveDataCollectionList.value!![i].fishName != "") {
+                collectionCount++
+            }
+
+        }
 
     } // init()
 
