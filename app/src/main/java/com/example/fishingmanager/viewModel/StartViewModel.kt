@@ -111,7 +111,6 @@ class StartViewModel: ViewModel() {
 
                 checkUserEmail(userInfo)
                 authNumber = model.createAuthNumber()
-                startTimer()
 
             }
             2 -> checkAuthNumber(userInfo)
@@ -213,6 +212,7 @@ class StartViewModel: ViewModel() {
                         userID = id
                         isUsableEmail.value = true
                         signUpPageNumber++
+                        startTimer()
 
                     } else {
 

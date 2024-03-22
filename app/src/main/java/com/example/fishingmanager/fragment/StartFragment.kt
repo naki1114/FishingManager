@@ -118,6 +118,7 @@ class StartFragment: Fragment() {
                     } else {
                         binding.signupTitleTextView.text =context?.resources?.getString(R.string.start_findPassword)
                     }
+                    viewSignUpFirstPage()
 
                     binding.loginLayout.visibility = View.GONE
                     binding.signupLayout.visibility = View.VISIBLE
@@ -155,6 +156,8 @@ class StartFragment: Fragment() {
         // id observe
         startViewModel.isUsableEmail.observe(viewLifecycleOwner) {
 
+            val select = startViewModel.layoutLiveData.value
+
             if (it) {
 
                 viewSignUpSecondPage()
@@ -170,7 +173,15 @@ class StartFragment: Fragment() {
 
                 } else {
 
-                    binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_using)
+                    if (select == "signup") {
+
+                        binding.signupValidTextView.text = context?.resources?.getString(R.string.start_signup_1page_valid_using)
+
+                    } else {
+
+                        binding.signupValidTextView.text = context?.resources?.getString(R.string.start_findPassword_1page_valid)
+
+                    }
 
                 }
 
@@ -634,7 +645,7 @@ class StartFragment: Fragment() {
 
         startViewModel.authTime.observe(viewLifecycleOwner) {
 
-            val time = startViewModel.authTime.value
+            val time = it
 
             if (time!! >= 0) {
 
