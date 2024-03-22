@@ -251,7 +251,8 @@ class CheckingFishViewModel(historyList : ArrayList<History>, val userInfo: User
                     val msg = response.body()
                     if (msg == "success") {
 
-                        liveDataCheckingFishDayCount.value = 3
+                        userInfo.checkingFishCount = 3
+                        liveDataCheckingFishCountText.value = "금일 남은 횟수 : ${userInfo.checkingFishCount} / 3"
 
                     }
 
