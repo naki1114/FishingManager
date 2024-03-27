@@ -71,28 +71,23 @@ class StartViewModel: ViewModel() {
 
             2 -> {
 
-                isUsableEmail.value = null
                 authNumber = ""
                 stopTimer(1)
 
             }
             3 -> {
 
-                isCorrectAuthNumber.value = null
                 authNumber = model.createAuthNumber()
                 userPassword = ""
                 isUsableEmail.value = true
                 startTimer()
 
             }
-            4 -> isUsablePassword.value = null
             5 -> {
 
-                isUsableRePassword.value = null
                 userNickname = ""
 
             }
-            6 -> isUsableNickname.value = null
 
         }
 

@@ -53,9 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     val enterFragment = EnterFragment()
     val splashFragment = SplashFragment()
-    val homeFragment = HomeFragment()
     val conditionFragment = ConditionFragment()
-    val writeFragment = WriteFragment()
     val payFragment = PayFragment()
     val photoViewFragment = PhotoViewFragment()
 
@@ -188,7 +186,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             "write" -> {
-                pickOutFragment(writeFragment)
+                pickOutFragment(WriteFragment())
                 navigationGone()
             }
 
